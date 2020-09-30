@@ -1,4 +1,4 @@
-package com.example.sprint2be.service;
+package com.example.sprint2be.service.user;
 
 import com.example.sprint2be.model.user.UserDto;
 

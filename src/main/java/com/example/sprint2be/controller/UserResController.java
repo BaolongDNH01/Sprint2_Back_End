@@ -1,19 +1,20 @@
 package com.example.sprint2be.controller;
 
-import com.example.sprint2be.model.user.User;
+
 import com.example.sprint2be.model.user.UserDto;
 import com.example.sprint2be.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-@Controller
-public class UserController {
+@RestController
+public class UserResController {
     @Autowired
     UserService userService;
     @GetMapping("/user")
@@ -25,9 +26,11 @@ public class UserController {
         return new ResponseEntity<>(userService.findById(id), HttpStatus.OK);
     }
     @PostMapping("/add-user")
-    public ResponseEntity<UserDto> addUser(@RequestBody UserDto userDto){
+    public ResponseEntity<UserDto> addUser(@RequestBody UserDto userDto, UriComponentsBuilder builder){
         userService.create(userDto);
-        return new ResponseEntity<>(userDto, HttpStatus.CREATED);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(builder.path("/user/{id}").buildAndExpand(userDto.getId()).toUri());
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Integer id){

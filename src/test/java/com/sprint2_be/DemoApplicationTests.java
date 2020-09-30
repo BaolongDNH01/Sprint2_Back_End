@@ -1,10 +1,10 @@
-package com.example.sprint2be;
+package com.sprint2_be;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class Sprint2BackEndApplicationTests {
+class DemoApplicationTests {
 
     @Test
     void contextLoads() {

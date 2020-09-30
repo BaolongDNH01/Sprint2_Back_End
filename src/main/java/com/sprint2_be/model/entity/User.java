@@ -3,13 +3,12 @@ package com.sprint2_be.model.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
 @JsonIgnoreProperties
-@Table(name = "information")
-public class Information {
+@Table(name = "user")
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,7 +48,7 @@ public class Information {
     @Column(name = "delete_flag")
     private Integer deleteFlag;
 
-    public Information() {
+    public User() {
     }
 
     @Override

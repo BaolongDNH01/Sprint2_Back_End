@@ -1,4 +1,10 @@
 package com.example.sprint2be.service.rank;
 
-public class RankService {
+import com.example.sprint2be.model.Rank;
+
+import java.util.List;
+
+public interface RankService {
+    List<Rank> findAll();
+    Rank findById(Integer id);
 }

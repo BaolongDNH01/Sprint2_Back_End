@@ -10,9 +10,7 @@ import com.example.sprint2be.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
@@ -35,7 +33,7 @@ public class UserServiceImpl implements UserService {
         user.setIdCard(userDto.getIdCard());
         user.setPoint(userDto.getPoint());
         user.setSignInRecent(userDto.getSignInRecent());
-        user.setTimeLock(userDto.getTimeLock());
+        user.setStatus_flag(userDto.getStatus_flag());
         user.setAvatar(userDto.getAvatar());
         Set<Role> roles = new HashSet<>();
         roles.add(roleRepository.findById(2).orElse(null));
@@ -56,7 +54,7 @@ public class UserServiceImpl implements UserService {
         userDto.setIdCard(user.getIdCard());
         userDto.setPoint(user.getPoint());
         userDto.setSignInRecent(user.getSignInRecent());
-        userDto.setTimeLock(user.getTimeLock());
+        userDto.setStatus_flag(user.getStatus_flag());
         userDto.setAvatar(user.getAvatar());
         userDto.setRank(user.getRank().getRankId());
         return userDto;
@@ -80,5 +78,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(Integer id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public void lockUser(UserDto userDto) {
+        userDto.setStatus_flag("false");
+        userRepository.save(convertToUser(userDto));
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                userDto.setStatus_flag("true");
+                userRepository.save(convertToUser(userDto));
+            }
+        };
+//        1000 time = 1s
+        Timer timer = new Timer();
+        timer.schedule(timerTask, userDto.getTime());
     }
 }

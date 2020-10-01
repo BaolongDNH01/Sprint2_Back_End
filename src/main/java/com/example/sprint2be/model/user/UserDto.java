@@ -1,45 +1,47 @@
 package com.example.sprint2be.model.user;
 
 
+import javax.persistence.Column;
+
 public class UserDto {
-    private Integer id;
-    private String name;
-    private String account;
+    private Integer userId;
+    private String fullName;
+    private String username;
     private String password;
     private String email;
     private String phone;
     private String birthday;
     private String address;
     private String idCard;
-    private String point;
+    private Integer point;
     private String signInRecent;
-    private String status_flag;
     private String avatar;
-    private Integer rank;
-    private Integer time;
+    private String flag;
+    private long timeLock;
+    private Integer rankId;
 
-    public Integer getId() {
-        return id;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
-    public String getName() {
-        return name;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
-    public String getAccount() {
-        return account;
+    public String getUsername() {
+        return username;
     }
 
-    public void setAccount(String account) {
-        this.account = account;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -90,11 +92,11 @@ public class UserDto {
         this.idCard = idCard;
     }
 
-    public String getPoint() {
+    public Integer getPoint() {
         return point;
     }
 
-    public void setPoint(String point) {
+    public void setPoint(Integer point) {
         this.point = point;
     }
 
@@ -106,14 +108,6 @@ public class UserDto {
         this.signInRecent = signInRecent;
     }
 
-    public String getStatus_flag() {
-        return status_flag;
-    }
-
-    public void setStatus_flag(String status_flag) {
-        this.status_flag = status_flag;
-    }
-
     public String getAvatar() {
         return avatar;
     }
@@ -122,19 +116,27 @@ public class UserDto {
         this.avatar = avatar;
     }
 
-    public Integer getRank() {
-        return rank;
+    public String getFlag() {
+        return flag;
     }
 
-    public void setRank(Integer rank) {
-        this.rank = rank;
+    public void setFlag(String flag) {
+        this.flag = flag;
     }
 
-    public Integer getTime() {
-        return time;
+    public long getTimeLock() {
+        return timeLock;
     }
 
-    public void setTime(Integer time) {
-        this.time = time;
+    public void setTimeLock(long timeLock) {
+        this.timeLock = timeLock;
+    }
+
+    public Integer getRankId() {
+        return rankId;
+    }
+
+    public void setRankId(Integer rankId) {
+        this.rankId = rankId;
     }
 }

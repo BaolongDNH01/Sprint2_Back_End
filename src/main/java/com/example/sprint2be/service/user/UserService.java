@@ -9,4 +9,5 @@ public interface UserService {
     UserDto findById(Integer id);
     void create(UserDto userDto);
     void delete(Integer id);
+    void lockUser(UserDto userDto);
 }

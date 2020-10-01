@@ -3,7 +3,6 @@ package com.example.sprint2be.model.user;
 import com.example.sprint2be.model.Rank;
 import com.example.sprint2be.model.Role;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.annotations.OnDelete;
@@ -15,6 +14,7 @@ import java.util.Set;
 
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="id")
+@Table(name = "_user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -38,7 +38,7 @@ public class User {
     @NotBlank
     private String point;
     private String signInRecent;
-    private String timeLock;
+    private String status_flag;
     private String avatar;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -153,12 +153,12 @@ public class User {
         this.rank = rank;
     }
 
-    public String getTimeLock() {
-        return timeLock;
+    public String getStatus_flag() {
+        return status_flag;
     }
 
-    public void setTimeLock(String timeLock) {
-        this.timeLock = timeLock;
+    public void setStatus_flag(String timeLock) {
+        this.status_flag = timeLock;
     }
 
     public String getAvatar() {

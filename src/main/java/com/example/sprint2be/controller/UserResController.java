@@ -4,6 +4,7 @@ package com.example.sprint2be.controller;
 import com.example.sprint2be.model.user.UserDto;
 import com.example.sprint2be.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +36,11 @@ public class UserResController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Integer id){
         userService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @PostMapping("/lock-user")
+    public ResponseEntity<Void> lockUser(@RequestBody UserDto userDto){
+        userService.lockUser(userDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -1,5 +1,6 @@
 package com.example.sprint2be.service.user.impl;
 
+import com.example.sprint2be.model.Rank;
 import com.example.sprint2be.model.Role;
 import com.example.sprint2be.model.user.User;
 import com.example.sprint2be.model.user.UserDto;
@@ -41,7 +42,12 @@ public class UserServiceImpl implements UserService {
         Set<Role> roles = new HashSet<>();
         roles.add(roleRepository.findById(2).orElse(null));
         user.setRoles(roles);
-        user.setRank(rankService.findById(userDto.getRankId()));
+        List<Rank> ranks = rankService.findAll();
+        for (Rank rank: ranks){
+            if (rank.getName().equals(userDto.getRank())) {
+                user.setRank(rankService.findById(rank.getRankId()));
+            }
+        }
         return user;
     }
     private UserDto convertToUserDto(User user){
@@ -59,7 +65,8 @@ public class UserServiceImpl implements UserService {
         userDto.setSignInRecent(user.getSignInRecent());
         userDto.setFlag(user.getFlag());
         userDto.setAvatar(user.getAvatar());
-        userDto.setRankId(user.getRank().getRankId());
+        List<Rank> ranks = rankService.findAll();
+        userDto.setRank(user.getRank().getName());
         return userDto;
     }
 

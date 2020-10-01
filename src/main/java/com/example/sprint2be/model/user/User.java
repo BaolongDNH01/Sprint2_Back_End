@@ -1,7 +1,10 @@
 package com.example.sprint2be.model.user;
 
+import com.example.sprint2be.model.Rank;
 import com.example.sprint2be.model.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -11,38 +14,30 @@ import java.util.Set;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Integer userId;
-    @Column(name = "full_name")
     private String fullName;
-    @Column(name = "username")
     private String username;
-    @Column (name = "user_password")
     private String password;
-    @Column (name = "email")
     private String email;
-    @Column (name = "phone")
     private String phone;
-    @Column (name = "birthday")
     private String birthday;
-    @Column (name = "address")
     private String address;
-    @Column (name = "id_card")
     private String idCard;
-    @Column (name = "point")
     private Integer point;
-    @Column (name = "signInRecent")
     private String signInRecent;
-    @Column (name = "avatar")
     private String avatar;
-    @Column (name = "status_flag")
-    private Boolean flag;
+    private String flag;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "rankId", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
+    private Rank rank;
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
-    @JoinTable (
-            name ="user_role",
-            joinColumns = @JoinColumn(name="user_id"),
-            inverseJoinColumns = @JoinColumn(name="role_id")
-    )
+//    @JoinTable (
+//            name ="user_role",
+//            joinColumns = @JoinColumn(name="user_id"),
+//            inverseJoinColumns = @JoinColumn(name="role_id")
+//    )
     @JsonIgnore
     private Set<Role> roles = new HashSet<>();
 
@@ -134,11 +129,11 @@ public class User {
         this.avatar = avatar;
     }
 
-    public Boolean getFlag() {
+    public String getFlag() {
         return flag;
     }
 
-    public void setFlag(Boolean flag) {
+    public void setFlag(String flag) {
         this.flag = flag;
     }
 
@@ -156,5 +151,13 @@ public class User {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public Rank getRank() {
+        return rank;
+    }
+
+    public void setRank(Rank rank) {
+        this.rank = rank;
     }
 }

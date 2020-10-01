@@ -1,8 +1,6 @@
 package com.example.sprint2be.model.user;
 
 
-import javax.persistence.Column;
-
 public class UserDto {
     private Integer userId;
     private String fullName;
@@ -18,7 +16,7 @@ public class UserDto {
     private String avatar;
     private String flag;
     private long timeLock;
-    private Integer rankId;
+    private String rank;
 
     public Integer getUserId() {
         return userId;
@@ -132,11 +130,11 @@ public class UserDto {
         this.timeLock = timeLock;
     }
 
-    public Integer getRankId() {
-        return rankId;
+    public String getRank() {
+        return rank;
     }
 
-    public void setRankId(Integer rankId) {
-        this.rankId = rankId;
+    public void setRank(String rank) {
+        this.rank = rank;
     }
 }

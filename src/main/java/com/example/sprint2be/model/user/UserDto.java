@@ -13,9 +13,10 @@ public class UserDto {
     private String idCard;
     private String point;
     private String signInRecent;
-    private String timeLock;
+    private String status_flag;
     private String avatar;
     private Integer rank;
+    private Integer time;
 
     public Integer getId() {
         return id;
@@ -105,12 +106,12 @@ public class UserDto {
         this.signInRecent = signInRecent;
     }
 
-    public String getTimeLock() {
-        return timeLock;
+    public String getStatus_flag() {
+        return status_flag;
     }
 
-    public void setTimeLock(String timeLock) {
-        this.timeLock = timeLock;
+    public void setStatus_flag(String status_flag) {
+        this.status_flag = status_flag;
     }
 
     public String getAvatar() {
@@ -129,4 +130,11 @@ public class UserDto {
         this.rank = rank;
     }
 
+    public Integer getTime() {
+        return time;
+    }
+
+    public void setTime(Integer time) {
+        this.time = time;
+    }
 }

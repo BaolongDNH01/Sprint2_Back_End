@@ -1,11 +1,7 @@
 package com.example.sprint2be.model;
 
 
-import com.example.sprint2be.model.user.User;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @Table(name = "_rank")

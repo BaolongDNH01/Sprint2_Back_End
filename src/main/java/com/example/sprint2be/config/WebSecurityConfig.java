@@ -97,14 +97,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 ////                    null,
 ////                     roles
                 );
-//                admin.setUsername(adminUsername);
-//                admin.setUserPassword(passwordEncoder.encode(adminPassword));
-//                admin.setFullName("ADMIN");
-//                admin.setEmail("admin@gmail.com");
-//                admin.setAddress("Da Nang");
-//                admin.setPhoneNumber("0123456799");
-//                admin.setAvatar(null);
-//                admin.setRoles(roles);
+                admin.setUsername(adminUsername);
+                admin.setPassword(passwordEncoder.encode(adminPassword));
+                admin.setFullName("ADMIN");
+                admin.setEmail("admin@gmail.com");
+                admin.setAddress("Da Nang");
+                admin.setPhone("0123456799");
+                admin.setAvatar(null);
+                admin.setRoles(roles);
 //                admin.setExamList(examList);
 
                 userRepository.save(admin);

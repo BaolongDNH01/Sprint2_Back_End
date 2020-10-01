@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 @RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UserRestController {
     @Autowired
     UserService userService;
@@ -69,7 +70,7 @@ public class UserRestController {
         headers.setLocation(builder.path("/user/{id}").buildAndExpand(userDto.getUserId()).toUri());
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete-user/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Integer id){
         userService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);

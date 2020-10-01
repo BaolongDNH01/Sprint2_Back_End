@@ -1,10 +1,8 @@
-package com.sprint2_be.model.repository;
+package com.example.sprint2be.repository;
 
-import com.sprint2_be.model.entity.HistoryRegister;
+import com.example.sprint2be.model.HistoryRegister;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 @Repository
 public interface HistoryRegisterRepository extends JpaRepository<HistoryRegister, Integer> {

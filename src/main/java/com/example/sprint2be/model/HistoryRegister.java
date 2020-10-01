@@ -1,4 +1,4 @@
-package com.sprint2_be.model.entity;
+package com.example.sprint2be.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

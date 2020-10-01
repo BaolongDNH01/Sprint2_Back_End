@@ -1,6 +1,6 @@
-package com.sprint2_be.service;
+package com.example.sprint2be.service;
 
-import com.sprint2_be.model.entity.HistoryRegister;
+import com.example.sprint2be.model.HistoryRegister;
 
 import java.util.List;
 

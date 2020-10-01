@@ -1,7 +1,7 @@
-package com.sprint2_be.controller;
+package com.example.sprint2be.controller;
 
-import com.sprint2_be.model.entity.HistoryRegister;
-import com.sprint2_be.service.HistoryRegisterService;
+import com.example.sprint2be.model.HistoryRegister;
+import com.example.sprint2be.service.HistoryRegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;

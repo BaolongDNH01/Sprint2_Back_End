@@ -1,4 +1,4 @@
-package com.sprint2_be.controller;
+package com.example.sprint2be.controller;
 
 import com.sprint2_be.model.entity.User;
 import com.sprint2_be.service.UserService;

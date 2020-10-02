@@ -9,31 +9,18 @@ public class ProductDto {
     private Double eachIncrease;
     private String image;
     private String productDetail;
-    private Integer category_id;
-    private Integer status_id;
-    private Integer time_id;
-    private Integer user_id;
-    private List<Integer> auctionList_id;
+    private Integer categoryId;
+    private String categoryName;
+    private Integer statusId;
+    private Integer timeId;
+    private Integer userId;
+    private List<Integer> auctionListId;
 
     public ProductDto() {
 
     }
 
-    public ProductDto(Integer productId, String productName, Double initialPrice, Double eachIncrease, String image,
-                      String productDetail, Integer category_id, Integer status_id, Integer time_id, Integer user_id,
-                      List<Integer> auctionList) {
-        this.productId = productId;
-        this.productName = productName;
-        this.initialPrice = initialPrice;
-        this.eachIncrease = eachIncrease;
-        this.image = image;
-        this.productDetail = productDetail;
-        this.category_id = category_id;
-        this.status_id = status_id;
-        this.time_id = time_id;
-        this.user_id = user_id;
-        this.auctionList_id = auctionList;
-    }
+
 
     public Integer getProductId() {
         return productId;
@@ -83,43 +70,52 @@ public class ProductDto {
         this.productDetail = productDetail;
     }
 
-    public Integer getCategory_id() {
-        return category_id;
+    public Integer getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory_id(Integer category_id) {
-        this.category_id = category_id;
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
     }
 
-    public Integer getStatus_id() {
-        return status_id;
+    public Integer getStatusId() {
+        return statusId;
     }
 
-    public void setStatus_id(Integer status_id) {
-        this.status_id = status_id;
+    public void setStatusId(Integer statusId) {
+        this.statusId = statusId;
     }
 
-    public Integer getTime_id() {
-        return time_id;
+    public Integer getTimeId() {
+        return timeId;
     }
 
-    public void setTime_id(Integer time_id) {
-        this.time_id = time_id;
+    public void setTimeId(Integer timeId) {
+        this.timeId = timeId;
     }
 
-    public Integer getUser_id() {
-        return user_id;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUser_id(Integer user_id) {
-        this.user_id = user_id;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
-    public List<Integer> getAuctionList_id() {
-        return auctionList_id;
+    public List<Integer> getAuctionListId() {
+        return auctionListId;
     }
 
-    public void setAuctionList_id(List<Integer> auctionList_id) {
-        this.auctionList_id = auctionList_id;
+    public void setAuctionListId(List<Integer> auctionListId) {
+        this.auctionListId = auctionListId;
+    }
+
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 }

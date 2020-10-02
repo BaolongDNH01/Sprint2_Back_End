@@ -1,22 +1,7 @@
 package com.example.sprint2be.model.user;
 
-import com.example.sprint2be.model.Rank;
-import com.example.sprint2be.model.Role;
-import com.example.sprint2be.model.auction.Bidder;
-import com.example.sprint2be.model.product.Product;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
-import javax.persistence.*;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-@Entity(name = "_user")
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class UserDto {
     private Integer userId;
     private String fullName;
     private String username;
@@ -30,25 +15,8 @@ public class User {
     private String signInRecent;
     private String avatar;
     private String flag;
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "rankId", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
-    private Rank rank;
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
-//    @JoinTable (
-//            name ="user_role",
-//            joinColumns = @JoinColumn(name="user_id"),
-//            inverseJoinColumns = @JoinColumn(name="role_id")
-//    )
-    @JsonIgnore
-    private Set<Role> roles = new HashSet<>();
-
-    @OneToMany(mappedBy = "user_product", cascade = CascadeType.DETACH)
-    private List<Product> productList;
-
-    @OneToMany(mappedBy = "user_bidder", cascade = CascadeType.DETACH)
-    private List<Bidder> bidderList;
+    private long timeLock;
+    private String rank;
 
     public Integer getUserId() {
         return userId;
@@ -106,6 +74,14 @@ public class User {
         this.birthday = birthday;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     public String getIdCard() {
         return idCard;
     }
@@ -146,44 +122,19 @@ public class User {
         this.flag = flag;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
+    public long getTimeLock() {
+        return timeLock;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setTimeLock(long timeLock) {
+        this.timeLock = timeLock;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-
-    public List<Product> getProductList() {
-        return productList;
-    }
-
-    public void setProductList(List<Product> productList) {
-        this.productList = productList;
-    }
-
-    public List<Bidder> getBidderList() {
-        return bidderList;
-    }
-
-    public void setBidderList(List<Bidder> bidderList) {
-        this.bidderList = bidderList;
-
-    public Rank getRank() {
+    public String getRank() {
         return rank;
     }
 
-    public void setRank(Rank rank) {
+    public void setRank(String rank) {
         this.rank = rank;
-
     }
 }

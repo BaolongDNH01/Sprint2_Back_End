@@ -30,12 +30,13 @@ public class UserRestController {
     @Autowired
     JwtProvider jwtProvider;
     @Autowired
-    AuthenticationManager authenticationManager;
+    AuthenticationManager authManager;
+
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody Login loginRequest) throws AuthenticationException {
 
-        Authentication authentication = authenticationManager.authenticate(
+        Authentication authentication = authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getUsername(),
                         loginRequest.getPassword()

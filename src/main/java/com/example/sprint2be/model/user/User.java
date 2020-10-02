@@ -1,10 +1,13 @@
 package com.example.sprint2be.model.user;
 
 import com.example.sprint2be.model.Role;
+import com.example.sprint2be.model.auction.Bidder;
+import com.example.sprint2be.model.product.Product;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity(name = "_user")
@@ -45,6 +48,12 @@ public class User {
     )
     @JsonIgnore
     private Set<Role> roles = new HashSet<>();
+
+    @OneToMany(mappedBy = "user_product", cascade = CascadeType.DETACH)
+    private List<Product> productList;
+
+    @OneToMany(mappedBy = "user_bidder", cascade = CascadeType.DETACH)
+    private List<Bidder> bidderList;
 
     public Integer getUserId() {
         return userId;
@@ -156,5 +165,21 @@ public class User {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public List<Product> getProductList() {
+        return productList;
+    }
+
+    public void setProductList(List<Product> productList) {
+        this.productList = productList;
+    }
+
+    public List<Bidder> getBidderList() {
+        return bidderList;
+    }
+
+    public void setBidderList(List<Bidder> bidderList) {
+        this.bidderList = bidderList;
     }
 }

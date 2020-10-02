@@ -5,9 +5,10 @@ import com.example.sprint2be.model.product.Category;
 import com.example.sprint2be.repository.product.CategoryRepository;
 import com.example.sprint2be.service.product.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class CategoryServiceImpl implements CategoryService {
     @Autowired
     CategoryRepository categoryRepository;

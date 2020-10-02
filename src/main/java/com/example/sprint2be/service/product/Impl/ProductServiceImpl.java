@@ -4,9 +4,10 @@ import com.example.sprint2be.model.product.Product;
 import com.example.sprint2be.repository.product.ProductRepository;
 import com.example.sprint2be.service.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class ProductServiceImpl implements ProductService {
     @Autowired
     ProductRepository productRepository;

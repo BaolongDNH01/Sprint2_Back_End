@@ -4,9 +4,10 @@ import com.example.sprint2be.model.auction.Auction;
 import com.example.sprint2be.repository.auction.AuctionRepository;
 import com.example.sprint2be.service.auction.AuctionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class AuctionServiceImpl implements AuctionService {
     @Autowired
     AuctionRepository auctionRepository;

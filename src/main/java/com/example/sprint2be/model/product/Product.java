@@ -3,6 +3,7 @@ package com.example.sprint2be.model.product;
 
 
 import com.example.sprint2be.model.auction.Auction;
+import com.example.sprint2be.model.user.User;
 
 import javax.persistence.*;
 import java.util.List;
@@ -31,9 +32,9 @@ public class Product {
     @JoinColumn(name = "status_id")
     private StatusProduct statusProduct;
 
-//    @ManyToOne(cascade = CascadeType.DETACH)
-//    @JoinColumn(name = "user_id")
-//    private User user_product;
+    @ManyToOne(cascade = CascadeType.DETACH)
+    @JoinColumn(name = "user_id")
+    private User user_product;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.DETACH)
     private List<Auction> auctionList;
@@ -110,13 +111,13 @@ public class Product {
         this.statusProduct = statusProduct;
     }
 
-//    public User getUser() {
-//        return user_product;
-//    }
-//
-//    public void setUser(User user) {
-//        this.user_product = user;
-//    }
+    public User getUser_product() {
+        return user_product;
+    }
+
+    public void setUser_product(User user_product) {
+        this.user_product = user_product;
+    }
 
     public List<Auction> getAuctionList() {
         return auctionList;

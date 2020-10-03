@@ -177,6 +177,7 @@ public class User {
 
     public void setBidderList(List<Bidder> bidderList) {
         this.bidderList = bidderList;
+    }
 
     public Rank getRank() {
         return rank;

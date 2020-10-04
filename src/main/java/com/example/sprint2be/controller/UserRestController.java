@@ -53,7 +53,6 @@ public class UserRestController {
                 userPrincipal.getAvatar(),
                 userPrincipal.getAuthorities()
         );
-        System.out.println(response);
         return ResponseEntity.ok(response);
     }
     @GetMapping("/user")

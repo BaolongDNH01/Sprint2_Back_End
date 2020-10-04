@@ -31,15 +31,18 @@ public class ProductServiceImpl implements ProductService {
 
         Category category = product.getCategory();
         productDto.setCategoryId(category.getCategoryId());
+        productDto.setCategoryName(category.getCategoryName());
 
         AuctionTime auctionTime = product.getAuctionTime();
         productDto.setTimeId(auctionTime.getTimeId());
 
         StatusProduct statusProduct = product.getStatusProduct();
         productDto.setStatusId(statusProduct.getStatusId());
+        productDto.setStatusName(statusProduct.getStatusName());
 
         User user = product.getUser_product();
         productDto.setUserId(user.getUserId());
+        productDto.setPoster(user.getUsername());
 
             return productDto;
 

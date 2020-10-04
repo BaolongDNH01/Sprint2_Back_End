@@ -1,6 +1,5 @@
 package com.example.sprint2be.controller.product;
 
-import com.example.sprint2be.model.product.Product;
 import com.example.sprint2be.model.product.dto.ProductDto;
 import com.example.sprint2be.service.products.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;

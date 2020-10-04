@@ -12,8 +12,10 @@ public class ProductDto {
     private Integer categoryId;
     private String categoryName;
     private Integer statusId;
+    private String statusName;
     private Integer timeId;
     private Integer userId;
+    private String poster;
     private List<Integer> auctionListId;
 
     public ProductDto() {
@@ -117,5 +119,13 @@ public class ProductDto {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+    }
+
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
+    }
+
+    public void setPoster(String poster) {
+        this.poster = poster;
     }
 }

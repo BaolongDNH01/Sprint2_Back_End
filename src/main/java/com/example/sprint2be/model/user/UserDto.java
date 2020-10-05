@@ -17,6 +17,8 @@ public class UserDto {
     private String flag;
     private long timeLock;
     private String rank;
+    private String confirmPassword;
+    private String enabled;
 
     public Integer getUserId() {
         return userId;
@@ -136,5 +138,21 @@ public class UserDto {
 
     public void setRank(String rank) {
         this.rank = rank;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+
+    public String getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(String enabled) {
+        this.enabled = enabled;
     }
 }

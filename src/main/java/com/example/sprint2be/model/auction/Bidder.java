@@ -20,7 +20,7 @@ public class Bidder {
 
     @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "user_id")
-    private User user_bidder;
+    private User userBidder;
 
 
     public Integer getBidId() {
@@ -57,11 +57,11 @@ public class Bidder {
     }
 
     public User getUser_bidder() {
-        return user_bidder;
+        return userBidder;
     }
 
     public void setUser_bidder(User user_bidder) {
-        this.user_bidder = user_bidder;
+        this.userBidder = user_bidder;
     }
 }
 

@@ -44,7 +44,6 @@ public class ProductServiceImpl implements ProductService {
         productDto.setProductName(product.getProductName());
         productDto.setInitialPrice(product.getInitialPrice());
         productDto.setEachIncrease(product.getEachIncrease());
-        productDto.setImage(product.getImage());
         productDto.setProductDetail(product.getProductDetail());
 
 

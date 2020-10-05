@@ -7,7 +7,6 @@ public class ProductDto {
     private String productName;
     private Double initialPrice;
     private Double eachIncrease;
-    private String image;
     private String productDetail;
     private Integer categoryId;
     private String categoryName;
@@ -55,14 +54,6 @@ public class ProductDto {
 
     public void setEachIncrease(Double eachIncrease) {
         this.eachIncrease = eachIncrease;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
     }
 
     public String getProductDetail() {

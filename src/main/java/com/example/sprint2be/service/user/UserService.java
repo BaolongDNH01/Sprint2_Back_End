@@ -7,17 +7,19 @@ import java.util.List;
 
 public interface UserService {
 
-//    Boolean findByUsername(String username);
-
+    User findByUsername(String username);
+    User findByEmail(String email);
     List<UserDto> findAll();
     UserDto findById(Integer id);
     void create(UserDto userDto);
     void delete(Integer id);
     void lockUser(List<UserDto> userDtoList);
+    Boolean checkUsernameExist(String username);
 
-//    khanh
+    //    khanh
     UserDto getUserByUserName(String userName);
     void editUser(UserDto user, String userName);
+
 }
 
 

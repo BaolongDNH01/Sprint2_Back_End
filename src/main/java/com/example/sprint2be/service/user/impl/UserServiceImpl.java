@@ -70,10 +70,21 @@ public class UserServiceImpl implements UserService {
         return userDto;
     }
 
-//    @Override
-//    public Boolean findByUsername(String username) {
-//        return (userRepository.findByUsername(username).orElse(null) != null);
-//    }
+
+    @Override
+    public User findByUsername(String username) {
+        return null;
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        return null;
+    }
+
+        @Override
+    public Boolean checkUsernameExist(String username) {
+        return (userRepository.findByUsername(username).orElse(null) != null);
+    }
     @Override
     public List<UserDto> findAll() {
         return userRepository.findAll().stream().map(this::convertToUserDto).collect(Collectors.toList());

@@ -16,7 +16,7 @@ public class Bidder {
 
     @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "auction_id")
-    private Auction auction_bidder;
+    private Auction auction;
 
     @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "user_id")
@@ -49,11 +49,11 @@ public class Bidder {
 
 
     public Auction getAuction_bidder() {
-        return auction_bidder;
+        return auction;
     }
 
     public void setAuction_bidder(Auction auction_bidder) {
-        this.auction_bidder = auction_bidder;
+        this.auction = auction_bidder;
     }
 
     public User getUser_bidder() {

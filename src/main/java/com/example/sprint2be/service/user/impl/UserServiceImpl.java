@@ -96,19 +96,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void lockUser(UserDto userDto) {
-        userDto.setFlag("false");
-        userRepository.save(convertToUser(userDto));
-        TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                userDto.setFlag("true");
-                userRepository.save(convertToUser(userDto));
-            }
-        };
+    public void lockUser(List<UserDto> userDtoList) {
+        for (UserDto userDto: userDtoList){
+            userDto.setFlag("false");
+            userRepository.save(convertToUser(userDto));
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    userDto.setFlag("true");
+                    userRepository.save(convertToUser(userDto));
+                }
+            };
 //        1000 time = 1s
-        Timer timer = new Timer();
-        timer.schedule(timerTask, userDto.getTimeLock());
+            Timer timer = new Timer();
+            timer.schedule(timerTask, userDto.getTimeLock());
+        }
     }
 
 }

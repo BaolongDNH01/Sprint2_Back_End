@@ -25,6 +25,19 @@ public class ProductController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @PostMapping("/edit-product")
+    public ResponseEntity<Product> editProduct(@RequestBody Product product, UriComponentsBuilder builder) {
+        productService.save(product);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(builder.path("/get-product/{id}").buildAndExpand(product.getProductId()).toUri());
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @GetMapping("/getAllProduct")
+    public ResponseEntity<List<ProductDto>> getAllProduct() {
+        return new ResponseEntity<>(productService.findAllProduct(), HttpStatus.OK);
+    }
+
     @GetMapping("/list-product")
     public ResponseEntity<List<ProductDto>> getListProduct(){
         return new ResponseEntity<>(productService.findAllProduct(), HttpStatus.OK);

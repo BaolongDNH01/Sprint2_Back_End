@@ -53,7 +53,6 @@ public class UserRestController {
                 userPrincipal.getAvatar(),
                 userPrincipal.getAuthorities()
         );
-        System.out.println(response);
         return ResponseEntity.ok(response);
     }
     @GetMapping("/user")
@@ -77,8 +76,8 @@ public class UserRestController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
     @PostMapping("/lock-user")
-    public ResponseEntity<Void> lockUser(@RequestBody UserDto userDto){
-        userService.lockUser(userDto);
+    public ResponseEntity<Void> lockUser(@RequestBody List<UserDto> userDtoList){
+        userService.lockUser(userDtoList);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

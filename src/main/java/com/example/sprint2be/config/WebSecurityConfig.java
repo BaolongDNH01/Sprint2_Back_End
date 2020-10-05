@@ -67,7 +67,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     ApplicationRunner init(RoleRepository roleRepository, UserRepository userRepository) {
         System.out.println("Created !");
         return args -> {
-            if (roleRepository.findAll().size() == 0) {
+            if (roleRepository.findAll().isEmpty()) {
 
                 Role adminRole = new Role(ERoleName.ROLE_ADMIN);
                 adminRole.setId(1);

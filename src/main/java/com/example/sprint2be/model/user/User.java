@@ -31,16 +31,16 @@ public class User {
     private String avatar;
     private String flag;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "rankId", nullable = false)
+    @JoinColumn(name = "rankId")
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private Rank rank;
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
-//    @JoinTable (
-//            name ="user_role",
-//            joinColumns = @JoinColumn(name="user_id"),
-//            inverseJoinColumns = @JoinColumn(name="role_id")
-//    )
+    @JoinTable (
+            name ="user_role",
+            joinColumns = @JoinColumn(name="user_id"),
+            inverseJoinColumns = @JoinColumn(name="role_id")
+    )
     @JsonIgnore
     private Set<Role> roles = new HashSet<>();
 

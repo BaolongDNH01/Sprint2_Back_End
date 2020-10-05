@@ -1,29 +1,26 @@
 package com.example.sprint2be.model.user;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class RecoverPassword {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "recover_id")
+    private Integer id;
     private String username;
     private String email;
     private String confirmCode;
 
 
-    public RecoverPassword(String username, String email, String confirmCode) {
-        this.username = username;
-        this.email = email;
-        this.confirmCode = confirmCode;
+    public Integer getId() {
+        return id;
     }
-    public RecoverPassword(){
 
-    };
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getConfirmCode() {
         return confirmCode;

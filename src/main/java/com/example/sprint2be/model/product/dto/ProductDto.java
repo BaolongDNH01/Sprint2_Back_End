@@ -14,8 +14,9 @@ public class ProductDto {
     private Integer statusId;
     private String statusName;
     private Integer timeId;
+    private Integer auctionTime;
     private Integer userId;
-    private String poster;
+    private String fullName;
     private List<Integer> auctionListId;
 
     public ProductDto() {
@@ -112,6 +113,29 @@ public class ProductDto {
         this.auctionListId = auctionListId;
     }
 
+    public String getStatusName() {
+        return statusName;
+    }
+
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
+    }
+
+    public Integer getAuctionTime() {
+        return auctionTime;
+    }
+
+    public void setAuctionTime(Integer auctionTime) {
+        this.auctionTime = auctionTime;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
 
     public String getCategoryName() {
         return categoryName;
@@ -119,13 +143,5 @@ public class ProductDto {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
-    }
-
-    public void setStatusName(String statusName) {
-        this.statusName = statusName;
-    }
-
-    public void setPoster(String poster) {
-        this.poster = poster;
     }
 }

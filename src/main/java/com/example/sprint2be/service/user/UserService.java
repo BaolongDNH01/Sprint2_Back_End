@@ -14,6 +14,7 @@ public interface UserService {
     User findByEmail(String email);
     List<UserDto> findAll();
     UserDto findById(Integer id);
+    User findByIdUser(Integer id);
     void create(UserDto userDto);
     void delete(Integer id);
     void lockUser(List<UserDto> userDtoList);

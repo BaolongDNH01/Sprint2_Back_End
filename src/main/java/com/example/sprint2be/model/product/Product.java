@@ -129,4 +129,5 @@ public class Product {
     public void setImageProductList(List<ImageProduct> imageProductList) {
         this.imageProductList = imageProductList;
     }
+
 }

@@ -31,4 +31,9 @@ public class BidderServiceImpl implements BidderService {
     public void delete(Integer bidderId) {
         bidderRepository.deleteById(bidderId);
     }
+
+    @Override
+    public List<Bidder> findByAuction_AuctionId(Integer id) {
+        return bidderRepository.findByAuction_AuctionId(id);
+    }
 }

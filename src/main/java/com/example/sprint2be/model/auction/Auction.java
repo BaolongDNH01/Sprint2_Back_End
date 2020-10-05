@@ -23,7 +23,7 @@ public class Auction {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @OneToMany(mappedBy = "auction_bidder", cascade = CascadeType.DETACH)
+    @OneToMany(mappedBy = "auction", cascade = CascadeType.DETACH)
     private List<Bidder> bidderList;
 
     public Integer getAuctionId() {

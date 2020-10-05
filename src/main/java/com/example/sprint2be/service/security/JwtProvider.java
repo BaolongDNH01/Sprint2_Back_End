@@ -34,6 +34,18 @@ public class JwtProvider {
                 .compact();
     }
 
+    public String genJwtConfirmCode(String confirmCode){
+        Date currentDate = new Date();
+        Date expiryDate = new Date(currentDate.getTime() + JWT_EXPIRATION * 1000);
+        return Jwts
+                .builder()
+                .setSubject(confirmCode)
+                .signWith(SignatureAlgorithm.HS512, JWT_SECRET_KEY)
+                .setExpiration(expiryDate)
+                .setIssuedAt(currentDate)
+                .compact();
+    }
+
     public boolean validatingJwt(String token) {
         try {
             Jwts

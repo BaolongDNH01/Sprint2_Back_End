@@ -50,7 +50,8 @@ public class UserServiceImpl implements UserService {
         }
         return user;
     }
-    private UserDto convertToUserDto(User user){
+    @Override
+    public UserDto convertToUserDto(User user){
         UserDto userDto = new UserDto();
         userDto.setUserId(user.getUserId());
         userDto.setFullName(user.getFullName());
@@ -77,6 +78,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Optional<User> findUserById(Integer id) {
+        return userRepository.findById(id);
+    }
+
+    @Override
     public User findByEmail(String email) {
         return null;
     }
@@ -85,6 +91,19 @@ public class UserServiceImpl implements UserService {
     public Boolean checkUsernameExist(String username) {
         return (userRepository.findByUsername(username).orElse(null) != null);
     }
+
+    @Override
+    public Boolean changePassword(Integer id, String password) {
+        Optional<User> checkExist = findUserById(id);
+        if (checkExist.isPresent()){
+            User user = checkExist.get();
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            user.setPassword(encoder.encode(password));
+            userRepository.save(user);
+            return true;
+        }else return false;
+    }
+
     @Override
     public List<UserDto> findAll() {
         return userRepository.findAll().stream().map(this::convertToUserDto).collect(Collectors.toList());

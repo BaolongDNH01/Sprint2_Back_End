@@ -139,6 +139,7 @@ public class UserRestController {
     }
 
     @PostMapping("editUserInfo/{username}")
-    public void editUserInfo(@PathVariable String username, @RequestBody UserDto userDto){
+    public void editUserInfo(@PathVariable String username, @RequestBody UserDto userDto) {
         userService.editUser(userDto, username);
+    }
 }

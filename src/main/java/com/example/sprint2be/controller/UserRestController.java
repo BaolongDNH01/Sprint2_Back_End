@@ -3,6 +3,7 @@ package com.example.sprint2be.controller;
 import com.example.sprint2be.model.UserPrincipal;
 import com.example.sprint2be.model.login_msg.request.Login;
 import com.example.sprint2be.model.login_msg.response.JwtResponse;
+import com.example.sprint2be.model.user.RecoverPassword;
 import com.example.sprint2be.model.user.UserDto;
 import com.example.sprint2be.service.security.JwtProvider;
 import com.example.sprint2be.service.user.UserService;
@@ -79,5 +80,10 @@ public class UserRestController {
     public ResponseEntity<Void> lockUser(@RequestBody List<UserDto> userDtoList){
         userService.lockUser(userDtoList);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/recover-password")
+    public ResponseEntity<Void> recoverPassword(@RequestBody RecoverPassword recoverPassword){
+
     }
 }

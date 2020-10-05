@@ -96,6 +96,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findByIdUser(Integer id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
+    @Override
     public void create(UserDto userDto) {
 
         userRepository.save(convertToUser(userDto));

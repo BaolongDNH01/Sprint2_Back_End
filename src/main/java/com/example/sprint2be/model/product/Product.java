@@ -17,7 +17,6 @@ public class Product {
     private String productName;
     private Double initialPrice;
     private Double eachIncrease;
-    private String image;
     private String productDetail;
 
     @ManyToOne(cascade = CascadeType.DETACH)
@@ -38,6 +37,10 @@ public class Product {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.DETACH)
     private List<Auction> auctionList;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.DETACH)
+    private List<ImageProduct> imageProductList;
+
 
     public Integer getProductId() {
         return productId;
@@ -69,14 +72,6 @@ public class Product {
 
     public void setEachIncrease(Double eachIncrease) {
         this.eachIncrease = eachIncrease;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
     }
 
     public String getProductDetail() {
@@ -125,5 +120,13 @@ public class Product {
 
     public void setAuctionList(List<Auction> auctionList) {
         this.auctionList = auctionList;
+    }
+
+    public List<ImageProduct> getImageProductList() {
+        return imageProductList;
+    }
+
+    public void setImageProductList(List<ImageProduct> imageProductList) {
+        this.imageProductList = imageProductList;
     }
 }

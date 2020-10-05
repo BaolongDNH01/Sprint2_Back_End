@@ -18,7 +18,10 @@ public interface UserService {
     void delete(Integer id);
     void lockUser(List<UserDto> userDtoList);
     Boolean checkUsernameExist(String username);
+    UserDto getUserByUserName(String userName);
+    void editUser(UserDto user, String userName);
     Boolean changePassword(Integer id, String password);
+
 }
 
 

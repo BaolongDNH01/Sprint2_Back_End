@@ -131,4 +131,14 @@ public class UserRestController {
             return new ResponseEntity<>(HttpStatus.OK);
         }else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
+  
+  
+    @GetMapping("/getUserByUserName/{username}")
+    public ResponseEntity<UserDto> getUserByUserName(@PathVariable String username){
+        return new ResponseEntity<>(userService.getUserByUserName(username), HttpStatus.OK);
+    }
+
+    @PostMapping("editUserInfo/{username}")
+    public void editUserInfo(@PathVariable String username, @RequestBody UserDto userDto){
+        userService.editUser(userDto, username);
 }

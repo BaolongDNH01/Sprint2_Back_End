@@ -47,7 +47,7 @@ public class User {
     @OneToMany(mappedBy = "user_product", cascade = CascadeType.DETACH)
     private List<Product> productList;
 
-    @OneToMany(mappedBy = "user_bidder", cascade = CascadeType.DETACH)
+    @OneToMany(mappedBy = "userBidder", cascade = CascadeType.DETACH)
     private List<Bidder> bidderList;
 
     public Integer getUserId() {

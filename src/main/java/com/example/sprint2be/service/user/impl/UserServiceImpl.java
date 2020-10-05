@@ -113,5 +113,26 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public UserDto getUserByUserName(String userName) {
+        return userRepository.findByUsername(userName).map(this::convertToUserDto).orElse(null);
+    }
+
+    @Override
+    public void editUser(UserDto userEdit, String userName) {
+        User user = userRepository.findByUsername(userName).orElse(null);
+        if(user != null){
+            user.setUsername(userEdit.getUsername());
+            user.setFullName(userEdit.getFullName());
+            user.setEmail(userEdit.getEmail());
+            user.setBirthday(userEdit.getBirthday());
+            user.setIdCard(userEdit.getIdCard());
+            user.setPassword(userEdit.getPassword());
+            user.setAddress(userEdit.getAddress());
+            user.setPhone(userEdit.getPhone());
+            userRepository.save(user);
+        }
+    }
+
 }
 

@@ -80,4 +80,14 @@ public class UserRestController {
         userService.lockUser(userDtoList);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @GetMapping("/getUserByUserName/{username}")
+    public ResponseEntity<UserDto> getUserByUserName(@PathVariable String username){
+        return new ResponseEntity<>(userService.getUserByUserName(username), HttpStatus.OK);
+    }
+
+    @PostMapping("editUserInfo/{username}")
+    public void editUserInfo(@PathVariable String username, @RequestBody UserDto userDto){
+        userService.editUser(userDto, username);
+    }
 }

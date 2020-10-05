@@ -14,6 +14,10 @@ public interface UserService {
     void create(UserDto userDto);
     void delete(Integer id);
     void lockUser(List<UserDto> userDtoList);
+
+//    khanh
+    UserDto getUserByUserName(String userName);
+    void editUser(UserDto user, String userName);
 }
 
 

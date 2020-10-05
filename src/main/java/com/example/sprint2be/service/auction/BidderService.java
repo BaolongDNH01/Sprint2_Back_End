@@ -10,4 +10,7 @@ public interface BidderService {
     Bidder findById(Integer bidderId);
     void save(Bidder bidder);
     void delete(Integer bidderId);
+
+    //hiện thị danh sách người đấu thầu trong 1 phiên
+    List<Bidder>findByAuction_AuctionId(Integer id);
 }

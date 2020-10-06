@@ -189,4 +189,9 @@ public class UserRestController {
     public ResponseEntity<List<UserDto>> findAllUserActivated(){
         return new ResponseEntity<>(userService.findAllUserActivated(), HttpStatus.OK);
     }
+    @PostMapping("/unlock-user")
+    public ResponseEntity<Void>  unlockUser(@RequestBody List<UserDto> userDtoList){
+        userService.unlockUser(userDtoList);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

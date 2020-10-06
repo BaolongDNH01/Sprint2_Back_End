@@ -1,12 +1,14 @@
 package com.example.sprint2be.controller;
 
 import com.example.sprint2be.model.UserPrincipal;
+import com.example.sprint2be.model.auction.dto.UserBidderDto;
 import com.example.sprint2be.model.login_msg.request.Login;
 import com.example.sprint2be.model.login_msg.response.JwtResponse;
 import com.example.sprint2be.model.user.RecoverPassword;
 import com.example.sprint2be.model.user.User;
 import com.example.sprint2be.model.user.UserDto;
 import com.example.sprint2be.repository.RecoverPasswordRepository;
+import com.example.sprint2be.service.auction.BidderService;
 import com.example.sprint2be.service.email.EmailService;
 import com.example.sprint2be.service.recoverPassword.RecoverPasswordService;
 import com.example.sprint2be.service.security.JwtProvider;
@@ -141,5 +143,13 @@ public class UserRestController {
     @PostMapping("editUserInfo/{username}")
     public void editUserInfo(@PathVariable String username, @RequestBody UserDto userDto) {
         userService.editUser(userDto, username);
+    }
+
+    @Autowired
+    BidderService bidderService;
+
+    @GetMapping("getAllBidderByUserName/{username}")
+    public ResponseEntity<List<UserBidderDto>> getAllBidderByUserName(@PathVariable String username) {
+        return new ResponseEntity<>(bidderService.findAllBidderByU(username), HttpStatus.OK);
     }
 }

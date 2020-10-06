@@ -1,13 +1,13 @@
 package com.example.sprint2be.controller;
 
+import com.example.sprint2be.model.product.AuctionTime;
+import com.example.sprint2be.model.product.Category;
 import com.example.sprint2be.model.product.ImageProduct;
 import com.example.sprint2be.model.product.Product;
 import com.example.sprint2be.model.product.dto.ImageProductDto;
 import com.example.sprint2be.model.product.dto.ProductDto;
 import com.example.sprint2be.model.product.dto.StatusProductDto;
-import com.example.sprint2be.service.product.ImageProductService;
-import com.example.sprint2be.service.product.ProductService;
-import com.example.sprint2be.service.product.StatusProductService;
+import com.example.sprint2be.service.product.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -27,6 +27,12 @@ public class ProductController {
 
     @Autowired
     ImageProductService imageProductService;
+
+    @Autowired
+    CategoryService categoryService;
+
+    @Autowired
+    AuctionTimeService auctionTimeService;
 
     @PostMapping("/create-product")
     public ResponseEntity<Product> createProduct(@RequestBody Product product, UriComponentsBuilder builder) {
@@ -82,4 +88,13 @@ public class ProductController {
         return new ResponseEntity<>(imageProductService.findAllDto(), HttpStatus.OK);
     }
 
+    @GetMapping("/list-category")
+    public ResponseEntity<List<Category>> getListCategory(){
+        return new ResponseEntity<>(categoryService.findAll(), HttpStatus.OK);
+    }
+
+    @GetMapping("/list-time")
+    public ResponseEntity<List<AuctionTime>> getListAuctionTime(){
+        return new ResponseEntity<>(auctionTimeService.findAll(), HttpStatus.OK);
+    }
 }

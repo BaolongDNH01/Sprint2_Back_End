@@ -23,7 +23,7 @@ public interface UserService {
     void editUser(UserDto user, String userName);
     Boolean changePassword(Integer id, String password);
     boolean isCorrectConfirmPassword(UserDto userDto);
-
+    UserDto findTopById();
 }
 
 

@@ -18,6 +18,12 @@ public class Rank {
 //    @JsonManagedReference
     private Set<User> users;
 
+    public Rank(){}
+
+    public Rank(String name) {
+        this.name = name;
+    }
+
     public Integer getRankId() {
         return rankId;
     }

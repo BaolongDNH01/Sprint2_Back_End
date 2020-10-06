@@ -1,9 +1,6 @@
 package com.example.sprint2be.service.product.Impl;
 
-import com.example.sprint2be.model.product.AuctionTime;
-import com.example.sprint2be.model.product.Category;
-import com.example.sprint2be.model.product.Product;
-import com.example.sprint2be.model.product.StatusProduct;
+import com.example.sprint2be.model.product.*;
 import com.example.sprint2be.model.product.dto.ProductDto;
 import com.example.sprint2be.model.user.User;
 import com.example.sprint2be.repository.product.AuctionTimeRepository;
@@ -16,6 +13,7 @@ import com.example.sprint2be.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -62,6 +60,17 @@ public class ProductServiceImpl implements ProductService {
         User user = product.getUser_product();
         productDto.setUserId(user.getUserId());
         productDto.setFullName(user.getFullName());
+
+        List<ImageProduct> imageProductList = product.getImageProductList();
+        List<Integer> id = new ArrayList<>();
+        String imgUrl = null;
+        for (ImageProduct img: imageProductList) {
+                    id.add(img.getImageId());
+                    imgUrl = img.getImageURL();
+        }
+        productDto.setImageURL(imgUrl);
+        productDto.setListImageProduct(id);
+
 
         return productDto;
 

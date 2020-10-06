@@ -1,12 +1,14 @@
 package com.example.sprint2be.controller;
 
 import com.example.sprint2be.model.UserPrincipal;
+import com.example.sprint2be.model.auction.dto.UserBidderDto;
 import com.example.sprint2be.model.login_msg.request.Login;
 import com.example.sprint2be.model.login_msg.response.JwtResponse;
 import com.example.sprint2be.model.token.TokenDto;
 import com.example.sprint2be.model.user.RecoverPassword;
 import com.example.sprint2be.model.user.User;
 import com.example.sprint2be.model.user.UserDto;
+import com.example.sprint2be.service.auction.BidderService;
 import com.example.sprint2be.service.email.EmailService;
 import com.example.sprint2be.service.recoverPassword.RecoverPasswordService;
 import com.example.sprint2be.service.security.JwtProvider;
@@ -49,6 +51,8 @@ public class UserRestController {
     TokenService tokenService;
     @Autowired
     com.example.sprint2be.service.EmailService getEmailService;
+     @Autowired
+    BidderService bidderService;
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody Login loginRequest) throws AuthenticationException {
@@ -185,8 +189,14 @@ public class UserRestController {
                 '\n' + "đường dẫn có thời hạn 1 ngày");
         return new ResponseEntity<>(userDto, HttpStatus.CREATED);
     }
+
+    @GetMapping("getAllBidderByUserName/{username}")
+    public ResponseEntity<List<UserBidderDto>> getAllBidderByUserName(@PathVariable String username) {
+        return new ResponseEntity<>(bidderService.findAllBidderByU(username), HttpStatus.OK);
+
     @GetMapping("/user-activated")
     public ResponseEntity<List<UserDto>> findAllUserActivated(){
         return new ResponseEntity<>(userService.findAllUserActivated(), HttpStatus.OK);
+
     }
 }

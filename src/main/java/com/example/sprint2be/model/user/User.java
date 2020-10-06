@@ -47,7 +47,7 @@ public class User {
     @JsonIgnore
     private Set<Role> roles = new HashSet<>();
 
-    @OneToMany(mappedBy = "user_product", cascade = CascadeType.DETACH)
+    @OneToMany(mappedBy = "userId", cascade = CascadeType.DETACH)
     private List<Product> productList;
 
     @OneToMany(mappedBy = "userBidder", cascade = CascadeType.DETACH)

@@ -48,6 +48,8 @@ public class UserServiceImpl implements UserService {
                 user.setRank(rankService.findById(rank.getRankId()));
             }
         }
+        user.setConfirmPassword(userDto.getConfirmPassword());
+        user.setEnabled(userDto.getEnabled());
         return user;
     }
     @Override
@@ -68,6 +70,8 @@ public class UserServiceImpl implements UserService {
         userDto.setAvatar(user.getAvatar());
         List<Rank> ranks = rankService.findAll();
         userDto.setRank(user.getRank().getName());
+        userDto.setConfirmPassword(user.getConfirmPassword());
+        userDto.setEnabled(user.getEnabled());
         return userDto;
     }
 
@@ -82,10 +86,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id);
     }
 
-    @Override
-    public User findByEmail(String email) {
-        return null;
-    }
 
         @Override
     public Boolean checkUsernameExist(String username) {
@@ -167,6 +167,32 @@ public class UserServiceImpl implements UserService {
             user.setPhone(userEdit.getPhone());
             userRepository.save(user);
         }
+    }
+    @Override
+    public UserDto findByEmail(String email) {
+        User user = userRepository.findByEmail(email);
+        return convertToUserDto(user);
+    }
+
+    @Override
+
+    public boolean isCorrectConfirmPassword(UserDto userDto) {
+        User user = convertToUser(userDto);
+        boolean isCorrectConfirmPassword = false;
+
+        if (user.getPassword().equals(user.getConfirmPassword())) {
+
+            isCorrectConfirmPassword = true;
+
+        }
+
+        return isCorrectConfirmPassword;
+
+    }
+
+    @Override
+    public UserDto findTopById() {
+        return convertToUserDto(userRepository.findTopByOrderByUserIdDesc());
     }
 
 }

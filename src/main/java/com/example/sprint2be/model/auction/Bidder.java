@@ -9,6 +9,7 @@ import javax.persistence.*;
 @Table(name = "bidder")
 public class Bidder {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer bidId;
 
     private Double bidPrice;
@@ -19,7 +20,7 @@ public class Bidder {
     private Auction auction;
 
     @ManyToOne(cascade = CascadeType.DETACH)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "userId")
     private User userBidder;
 
 

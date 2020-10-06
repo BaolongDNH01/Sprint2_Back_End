@@ -1,8 +1,10 @@
 package com.example.sprint2be.config;
 
+import com.example.sprint2be.model.Rank;
 import com.example.sprint2be.model.Role;
 import com.example.sprint2be.model.constant.ERoleName;
 import com.example.sprint2be.model.user.User;
+import com.example.sprint2be.repository.RankRepository;
 import com.example.sprint2be.repository.RoleRepository;
 import com.example.sprint2be.repository.UserRepository;
 import com.example.sprint2be.service.security.JwtEntryPoint;
@@ -23,7 +25,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import sun.util.calendar.BaseCalendar;
 
+import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -46,6 +50,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private RankRepository rankRepository;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -97,6 +103,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 ////                    null,
 ////                     roles
                 );
+                Rank defaultRank = new Rank();
+                defaultRank.setName("Incase");
+                rankRepository.save(defaultRank);
                 admin.setUsername(adminUsername);
                 admin.setPassword(passwordEncoder.encode(adminPassword));
                 admin.setFullName("ADMIN");
@@ -104,7 +113,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 admin.setAddress("Da Nang");
                 admin.setPhone("0123456799");
                 admin.setAvatar(null);
+                admin.setIdCard("123456789012");
                 admin.setRoles(roles);
+                admin.setRank(defaultRank);
 //                admin.setExamList(examList);
 
                 userRepository.save(admin);
@@ -114,26 +125,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         () -> new RuntimeException("Role doesn't exist")
                 ));
 
-                User member = new User(
-//                        "membertest",
-//                        passwordEncoder.encode("123123"),
-//                        "MEMBER",
-//                        "member@gmail.com",
-//                        "Da Nang",
-//                        "0998283831",
-//                        null,
-//                        rolesForMember,
-                );
-//                member.setUsername("membertest");
-//                member.setUserPassword(passwordEncoder.encode("123123"));
-//                member.setFullName("MEMBER");
-//                member.setEmail("member@gmail.com");
-//                member.setAddress("Da Nang");
-//                member.setPhoneNumber("0998283831");
-//                member.setAvatar(null);
-//                member.setRoles(rolesForMember);
-//                member.setExamList(examList);
-                userRepository.save(member);
+//                User member = new User(
+////                        "membertest",
+////                        passwordEncoder.encode("123123"),
+////                        "MEMBER",
+////                        "member@gmail.com",
+////                        "Da Nang",
+////                        "0998283831",
+////                        null,
+////                        rolesForMember,
+//                );
+////                member.setUsername("membertest");
+////                member.setUserPassword(passwordEncoder.encode("123123"));
+////                member.setFullName("MEMBER");
+////                member.setEmail("member@gmail.com");
+////                member.setAddress("Da Nang");
+////                member.setPhoneNumber("0998283831");
+////                member.setAvatar(null);
+////                member.setRoles(rolesForMember);
+////                member.setExamList(examList);
+//                userRepository.save(member);
             }
         };
     }

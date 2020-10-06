@@ -153,37 +153,24 @@ public class UserRestController {
     @PostMapping("/register")
     public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto, BindingResult bindingResult) {
         List<UserDto> userDtos = userService.findAll();
-        int i = 0;
         int id = 0;
+        User user = userService.findByUsername(userDto.getUsername());
         for (UserDto userDto1: userDtos){
-            if (userDto1.getUsername().equals(userDto.getUsername())){
-                i++;
-            }
-            id++;
-        }
-        if (i == 0){
-            userDto.setUserId(id + 1);
-            this.userService.create(userDto);
-        }
-        else {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        for (UserDto userDto1: userDtos){
-            if (userDto1.getUsername().equals(userDto.getUsername())){
-                userDto = userDto1;
+            if (userDto.getUsername().equals(userDto1.getUsername())){
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
         }
+        id = userService.findTopById().getUserId() + 1;
+        userDto.setUserId(id);
+        this.userService.create(userDto);
+        userDto = userService.findById(id);
         Random generator = new Random();
         TokenDto tokenDto = new TokenDto();
         tokenDto.setIdUser(userDto.getUserId());
+//        tokenDto.setId(tokenService.findTopByOrderByIdDesc().getId() + 1);
         tokenDto.setNameToken(Integer.toString(generator.nextInt()));
         tokenService.save(tokenDto);
-        List<TokenDto> tokenDtos = tokenService.findAll();
-        for (TokenDto tokenDto1: tokenDtos){
-            if (tokenDto1.getNameToken().equals(tokenDto.getNameToken())){
-                tokenDto = tokenDto1;
-            }
-        }
+        tokenDto = tokenService.findByNameToken(tokenDto.getNameToken());
         TokenDto finalTokenDto = tokenDto;
         TimerTask timerTask = new TimerTask() {
             @Override

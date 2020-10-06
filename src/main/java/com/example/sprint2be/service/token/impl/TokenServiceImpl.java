@@ -19,7 +19,7 @@ public class TokenServiceImpl implements TokenService {
     UserRepository userRepository;
     Token covertToToken(TokenDto tokenDto){
         Token token = new Token();
-//        token.setId(tokenDto.getId());
+        token.setId(tokenDto.getId());
         token.setUser(userRepository.findById(tokenDto.getIdUser()).orElse(null));
         token.setNameToken(tokenDto.getNameToken());
         return token;
@@ -45,4 +45,10 @@ public class TokenServiceImpl implements TokenService {
     public List<TokenDto> findAll() {
         return tokenRepository.findAll().stream().map(this::convertToTokenDto).collect(Collectors.toList());
     }
+
+    @Override
+    public TokenDto findByNameToken(String nameToken) {
+        return convertToTokenDto(tokenRepository.findByNameToken(nameToken));
+    }
+
 }

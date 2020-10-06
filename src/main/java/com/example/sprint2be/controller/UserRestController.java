@@ -185,4 +185,8 @@ public class UserRestController {
                 '\n' + "đường dẫn có thời hạn 1 ngày");
         return new ResponseEntity<>(userDto, HttpStatus.CREATED);
     }
+    @GetMapping("/user-activated")
+    public ResponseEntity<List<UserDto>> findAllUserActivated(){
+        return new ResponseEntity<>(userService.findAllUserActivated(), HttpStatus.OK);
+    }
 }

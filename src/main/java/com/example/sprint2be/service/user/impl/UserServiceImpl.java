@@ -195,5 +195,10 @@ public class UserServiceImpl implements UserService {
         return convertToUserDto(userRepository.findTopByOrderByUserIdDesc());
     }
 
+    @Override
+    public List<UserDto> findAllUserActivated() {
+        return userRepository.findAllUserActivated().stream().map(this::convertToUserDto).collect(Collectors.toList());
+    }
+
 }
 

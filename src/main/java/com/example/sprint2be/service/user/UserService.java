@@ -24,6 +24,7 @@ public interface UserService {
     Boolean changePassword(Integer id, String password);
     boolean isCorrectConfirmPassword(UserDto userDto);
     UserDto findTopById();
+    List<UserDto> findAllUserActivated();
 }
 
 

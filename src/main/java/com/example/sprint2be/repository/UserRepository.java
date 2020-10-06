@@ -15,4 +15,6 @@ public interface UserRepository extends JpaRepository<User,Integer> {
     Optional<User> findByUsername(String username);
     User findByEmail(String email);
     User findTopByOrderByUserIdDesc();
+    @Query(value = "select * from _user u where u.enabled = 'true'", nativeQuery = true)
+    List<User> findAllUserActivated();
 }

@@ -190,5 +190,10 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Override
+    public UserDto findTopById() {
+        return convertToUserDto(userRepository.findTopByOrderByUserIdDesc());
+    }
+
 }
 

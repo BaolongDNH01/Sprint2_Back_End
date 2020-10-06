@@ -65,6 +65,9 @@ public class ProductController {
         return new ResponseEntity<>(statusProductService.findAllStatusProduct(), HttpStatus.OK);
     }
 
-
+    @GetMapping("/getAllProductByUserName/{userName}")
+    public ResponseEntity<List<ProductDto>> getAllProductByUserName(@PathVariable String userName){
+        return new ResponseEntity<>(productService.findAllProductByUser(userName), HttpStatus.OK);
+    }
 
 }

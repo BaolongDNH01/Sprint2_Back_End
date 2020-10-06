@@ -6,6 +6,7 @@ import com.example.sprint2be.model.product.Product;
 import com.example.sprint2be.model.product.StatusProduct;
 import com.example.sprint2be.model.product.dto.ProductDto;
 import com.example.sprint2be.model.user.User;
+import com.example.sprint2be.repository.UserRepository;
 import com.example.sprint2be.repository.product.AuctionTimeRepository;
 import com.example.sprint2be.repository.product.CategoryRepository;
 import com.example.sprint2be.repository.product.ProductRepository;
@@ -59,7 +60,7 @@ public class ProductServiceImpl implements ProductService {
         productDto.setStatusId(statusProduct.getStatusId());
         productDto.setStatusName(statusProduct.getStatusName());
 
-        User user = product.getUser_product();
+        User user = product.getUserId();
         productDto.setUserId(user.getUserId());
         productDto.setFullName(user.getFullName());
 
@@ -100,14 +101,24 @@ public class ProductServiceImpl implements ProductService {
         product.setProductName(productDto.getProductName());
         product.setInitialPrice(productDto.getInitialPrice());
         product.setEachIncrease(productDto.getEachIncrease());
-        product.setImage(productDto.getImage());
+//        product.setImage(productDto.getImage());
         product.setProductDetail(productDto.getProductDetail());
         product.setStatusProduct(statusProductRepository.findById(productDto.getStatusId()).orElse(null));
         product.setAuctionTime(auctionTimeRepository.findById(productDto.getTimeId()).orElse(null));
         product.setCategory(categoryRepository.findById(productDto.getCategoryId()).orElse(null));
-        product.setUser_product(userService.findByIdUser(productDto.getUserId()));
+        product.setUserId(userService.findByIdUser(productDto.getUserId()));
         productRepository.save(product);
 
         System.out.println("da toi");
+    }
+
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Override
+    public List<ProductDto> findAllProductByUser(String userName) {
+        User user = userRepository.findByUsername(userName).orElse(new User());
+        return productRepository.findProductsByUserId(user).stream().map(this::convertToProductDto).collect(Collectors.toList());
     }
 }

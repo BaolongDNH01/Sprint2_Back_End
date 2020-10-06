@@ -17,7 +17,7 @@ public class UserDto {
     private String flag;
     private long timeLock;
     private String rank;
-    private String confirmPassword;
+    private String confirmPassword = "false";
     private String enabled;
 
     public Integer getUserId() {

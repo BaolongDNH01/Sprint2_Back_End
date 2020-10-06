@@ -17,6 +17,8 @@ public class ProductDto {
     private Integer userId;
     private String fullName;
     private List<Integer> auctionListId;
+    private List<Integer> listImageProduct;
+    private String imageURL;
 
     public ProductDto() {
 
@@ -134,5 +136,21 @@ public class ProductDto {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+    }
+
+    public List<Integer> getListImageProduct() {
+        return listImageProduct;
+    }
+
+    public void setListImageProduct(List<Integer> listImageProduct) {
+        this.listImageProduct = listImageProduct;
+    }
+
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
     }
 }

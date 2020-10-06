@@ -30,17 +30,20 @@ public class User {
     private String signInRecent;
     private String avatar;
     private String flag;
+    private String enabled;
+    @Column(nullable = false)
+    private String confirmPassword;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "rankId", nullable = false)
+    @JoinColumn(name = "rankId")
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private Rank rank;
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
-//    @JoinTable (
-//            name ="user_role",
-//            joinColumns = @JoinColumn(name="user_id"),
-//            inverseJoinColumns = @JoinColumn(name="role_id")
-//    )
+    @JoinTable (
+            name ="user_role",
+            joinColumns = @JoinColumn(name="user_id"),
+            inverseJoinColumns = @JoinColumn(name="role_id")
+    )
     @JsonIgnore
     private Set<Role> roles = new HashSet<>();
 
@@ -186,5 +189,21 @@ public class User {
     public void setRank(Rank rank) {
         this.rank = rank;
 
+    }
+
+    public String getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(String enabled) {
+        this.enabled = enabled;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 }

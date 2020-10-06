@@ -4,14 +4,15 @@ import com.example.sprint2be.model.UserPrincipal;
 import com.example.sprint2be.model.auction.dto.UserBidderDto;
 import com.example.sprint2be.model.login_msg.request.Login;
 import com.example.sprint2be.model.login_msg.response.JwtResponse;
+import com.example.sprint2be.model.token.TokenDto;
 import com.example.sprint2be.model.user.RecoverPassword;
 import com.example.sprint2be.model.user.User;
 import com.example.sprint2be.model.user.UserDto;
-import com.example.sprint2be.repository.RecoverPasswordRepository;
 import com.example.sprint2be.service.auction.BidderService;
 import com.example.sprint2be.service.email.EmailService;
 import com.example.sprint2be.service.recoverPassword.RecoverPasswordService;
 import com.example.sprint2be.service.security.JwtProvider;
+import com.example.sprint2be.service.token.TokenService;
 import com.example.sprint2be.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -22,12 +23,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.logging.Logger;
 
 @RestController
@@ -43,6 +45,12 @@ public class UserRestController {
     EmailService emailService;
     @Autowired
     RecoverPasswordService recoverPasswordService;
+    @Autowired
+    PasswordEncoder passwordEncoder;
+    @Autowired
+    TokenService tokenService;
+    @Autowired
+    com.example.sprint2be.service.EmailService getEmailService;
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody Login loginRequest) throws AuthenticationException {
@@ -143,6 +151,41 @@ public class UserRestController {
     @PostMapping("editUserInfo/{username}")
     public void editUserInfo(@PathVariable String username, @RequestBody UserDto userDto) {
         userService.editUser(userDto, username);
+    }
+    @PostMapping("/register")
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto, BindingResult bindingResult) {
+        List<UserDto> userDtos = userService.findAll();
+        int id = 0;
+        User user = userService.findByUsername(userDto.getUsername());
+        for (UserDto userDto1: userDtos){
+            if (userDto.getUsername().equals(userDto1.getUsername())){
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+        }
+        id = userService.findTopById().getUserId() + 1;
+        userDto.setUserId(id);
+        this.userService.create(userDto);
+        userDto = userService.findById(id);
+        Random generator = new Random();
+        TokenDto tokenDto = new TokenDto();
+        tokenDto.setIdUser(userDto.getUserId());
+//        tokenDto.setId(tokenService.findTopByOrderByIdDesc().getId() + 1);
+        tokenDto.setNameToken(Integer.toString(generator.nextInt()));
+        tokenService.save(tokenDto);
+        tokenDto = tokenService.findByNameToken(tokenDto.getNameToken());
+        TokenDto finalTokenDto = tokenDto;
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                tokenService.delete(finalTokenDto.getId());
+            }
+        };
+        Timer timer = new Timer();
+        timer.schedule(timerTask, 24 * 60 * 60 * 1000);
+
+        getEmailService.sendEmail(userDto.getEmail(), "Hello bà con", "Chào mừng bạn đã đến trang đấu giá vủa chúng tôi, bạn vui lòng click vào đường link kích hoạt tài khoản : http://localhost:4200/activated-account/"+ tokenDto.getNameToken() +
+                '\n' + "đường dẫn có thời hạn 1 ngày");
+        return new ResponseEntity<>(userDto, HttpStatus.CREATED);
     }
 
     @Autowired

@@ -1,8 +1,11 @@
 package com.example.sprint2be.controller;
 
+import com.example.sprint2be.model.product.ImageProduct;
 import com.example.sprint2be.model.product.Product;
+import com.example.sprint2be.model.product.dto.ImageProductDto;
 import com.example.sprint2be.model.product.dto.ProductDto;
 import com.example.sprint2be.model.product.dto.StatusProductDto;
+import com.example.sprint2be.service.product.ImageProductService;
 import com.example.sprint2be.service.product.ProductService;
 import com.example.sprint2be.service.product.StatusProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +25,9 @@ public class ProductController {
     @Autowired
     StatusProductService statusProductService;
 
+    @Autowired
+    ImageProductService imageProductService;
+
     @PostMapping("/create-product")
     public ResponseEntity<Product> createProduct(@RequestBody Product product, UriComponentsBuilder builder) {
         productService.saveProductDto(product);
@@ -40,19 +46,24 @@ public class ProductController {
 
     @GetMapping("/getAllProduct")
     public ResponseEntity<List<ProductDto>> getAllProduct() {
+        System.out.println("okokok");
         return new ResponseEntity<>(productService.findAllProduct(), HttpStatus.OK);
     }
 
     @GetMapping("/list-product")
-    public ResponseEntity<List<ProductDto>> getListProduct(){
+    public ResponseEntity<List<ProductDto>> getListProduct() {
         return new ResponseEntity<>(productService.findAllProduct(), HttpStatus.OK);
     }
 
     @GetMapping("/product/{id}")
-    public ResponseEntity<ProductDto> findProductById(@PathVariable Integer id){
+    public ResponseEntity<ProductDto> findProductById(@PathVariable Integer id) {
         return new ResponseEntity<>(productService.findById(id), HttpStatus.OK);
     }
 
+    @GetMapping("/product/image/{id}")
+    public ResponseEntity<ImageProductDto> findImageById(@PathVariable Integer id){
+        return new ResponseEntity<>(imageProductService.findByIdImageDto(id),HttpStatus.OK);
+    }
     @PatchMapping("/product-edit/{id}")
     public ResponseEntity<String> updateProduct(@PathVariable Integer id, @RequestBody ProductDto productDtoForm) {
         Product product = productService.findByIdProduct(id);
@@ -60,9 +71,15 @@ public class ProductController {
         productService.saveProductDto(productDtoForm);
         return new ResponseEntity<>("update", HttpStatus.OK);
     }
+
     @GetMapping("/list-status")
-    public ResponseEntity<List<StatusProductDto>> getListStatus(){
+    public ResponseEntity<List<StatusProductDto>> getListStatus() {
         return new ResponseEntity<>(statusProductService.findAllStatusProduct(), HttpStatus.OK);
+    }
+
+    @GetMapping("/list-image-product")
+    public ResponseEntity<List<ImageProductDto>> getAllImage() {
+        return new ResponseEntity<>(imageProductService.findAllDto(), HttpStatus.OK);
     }
 
     @GetMapping("/getAllProductByUserName/{userName}")

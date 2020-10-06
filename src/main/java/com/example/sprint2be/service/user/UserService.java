@@ -11,7 +11,7 @@ public interface UserService {
     UserDto convertToUserDto(User user);
     User findByUsername(String username);
     Optional<User> findUserById(Integer id);
-    User findByEmail(String email);
+    UserDto findByEmail(String email);
     List<UserDto> findAll();
     UserDto findById(Integer id);
     User findByIdUser(Integer id);
@@ -22,7 +22,8 @@ public interface UserService {
     UserDto getUserByUserName(String userName);
     void editUser(UserDto user, String userName);
     Boolean changePassword(Integer id, String password);
-
+    boolean isCorrectConfirmPassword(UserDto userDto);
+    UserDto findTopById();
 }
 
 

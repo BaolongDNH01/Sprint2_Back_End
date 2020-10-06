@@ -51,6 +51,8 @@ public class UserRestController {
     TokenService tokenService;
     @Autowired
     com.example.sprint2be.service.EmailService getEmailService;
+     @Autowired
+    BidderService bidderService;
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody Login loginRequest) throws AuthenticationException {
@@ -188,11 +190,13 @@ public class UserRestController {
         return new ResponseEntity<>(userDto, HttpStatus.CREATED);
     }
 
-    @Autowired
-    BidderService bidderService;
-
     @GetMapping("getAllBidderByUserName/{username}")
     public ResponseEntity<List<UserBidderDto>> getAllBidderByUserName(@PathVariable String username) {
         return new ResponseEntity<>(bidderService.findAllBidderByU(username), HttpStatus.OK);
+
+    @GetMapping("/user-activated")
+    public ResponseEntity<List<UserDto>> findAllUserActivated(){
+        return new ResponseEntity<>(userService.findAllUserActivated(), HttpStatus.OK);
+
     }
 }

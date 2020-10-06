@@ -8,4 +8,5 @@ public interface TokenService {
     void save(TokenDto tokenDto);
     void delete(Integer id);
     List<TokenDto> findAll();
+    TokenDto findByNameToken(String nameToken);
 }

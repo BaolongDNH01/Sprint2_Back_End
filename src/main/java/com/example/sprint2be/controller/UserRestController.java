@@ -156,22 +156,15 @@ public class UserRestController {
     }
     @PostMapping("/register")
     public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto, BindingResult bindingResult) {
-        List<UserDto> userDtos = userService.findAll();
-        int id = 0;
         User user = userService.findByUsername(userDto.getUsername());
-        for (UserDto userDto1: userDtos){
-            if (userDto.getUsername().equals(userDto1.getUsername())){
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            }
+        if (null != user){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        id = userService.findTopById().getUserId() + 1;
-        userDto.setUserId(id);
         this.userService.create(userDto);
-        userDto = userService.findById(id);
         Random generator = new Random();
         TokenDto tokenDto = new TokenDto();
+        userDto = userService.findTopById();
         tokenDto.setIdUser(userDto.getUserId());
-//        tokenDto.setId(tokenService.findTopByOrderByIdDesc().getId() + 1);
         tokenDto.setNameToken(Integer.toString(generator.nextInt()));
         tokenService.save(tokenDto);
         tokenDto = tokenService.findByNameToken(tokenDto.getNameToken());
@@ -185,7 +178,7 @@ public class UserRestController {
         Timer timer = new Timer();
         timer.schedule(timerTask, 24 * 60 * 60 * 1000);
 
-        getEmailService.sendEmail(userDto.getEmail(), "Hello bà con", "Chào mừng bạn đã đến trang đấu giá vủa chúng tôi, bạn vui lòng click vào đường link kích hoạt tài khoản : http://localhost:4200/activated-account/"+ tokenDto.getNameToken() +
+        getEmailService.sendEmail(userDto.getEmail(), "Hello bà con", "Chào mừng bạn đã đến trang đấu giá vủa chúng tôi, vui lòng click vào đường link kích hoạt tài khoản " + userDto.getUsername() + " :\n http://localhost:4200/activated-account/"+ tokenDto.getNameToken() +
                 '\n' + "đường dẫn có thời hạn 1 ngày");
         return new ResponseEntity<>(userDto, HttpStatus.CREATED);
     }
@@ -193,6 +186,7 @@ public class UserRestController {
     @GetMapping("getAllBidderByUserName/{username}")
     public ResponseEntity<List<UserBidderDto>> getAllBidderByUserName(@PathVariable String username) {
         return new ResponseEntity<>(bidderService.findAllBidderByU(username), HttpStatus.OK);
+    }
 
     @GetMapping("/user-activated")
     public ResponseEntity<List<UserDto>> findAllUserActivated(){
@@ -202,6 +196,11 @@ public class UserRestController {
     @PostMapping("/unlock-user")
     public ResponseEntity<Void>  unlockUser(@RequestBody List<UserDto> userDtoList){
         userService.unlockUser(userDtoList);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @DeleteMapping("/delete-users/{ids}")
+    public ResponseEntity<Void> deleteUsers(@PathVariable List<String> ids){
+        userService.deleteUser(ids);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

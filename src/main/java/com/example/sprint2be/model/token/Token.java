@@ -10,7 +10,7 @@ public class Token {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nameToken;
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     private User user;
 
     public Integer getId() {

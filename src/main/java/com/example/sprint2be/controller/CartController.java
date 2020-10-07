@@ -14,9 +14,6 @@ public class CartController {
     @Autowired
     CartService cartService;
 
-    @Autowired
-    CartItemService cartItemService;
-
     // Load cart by user id
     @GetMapping("/cart/{userId}")
     public ResponseEntity<Cart> getCartByUserId(@PathVariable Long userId) throws Exception {

@@ -88,6 +88,13 @@ public class ProductController {
         return new ResponseEntity<>(imageProductService.findAllDto(), HttpStatus.OK);
     }
 
+
+    @GetMapping("/getAllProductByUserName/{userName}")
+    public ResponseEntity<List<ProductDto>> getAllProductByUserName(@PathVariable String userName){
+        return new ResponseEntity<>(productService.findAllProductByUser(userName), HttpStatus.OK);
+    }
+
+
     @GetMapping("/list-category")
     public ResponseEntity<List<Category>> getListCategory(){
         return new ResponseEntity<>(categoryService.findAll(), HttpStatus.OK);
@@ -97,4 +104,5 @@ public class ProductController {
     public ResponseEntity<List<AuctionTime>> getListAuctionTime(){
         return new ResponseEntity<>(auctionTimeService.findAll(), HttpStatus.OK);
     }
+
 }

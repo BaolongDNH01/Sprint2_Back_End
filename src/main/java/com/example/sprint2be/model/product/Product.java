@@ -33,7 +33,7 @@ public class Product {
 
     @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "user_id")
-    private User user_product;
+    private User userId;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.DETACH)
     private List<Auction> auctionList;
@@ -106,12 +106,12 @@ public class Product {
         this.statusProduct = statusProduct;
     }
 
-    public User getUser_product() {
-        return user_product;
+    public User getUserId() {
+        return userId;
     }
 
-    public void setUser_product(User user_product) {
-        this.user_product = user_product;
+    public void setUserId(User userId) {
+        this.userId = userId;
     }
 
     public List<Auction> getAuctionList() {

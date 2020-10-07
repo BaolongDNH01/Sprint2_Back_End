@@ -207,6 +207,12 @@ public class UserServiceImpl implements UserService {
             userRepository.save(convertToUser(userDto));
         }
     }
+    @Override
+    public void deleteUser(List<String> ids) {
+        for (String id: ids){
+            userRepository.deleteById(Integer.parseInt(id));
+        }
+    }
 
 }
 

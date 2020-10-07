@@ -193,6 +193,7 @@ public class UserRestController {
     @GetMapping("getAllBidderByUserName/{username}")
     public ResponseEntity<List<UserBidderDto>> getAllBidderByUserName(@PathVariable String username) {
         return new ResponseEntity<>(bidderService.findAllBidderByU(username), HttpStatus.OK);
+    }
 
     @GetMapping("/user-activated")
     public ResponseEntity<List<UserDto>> findAllUserActivated(){
@@ -202,6 +203,11 @@ public class UserRestController {
     @PostMapping("/unlock-user")
     public ResponseEntity<Void>  unlockUser(@RequestBody List<UserDto> userDtoList){
         userService.unlockUser(userDtoList);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @DeleteMapping("/delete-users/{ids}")
+    public ResponseEntity<Void> deleteUsers(@PathVariable List<String> ids){
+        userService.deleteUser(ids);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -3,8 +3,10 @@ package com.example.sprint2be.model.user;
 import com.example.sprint2be.model.Rank;
 import com.example.sprint2be.model.Role;
 import com.example.sprint2be.model.auction.Bidder;
+import com.example.sprint2be.model.payment.Cart;
 import com.example.sprint2be.model.product.Product;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -52,6 +54,14 @@ public class User {
 
     @OneToMany(mappedBy = "userBidder", cascade = CascadeType.DETACH)
     private List<Bidder> bidderList;
+
+    /**
+     * Thien: Setup relationship Cart - User
+     */
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "cart_id")
+    @JsonManagedReference
+    private Cart cart;
 
     public Integer getUserId() {
         return userId;

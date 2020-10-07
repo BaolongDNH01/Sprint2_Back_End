@@ -25,6 +25,7 @@ public interface UserService {
     boolean isCorrectConfirmPassword(UserDto userDto);
     UserDto findTopById();
     List<UserDto> findAllUserActivated();
+    void unlockUser(List<UserDto> userDtoList);
 }
 
 

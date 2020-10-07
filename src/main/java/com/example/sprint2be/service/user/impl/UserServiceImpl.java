@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByUsername(String username) {
-        return null;
+        return userRepository.findByUsername(username).orElse(null);
     }
 
     @Override
@@ -205,6 +205,12 @@ public class UserServiceImpl implements UserService {
         for (UserDto userDto: userDtoList){
             userDto.setFlag("true");
             userRepository.save(convertToUser(userDto));
+        }
+    }
+    @Override
+    public void deleteUser(List<String> ids) {
+        for (String id: ids){
+            userRepository.deleteById(Integer.parseInt(id));
         }
     }
 

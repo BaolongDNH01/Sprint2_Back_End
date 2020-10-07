@@ -200,5 +200,13 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAllUserActivated().stream().map(this::convertToUserDto).collect(Collectors.toList());
     }
 
+    @Override
+    public void unlockUser(List<UserDto> userDtoList) {
+        for (UserDto userDto: userDtoList){
+            userDto.setFlag("true");
+            userRepository.save(convertToUser(userDto));
+        }
+    }
+
 }
 

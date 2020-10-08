@@ -2,6 +2,7 @@ package com.example.sprint2be.controller;
 
 import com.example.sprint2be.model.auction.Auction;
 import com.example.sprint2be.model.auction.Bidder;
+import com.example.sprint2be.model.auction.dto.AuctionDto;
 import com.example.sprint2be.model.auction.dto.BidderDto;
 import com.example.sprint2be.service.auction.AuctionService;
 import com.example.sprint2be.service.auction.BidderService;
@@ -37,11 +38,10 @@ public class AuctionController {
     }
 
 
-
-
-
-
-
+    @GetMapping("/getAllAuction")
+    public ResponseEntity<List<AuctionDto>> getAllAution() {
+        return new  ResponseEntity<>(this.auctionService.findAllAuctionDto(), HttpStatus.OK);
+    }
 
     @PostMapping("/create-bidder")
     public ResponseEntity<Bidder> createBidder(@RequestBody BidderDto bidder, UriComponentsBuilder builder) {

@@ -2,6 +2,7 @@ package com.example.sprint2be.service.auction.Impl;
 
 import com.example.sprint2be.model.auction.Auction;
 import com.example.sprint2be.model.auction.Bidder;
+import com.example.sprint2be.model.auction.dto.AuctionDto;
 import com.example.sprint2be.model.auction.dto.BidderDto;
 import com.example.sprint2be.model.auction.dto.UserBidderDto;
 import com.example.sprint2be.model.user.User;
@@ -56,8 +57,9 @@ public class BidderServiceImpl implements BidderService {
     }
 
     @Override
-    public List<Bidder> findByAuction_AuctionId(Integer id) {
-        return bidderRepository.findByAuction_AuctionId(id);
+    public List<Bidder> findBidderByAuction(Integer id) {
+        Auction auction = auctionRepository.findById(id).orElse(new Auction());
+        return bidderRepository.findBidderByAuction(auction);
     }
 
     @Override

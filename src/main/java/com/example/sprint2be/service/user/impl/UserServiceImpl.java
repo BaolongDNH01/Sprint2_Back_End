@@ -68,7 +68,6 @@ public class UserServiceImpl implements UserService {
         userDto.setSignInRecent(user.getSignInRecent());
         userDto.setFlag(user.getFlag());
         userDto.setAvatar(user.getAvatar());
-        List<Rank> ranks = rankService.findAll();
         userDto.setRank(user.getRank().getName());
         userDto.setConfirmPassword(user.getConfirmPassword());
         userDto.setEnabled(user.getEnabled());
@@ -78,7 +77,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByUsername(String username) {
-        return null;
+        return userRepository.findByUsername(username).orElse(null);
     }
 
     @Override
@@ -133,8 +132,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public void lockUser(List<UserDto> userDtoList) {
         for (UserDto userDto: userDtoList){
-            userDto.setFlag("false");
-            userRepository.save(convertToUser(userDto));
             TimerTask timerTask = new TimerTask() {
                 @Override
                 public void run() {
@@ -143,6 +140,8 @@ public class UserServiceImpl implements UserService {
                 }
             };
 //        1000 time = 1s
+            userDto.setFlag("false");
+            userRepository.save(convertToUser(userDto));
             Timer timer = new Timer();
             timer.schedule(timerTask, userDto.getTimeLock());
         }
@@ -205,6 +204,12 @@ public class UserServiceImpl implements UserService {
         for (UserDto userDto: userDtoList){
             userDto.setFlag("true");
             userRepository.save(convertToUser(userDto));
+        }
+    }
+    @Override
+    public void deleteUser(List<String> ids) {
+        for (String id: ids){
+            userRepository.deleteById(Integer.parseInt(id));
         }
     }
 

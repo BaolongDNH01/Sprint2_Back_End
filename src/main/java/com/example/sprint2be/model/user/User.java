@@ -31,7 +31,7 @@ public class User {
     private String avatar;
     private String flag;
     private String enabled;
-    @Column(nullable = false)
+    @Column
     private String confirmPassword;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "rankId")

@@ -50,7 +50,7 @@ public class UserRestController {
     TokenService tokenService;
     @Autowired
     com.example.sprint2be.service.EmailService getEmailService;
-     @Autowired
+    @Autowired
     BidderService bidderService;
 
     @PostMapping("/login")
@@ -110,15 +110,15 @@ public class UserRestController {
     public ResponseEntity<?> recoverPassword(@RequestBody RecoverPassword recoverPassword) {
         User user = userService.findByUsername(recoverPassword.getUsername());
         if ((user != null) && (user.getEmail().equals(recoverPassword.getEmail()))) {
-                String confirmCode = emailService.genConfirmCode();
-                Optional<RecoverPassword> checkExist = recoverPasswordService.loadByUsername(recoverPassword.getUsername());
-                if (checkExist.isPresent()){
-                    recoverPassword = checkExist.get();
-                }
-                recoverPassword.setConfirmCode(confirmCode);
-                recoverPasswordService.save(recoverPassword);
+            String confirmCode = emailService.genConfirmCode();
+            Optional<RecoverPassword> checkExist = recoverPasswordService.loadByUsername(recoverPassword.getUsername());
+            if (checkExist.isPresent()){
+                recoverPassword = checkExist.get();
+            }
+            recoverPassword.setConfirmCode(confirmCode);
+            recoverPasswordService.save(recoverPassword);
 //Send Email
-                return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         }else {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
@@ -142,8 +142,8 @@ public class UserRestController {
             return new ResponseEntity<>(HttpStatus.OK);
         }else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
-  
-  
+
+
     @GetMapping("/getUserByUserName/{username}")
     public ResponseEntity<UserDto> getUserByUserName(@PathVariable String username){
         return new ResponseEntity<>(userService.getUserByUserName(username), HttpStatus.OK);
@@ -186,10 +186,9 @@ public class UserRestController {
         return new ResponseEntity<>(bidderService.findAllBidderByU(username), HttpStatus.OK);
     }
 
-    @GetMapping("/user-activated")
-    public ResponseEntity<List<UserDto>> findAllUserActivated(){
+        @GetMapping("/user-activated")
+        public ResponseEntity<List<UserDto>> findAllUserActivated() {
         return new ResponseEntity<>(userService.findAllUserActivated(), HttpStatus.OK);
-
     }
     @PostMapping("/unlock-user")
     public ResponseEntity<Void>  unlockUser(@RequestBody List<UserDto> userDtoList){

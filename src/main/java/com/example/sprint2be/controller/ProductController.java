@@ -4,6 +4,7 @@ import com.example.sprint2be.model.product.AuctionTime;
 import com.example.sprint2be.model.product.Category;
 import com.example.sprint2be.model.product.ImageProduct;
 import com.example.sprint2be.model.product.Product;
+import com.example.sprint2be.model.product.dto.CategoryDto;
 import com.example.sprint2be.model.product.dto.ImageProductDto;
 import com.example.sprint2be.model.product.dto.ProductDto;
 import com.example.sprint2be.model.product.dto.StatusProductDto;
@@ -105,4 +106,15 @@ public class ProductController {
         return new ResponseEntity<>(auctionTimeService.findAll(), HttpStatus.OK);
     }
 
+    @GetMapping("/getAllCategoryDto")
+    public ResponseEntity<List<CategoryDto>> getAllCategoryDto(){
+        return new ResponseEntity<>(categoryService.findAllCategoryDto(), HttpStatus.OK);
+    }
+
+    @PostMapping("/deleteProducts")
+    public void deleteProducts(@RequestBody Integer[] list){
+        for (int delCount: list) {
+            productService.delete(delCount);
+        }
+    }
 }

@@ -30,7 +30,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.util.*;
-import java.util.logging.Logger;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -161,11 +160,10 @@ public class UserRestController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         this.userService.create(userDto);
-        Random generator = new Random();
         TokenDto tokenDto = new TokenDto();
         userDto = userService.findTopById();
         tokenDto.setIdUser(userDto.getUserId());
-        tokenDto.setNameToken(Integer.toString(generator.nextInt()));
+        tokenDto.setNameToken(Integer.toString((new Random()).nextInt()));
         tokenService.save(tokenDto);
         tokenDto = tokenService.findByNameToken(tokenDto.getNameToken());
         TokenDto finalTokenDto = tokenDto;

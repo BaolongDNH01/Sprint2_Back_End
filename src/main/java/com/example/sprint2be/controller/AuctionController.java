@@ -2,6 +2,7 @@ package com.example.sprint2be.controller;
 
 import com.example.sprint2be.model.auction.Auction;
 import com.example.sprint2be.model.auction.Bidder;
+import com.example.sprint2be.model.auction.dto.BidderDto;
 import com.example.sprint2be.service.auction.AuctionService;
 import com.example.sprint2be.service.auction.BidderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,4 +35,13 @@ public class AuctionController {
         List<Bidder> bidders = bidderService.findByAuction_AuctionId(id);
         return new ResponseEntity<>(bidders, HttpStatus.OK);
     }
+
+    @PostMapping("/create-bidder")
+    public ResponseEntity<Bidder> createBidder(@RequestBody Bidder bidder, UriComponentsBuilder builder) {
+        bidderService.save(bidder);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(builder.path("/get-bidder/{id}").buildAndExpand(bidder.getBidId()).toUri());
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
 }

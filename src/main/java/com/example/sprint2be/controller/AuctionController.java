@@ -31,14 +31,21 @@ public class AuctionController {
     }
 
     @GetMapping(value = "/get-bidder-auction/{id}")
-    public ResponseEntity<Object> getTestHistory(@PathVariable("id") Integer id) {
-        List<Bidder> bidders = bidderService.findByAuction_AuctionId(id);
+    public ResponseEntity<List<Bidder>> getListBidder(@PathVariable("id") Integer id) {
+        List<Bidder> bidders = bidderService.findBidderByAuction(id);
         return new ResponseEntity<>(bidders, HttpStatus.OK);
     }
 
+
+
+
+
+
+
+
     @PostMapping("/create-bidder")
-    public ResponseEntity<Bidder> createBidder(@RequestBody Bidder bidder, UriComponentsBuilder builder) {
-        bidderService.save(bidder);
+    public ResponseEntity<Bidder> createBidder(@RequestBody BidderDto bidder, UriComponentsBuilder builder) {
+        bidderService.saveDto(bidder);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(builder.path("/get-bidder/{id}").buildAndExpand(bidder.getBidId()).toUri());
         return new ResponseEntity<>(HttpStatus.CREATED);

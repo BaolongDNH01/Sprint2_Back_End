@@ -50,7 +50,7 @@ public class Bidder {
 
 
     public Auction getAuction_bidder() {
-        return auction;
+        return this.auction;
     }
 
     public void setAuction_bidder(Auction auction_bidder) {

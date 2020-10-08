@@ -35,7 +35,7 @@ public class ProductController {
     AuctionTimeService auctionTimeService;
 
     @PostMapping("/create-product")
-    public ResponseEntity<Product> createProduct(@RequestBody Product product, UriComponentsBuilder builder) {
+    public ResponseEntity<Product> createProduct(@RequestBody ProductDto product, UriComponentsBuilder builder) {
         productService.saveProductDto(product);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(builder.path("/get-product/{id}").buildAndExpand(product.getProductId()).toUri());

@@ -5,8 +5,8 @@ public class BidderDto {
     private Integer bidId;
     private Double bidPrice;
     private String bidDateTime;
-    private Integer auction_id;
-    private Integer user_id;
+    private Integer auctionId;
+    private Integer userId;
 
     public BidderDto() {
 
@@ -16,8 +16,8 @@ public class BidderDto {
         this.bidId = bidId;
         this.bidPrice = bidPrice;
         this.bidDateTime = bidDateTime;
-        this.auction_id = auction_id;
-        this.user_id = user_id;
+        this.auctionId = auction_id;
+        this.userId = user_id;
     }
 
     public Integer getBidId() {
@@ -44,19 +44,19 @@ public class BidderDto {
         this.bidDateTime = bidDateTime;
     }
 
-    public Integer getAuction_id() {
-        return auction_id;
+    public Integer getAuctionId() {
+        return auctionId;
     }
 
-    public void setAuction_id(Integer auction_id) {
-        this.auction_id = auction_id;
+    public void setAuctionId(Integer auctionId) {
+        this.auctionId = auctionId;
     }
 
-    public Integer getUser_id() {
-        return user_id;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUser_id(Integer user_id) {
-        this.user_id = user_id;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 }

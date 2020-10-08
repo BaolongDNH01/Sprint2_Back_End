@@ -37,8 +37,8 @@ public class AuctionController {
     }
 
     @PostMapping("/create-bidder")
-    public ResponseEntity<Bidder> createBidder(@RequestBody Bidder bidder, UriComponentsBuilder builder) {
-        bidderService.save(bidder);
+    public ResponseEntity<Bidder> createBidder(@RequestBody BidderDto bidder, UriComponentsBuilder builder) {
+        bidderService.saveDto(bidder);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(builder.path("/get-bidder/{id}").buildAndExpand(bidder.getBidId()).toUri());
         return new ResponseEntity<>(HttpStatus.CREATED);

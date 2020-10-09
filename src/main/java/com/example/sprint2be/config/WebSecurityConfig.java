@@ -27,8 +27,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import sun.util.calendar.BaseCalendar;
 
-import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Configuration
@@ -103,6 +105,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 ////                    null,
 ////                     roles
                 );
+
+                String[] ranks = {"Đồng", "Bạc", "Bạch kim", "Kim cương"};
+                for (String s : ranks) {
+                    Rank rank = new Rank();
+                    rank.setName(s);
+                    rankRepository.save(rank);
+                }
                 Rank defaultRank = new Rank();
                 defaultRank.setName("Incase");
                 rankRepository.save(defaultRank);

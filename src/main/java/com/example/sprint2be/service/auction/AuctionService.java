@@ -12,4 +12,6 @@ public interface AuctionService {
     void save(Auction auction);
     void delete(Integer auctionId);
     List<AuctionDto> findAllAuctionDto();
+    void saveAuctionDto(AuctionDto auctionDto);
+    AuctionDto findByIdDto(Integer auctionId);
 }

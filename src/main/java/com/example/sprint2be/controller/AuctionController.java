@@ -2,6 +2,7 @@ package com.example.sprint2be.controller;
 
 import com.example.sprint2be.model.auction.Auction;
 import com.example.sprint2be.model.auction.Bidder;
+import com.example.sprint2be.model.auction.dto.AuctionDto;
 import com.example.sprint2be.model.auction.dto.BidderDto;
 import com.example.sprint2be.service.auction.AuctionService;
 import com.example.sprint2be.service.auction.BidderService;
@@ -31,14 +32,20 @@ public class AuctionController {
     }
 
     @GetMapping(value = "/get-bidder-auction/{id}")
-    public ResponseEntity<Object> getTestHistory(@PathVariable("id") Integer id) {
-        List<Bidder> bidders = bidderService.findByAuction_AuctionId(id);
+    public ResponseEntity<List<Bidder>> getListBidder(@PathVariable("id") Integer id) {
+        List<Bidder> bidders = bidderService.findBidderByAuction(id);
         return new ResponseEntity<>(bidders, HttpStatus.OK);
     }
 
+
+    @GetMapping("/getAllAuction")
+    public ResponseEntity<List<AuctionDto>> getAllAution() {
+        return new  ResponseEntity<>(this.auctionService.findAllAuctionDto(), HttpStatus.OK);
+    }
+
     @PostMapping("/create-bidder")
-    public ResponseEntity<Bidder> createBidder(@RequestBody Bidder bidder, UriComponentsBuilder builder) {
-        bidderService.save(bidder);
+    public ResponseEntity<Bidder> createBidder(@RequestBody BidderDto bidder, UriComponentsBuilder builder) {
+        bidderService.saveDto(bidder);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(builder.path("/get-bidder/{id}").buildAndExpand(bidder.getBidId()).toUri());
         return new ResponseEntity<>(HttpStatus.CREATED);

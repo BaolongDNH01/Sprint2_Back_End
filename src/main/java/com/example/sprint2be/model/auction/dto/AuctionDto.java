@@ -7,9 +7,13 @@ public class AuctionDto {
     private Integer auctionId;
     private String dayTimeStart;
     private String dayTimeEnd;
-    private Integer status_id;
-    private Integer product_id;
-    private List<Integer> bidderList_id;
+    private Integer statusId;
+    private Integer productId;
+    private String productName;
+    private Double eachIncrease;
+    private String imageURL;
+    private Integer auctionTime;
+    private List<Integer> bidderListId;
 
     public AuctionDto() {
 
@@ -20,9 +24,9 @@ public class AuctionDto {
         this.auctionId = auctionId;
         this.dayTimeStart = dayTimeStart;
         this.dayTimeEnd = dayTimeEnd;
-        this.status_id = status_id;
-        this.product_id = product_id;
-        this.bidderList_id = bidderList_id;
+        this.statusId = status_id;
+        this.productId = product_id;
+        this.bidderListId = bidderList_id;
     }
 
     public Integer getAuctionId() {
@@ -49,27 +53,59 @@ public class AuctionDto {
         this.dayTimeEnd = dayTimeEnd;
     }
 
-    public Integer getStatus_id() {
-        return status_id;
+    public Integer getStatusId() {
+        return statusId;
     }
 
-    public void setStatus_id(Integer status_id) {
-        this.status_id = status_id;
+    public void setStatusId(Integer statusId) {
+        this.statusId = statusId;
     }
 
-    public Integer getProduct_id() {
-        return product_id;
+    public Integer getProductId() {
+        return productId;
     }
 
-    public void setProduct_id(Integer product_id) {
-        this.product_id = product_id;
+    public void setProductId(Integer productId) {
+        this.productId = productId;
     }
 
-    public List<Integer> getBidderList_id() {
-        return bidderList_id;
+    public List<Integer> getBidderListId() {
+        return bidderListId;
     }
 
-    public void setBidderList_id(List<Integer> bidderList_id) {
-        this.bidderList_id = bidderList_id;
+    public void setBidderListId(List<Integer> bidderListId) {
+        this.bidderListId = bidderListId;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public Double getEachIncrease() {
+        return eachIncrease;
+    }
+
+    public void setEachIncrease(Double eachIncrease) {
+        this.eachIncrease = eachIncrease;
+    }
+
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
+
+    public Integer getAuctionTime() {
+        return auctionTime;
+    }
+
+    public void setAuctionTime(Integer auctionTime) {
+        this.auctionTime = auctionTime;
     }
 }

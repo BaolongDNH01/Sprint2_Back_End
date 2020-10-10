@@ -32,8 +32,8 @@ public class AuctionController {
     }
 
     @GetMapping(value = "/get-bidder-auction/{id}")
-    public ResponseEntity<List<Bidder>> getListBidder(@PathVariable("id") Integer id) {
-        List<Bidder> bidders = bidderService.findBidderByAuction(id);
+    public ResponseEntity<List<BidderDto>> getListBidder(@PathVariable("id") Integer id) {
+        List<BidderDto> bidders = bidderService.findBidderByAuction(id);
         return new ResponseEntity<>(bidders, HttpStatus.OK);
     }
 

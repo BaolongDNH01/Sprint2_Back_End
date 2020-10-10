@@ -10,7 +10,7 @@ import java.util.List;
 public interface BidderRepository extends JpaRepository<Bidder,Integer> {
 
     //hiện thị danh sách người đấu thầu trong 1 phiên
-    List<Bidder>findBidderByAuction(Auction auction);
+    List<Bidder> findBiddersByAuction(Auction auction);
 
 //    khanh
     List<Bidder> findBiddersByUserBidder(User user);

@@ -3,6 +3,7 @@ package com.example.sprint2be.config;
 import com.example.sprint2be.model.Rank;
 import com.example.sprint2be.model.Role;
 import com.example.sprint2be.model.constant.ERoleName;
+import com.example.sprint2be.model.payment.Cart;
 import com.example.sprint2be.model.user.User;
 import com.example.sprint2be.repository.RankRepository;
 import com.example.sprint2be.repository.RoleRepository;
@@ -25,10 +26,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
 import sun.util.calendar.BaseCalendar;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -91,6 +94,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     () -> new RuntimeException("Role doesn't exist")
                 ));
 
+
+                User admin = new User();
                 for (Role role: roles) {
                     System.out.println(role.getRoleName());
                 }
@@ -112,6 +117,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     rank.setName(s);
                     rankRepository.save(rank);
                 }
+              
                 Rank defaultRank = new Rank();
                 defaultRank.setName("Incase");
                 rankRepository.save(defaultRank);
@@ -125,7 +131,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 admin.setIdCard("123456789012");
                 admin.setRoles(roles);
                 admin.setRank(defaultRank);
-//                admin.setExamList(examList);
 
                 userRepository.save(admin);
 
@@ -134,26 +139,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         () -> new RuntimeException("Role doesn't exist")
                 ));
 
-//                User member = new User(
-////                        "membertest",
-////                        passwordEncoder.encode("123123"),
-////                        "MEMBER",
-////                        "member@gmail.com",
-////                        "Da Nang",
-////                        "0998283831",
-////                        null,
-////                        rolesForMember,
-//                );
-////                member.setUsername("membertest");
-////                member.setUserPassword(passwordEncoder.encode("123123"));
-////                member.setFullName("MEMBER");
-////                member.setEmail("member@gmail.com");
-////                member.setAddress("Da Nang");
-////                member.setPhoneNumber("0998283831");
-////                member.setAvatar(null);
-////                member.setRoles(rolesForMember);
-////                member.setExamList(examList);
-//                userRepository.save(member);
+                // Thien: Create member account to test feature
+                User member = new User();
+                Cart cartForMember = new Cart();
+
+                Rank defaultRank2 = new Rank();
+                defaultRank2.setName("Incase1");
+                rankRepository.save(defaultRank2);
+                member.setUsername("member");
+                member.setPassword(passwordEncoder.encode("123123"));
+                member.setFullName("MEMBER");
+                member.setEmail("member@gmail.com");
+                member.setAddress("Da Nang");
+                member.setPhone("0123456799");
+                member.setAvatar(null);
+                member.setIdCard("123456789012");
+                member.setRoles(rolesForMember);
+                member.setRank(defaultRank2);
+                member.setCart(cartForMember);
+
+                userRepository.save(member);
             }
         };
     }

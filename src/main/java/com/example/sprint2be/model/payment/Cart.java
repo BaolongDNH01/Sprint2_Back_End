@@ -13,13 +13,16 @@ public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long cartId;
+    private Integer cartId;
 
     @Column
-    private double totalPrice;
+    private double totalPrice = 0;
 
     @Column
-    private double shipCost;
+    private double shipCost = 0;
+
+    @Column
+    private boolean status;
 
     // Relationship with User
     @OneToOne(mappedBy = "cart")
@@ -34,16 +37,19 @@ public class Cart {
     public Cart() {
     }
 
-    public Cart(double totalPrice, double shipCost) {
+    public Cart(double totalPrice, double shipCost, boolean status, User user, List<CartItem> cartItemList) {
         this.totalPrice = totalPrice;
         this.shipCost = shipCost;
+        this.status = status;
+        this.user = user;
+        this.cartItemList = cartItemList;
     }
 
-    public Long getCartId() {
+    public Integer getCartId() {
         return cartId;
     }
 
-    public void setCartId(Long cartId) {
+    public void setCartId(Integer cartId) {
         this.cartId = cartId;
     }
 
@@ -77,5 +83,13 @@ public class Cart {
 
     public void setCartItemList(List<CartItem> cartItemList) {
         this.cartItemList = cartItemList;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 }

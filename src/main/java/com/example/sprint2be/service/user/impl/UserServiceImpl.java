@@ -2,6 +2,7 @@ package com.example.sprint2be.service.user.impl;
 
 import com.example.sprint2be.model.Rank;
 import com.example.sprint2be.model.Role;
+import com.example.sprint2be.model.payment.Cart;
 import com.example.sprint2be.model.user.User;
 import com.example.sprint2be.model.user.UserDto;
 import com.example.sprint2be.repository.RoleRepository;
@@ -50,6 +51,11 @@ public class UserServiceImpl implements UserService {
         }
         user.setConfirmPassword(userDto.getConfirmPassword());
         user.setEnabled(userDto.getEnabled());
+
+        // Thien: Add cart when user is created
+        Cart cart = new Cart();
+        user.setCart(cart);
+
         return user;
     }
     @Override

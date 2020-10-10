@@ -8,6 +8,7 @@ public class AuctionDto {
     private String dayTimeStart;
     private String dayTimeEnd;
     private Integer statusId;
+    private String statusName;
     private Integer productId;
     private String productName;
     private Double eachIncrease;
@@ -107,5 +108,13 @@ public class AuctionDto {
 
     public void setAuctionTime(Integer auctionTime) {
         this.auctionTime = auctionTime;
+    }
+
+    public String getStatusName() {
+        return statusName;
+    }
+
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
     }
 }

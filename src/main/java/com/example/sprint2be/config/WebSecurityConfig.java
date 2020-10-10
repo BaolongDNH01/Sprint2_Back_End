@@ -26,7 +26,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
+import sun.util.calendar.BaseCalendar;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Configuration
@@ -87,7 +94,30 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     () -> new RuntimeException("Role doesn't exist")
                 ));
 
+
                 User admin = new User();
+                for (Role role: roles) {
+                    System.out.println(role.getRoleName());
+                }
+
+                User admin = new User(
+//                    adminUsername,
+////                    passwordEncoder.encode(adminPassword),
+////                    "ADMIN",
+////                    "admin@gmail.com",
+////                    "Da Nang",
+////                    "0123456799",
+////                    null,
+////                     roles
+                );
+
+                String[] ranks = {"Đồng", "Bạc", "Bạch kim", "Kim cương"};
+                for (String s : ranks) {
+                    Rank rank = new Rank();
+                    rank.setName(s);
+                    rankRepository.save(rank);
+                }
+              
                 Rank defaultRank = new Rank();
                 defaultRank.setName("Incase");
                 rankRepository.save(defaultRank);

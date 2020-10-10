@@ -51,4 +51,17 @@ public class AuctionController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @PatchMapping("/auction-edit/{id}")
+    public ResponseEntity<String> updateStatusAuction(@PathVariable Integer id, @RequestBody AuctionDto auctionDto) {
+        Auction auction = auctionService.findById(id);
+        auctionDto.setAuctionId(auction.getAuctionId());
+        auctionService.saveAuctionDto(auctionDto);
+        return new ResponseEntity<>("update", HttpStatus.OK);
+    }
+
+    @GetMapping("/auction/{id}")
+    public ResponseEntity<AuctionDto> findAuctionById(@PathVariable Integer id) {
+        return new ResponseEntity<>(auctionService.findByIdDto(id), HttpStatus.OK);
+    }
+
 }

@@ -100,7 +100,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     System.out.println(role.getRoleName());
                 }
 
-                User admin = new User(
+//                User admin = new User(
 //                    adminUsername,
 ////                    passwordEncoder.encode(adminPassword),
 ////                    "ADMIN",
@@ -109,7 +109,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 ////                    "0123456799",
 ////                    null,
 ////                     roles
-                );
+//                );
 
                 String[] ranks = {"Đồng", "Bạc", "Bạch kim", "Kim cương"};
                 for (String s : ranks) {

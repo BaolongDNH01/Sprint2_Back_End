@@ -17,7 +17,7 @@ public interface BidderService {
     void saveDto(BidderDto bidderDto);
 
     //hiện thị danh sách người đấu thầu trong 1 phiên
-    List<Bidder>findBidderByAuction(Integer id);
+    List<BidderDto>findBidderByAuction(Integer id);
 
 //    khanh
     List<UserBidderDto> findAllBidderByU(String userName);

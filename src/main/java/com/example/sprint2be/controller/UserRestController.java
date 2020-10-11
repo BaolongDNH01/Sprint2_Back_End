@@ -58,8 +58,8 @@ public class UserRestController {
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody Login loginRequest) throws AuthenticationException {
 //        quan
         User user = userService.findByUsername(loginRequest.getUsername());
-        Date today=new Date(System.currentTimeMillis());
-        SimpleDateFormat timeFormat= new SimpleDateFormat("hh:mm:ss dd/MM/yyyy");
+        Date today = new Date(System.currentTimeMillis());
+        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss dd/MM/yyyy");
         String s = timeFormat.format(today.getTime());
         user.setSignInRecent(s);
 
@@ -120,40 +120,45 @@ public class UserRestController {
         if ((user != null) && (user.getEmail().equals(recoverPassword.getEmail()))) {
             String confirmCode = emailService.genConfirmCode();
             Optional<RecoverPassword> checkExist = recoverPasswordService.loadByUsername(recoverPassword.getUsername());
-            if (checkExist.isPresent()){
+            if (checkExist.isPresent()) {
                 recoverPassword = checkExist.get();
             }
             recoverPassword.setConfirmCode(confirmCode);
             recoverPasswordService.save(recoverPassword);
-//Send Email
+            getEmailService.sendEmail(recoverPassword.getEmail(), "Phục Hồi Mật Khẩu",
+                    "Bạn vừa yêu cầu phục hồi lại mật khẩu đăng nhập của tài khoản: " + recoverPassword.getUsername() + "\n" +
+                            "Mã Xác Nhận: " + confirmCode + "\n" +
+                            "Xin sử dụng đường dẫn sau đây và nhập vào mã xác nhận trong email này để có thể thực hiệc việc đặt lại mật khẩu mới:" +
+                            " http://localhost:4200/recover-password?confirmCode=" + confirmCode +"&username="+ recoverPassword.getUsername() +"\n"+
+                            "Nếu đây không phải là bạn, xin hãy đăng nhập và thực hiện thay đổi mật khẩu hiện tại.");
             return new ResponseEntity<>(HttpStatus.OK);
-        }else {
+        } else {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
 
     @PostMapping("/check-code/{confirmCode}")
-    public ResponseEntity<?> checkConfirmCode(@PathVariable String confirmCode){
+    public ResponseEntity<?> checkConfirmCode(@PathVariable String confirmCode) {
         Optional<RecoverPassword> checkExist = recoverPasswordService.loadByConfirmCode(confirmCode);
-        if (checkExist.isPresent()){
+        if (checkExist.isPresent()) {
             User user = userService.findByUsername(checkExist.get().getUsername());
             UserDto userDto = userService.convertToUserDto(user);
             recoverPasswordService.delete(checkExist.get());
-            return new ResponseEntity<>(userDto,HttpStatus.OK);
+            return new ResponseEntity<>(userDto, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping("/change-password/{id}")
-    public ResponseEntity<?> changePassword(@PathVariable Integer id, @RequestParam String password){
-        if (Boolean.TRUE.equals(userService.changePassword(id,password))){
+    public ResponseEntity<?> changePassword(@PathVariable Integer id, @RequestParam String password) {
+        if (Boolean.TRUE.equals(userService.changePassword(id, password))) {
             return new ResponseEntity<>(HttpStatus.OK);
-        }else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
 
     @GetMapping("/getUserByUserName/{username}")
-    public ResponseEntity<UserDto> getUserByUserName(@PathVariable String username){
+    public ResponseEntity<UserDto> getUserByUserName(@PathVariable String username) {
         return new ResponseEntity<>(userService.getUserByUserName(username), HttpStatus.OK);
     }
 
@@ -161,10 +166,11 @@ public class UserRestController {
     public void editUserInfo(@PathVariable String username, @RequestBody UserDto userDto) {
         userService.editUser(userDto, username);
     }
+
     @PostMapping("/register")
     public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto, BindingResult bindingResult) {
         User user = userService.findByUsername(userDto.getUsername());
-        if (null != user){
+        if (null != user) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         this.userService.create(userDto);
@@ -184,7 +190,7 @@ public class UserRestController {
         Timer timer = new Timer();
         timer.schedule(timerTask, 24 * 60 * 60 * 1000);
 
-        getEmailService.sendEmail(userDto.getEmail(), "Hello bà con", "Chào mừng bạn đã đến trang đấu giá vủa chúng tôi, vui lòng click vào đường link kích hoạt tài khoản " + userDto.getUsername() + " :\n http://localhost:4200/activated-account/"+ tokenDto.getNameToken() +
+        getEmailService.sendEmail(userDto.getEmail(), "Hello bà con", "Chào mừng bạn đã đến trang đấu giá vủa chúng tôi, vui lòng click vào đường link kích hoạt tài khoản " + userDto.getUsername() + " :\n http://localhost:4200/activated-account/" + tokenDto.getNameToken() +
                 '\n' + "đường dẫn có thời hạn 1 ngày");
         return new ResponseEntity<>(userDto, HttpStatus.CREATED);
     }
@@ -194,17 +200,19 @@ public class UserRestController {
         return new ResponseEntity<>(bidderService.findAllBidderByU(username), HttpStatus.OK);
     }
 
-        @GetMapping("/user-activated")
-        public ResponseEntity<List<UserDto>> findAllUserActivated() {
+    @GetMapping("/user-activated")
+    public ResponseEntity<List<UserDto>> findAllUserActivated() {
         return new ResponseEntity<>(userService.findAllUserActivated(), HttpStatus.OK);
     }
+
     @PostMapping("/unlock-user")
-    public ResponseEntity<Void>  unlockUser(@RequestBody List<UserDto> userDtoList){
+    public ResponseEntity<Void> unlockUser(@RequestBody List<UserDto> userDtoList) {
         userService.unlockUser(userDtoList);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
     @DeleteMapping("/delete-users/{ids}")
-    public ResponseEntity<Void> deleteUsers(@PathVariable List<String> ids){
+    public ResponseEntity<Void> deleteUsers(@PathVariable List<String> ids) {
         userService.deleteUser(ids);
         return new ResponseEntity<>(HttpStatus.OK);
     }

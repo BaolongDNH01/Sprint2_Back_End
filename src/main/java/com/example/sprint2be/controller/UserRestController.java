@@ -97,6 +97,8 @@ public class UserRestController {
     @PostMapping("/add-user")
     public ResponseEntity<UserDto> addUser(@RequestBody UserDto userDto, UriComponentsBuilder builder) {
         userService.create(userDto);
+
+
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(builder.path("/user/{id}").buildAndExpand(userDto.getUserId()).toUri());
         return new ResponseEntity<>(headers, HttpStatus.CREATED);

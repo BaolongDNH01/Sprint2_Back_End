@@ -57,9 +57,9 @@ public class BidderServiceImpl implements BidderService {
     }
 
     @Override
-    public List<Bidder> findBidderByAuction(Integer id) {
+    public List<BidderDto> findBidderByAuction(Integer id) {
         Auction auction = auctionRepository.findById(id).orElse(new Auction());
-        return bidderRepository.findBidderByAuction(auction);
+        return bidderRepository.findBiddersByAuction(auction).stream().map(this::convertBidderToBidderDto).collect(Collectors.toList());
     }
 
     @Override
@@ -80,5 +80,16 @@ public class BidderServiceImpl implements BidderService {
       userBidderDto.setProductId(auction.getProduct().getProductId());
       userBidderDto.setProductDetail(auction.getProduct().getProductDetail());
       return userBidderDto;
+    }
+
+    private BidderDto convertBidderToBidderDto(Bidder bidder){
+        BidderDto bidderDto = new BidderDto();
+        bidderDto.setAuctionId(bidder.getAuction_bidder().getAuctionId());
+        bidderDto.setBidDateTime(bidder.getBidDateTime());
+        bidderDto.setBidId(bidder.getBidId());
+        bidderDto.setBidPrice(bidder.getBidPrice());
+        bidderDto.setUserName(bidder.getUser_bidder().getFullName());
+        bidderDto.setUserId(bidder.getUser_bidder().getUserId());
+        return bidderDto;
     }
 }

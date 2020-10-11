@@ -30,7 +30,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Optional<Cart> findCartByUserId(Long id) {
+    public Optional<Cart> findCartByUserId(Integer id) {
         return cartRepository.findCartByUser_UserId(id);
     }
 }

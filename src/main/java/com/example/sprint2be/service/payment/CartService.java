@@ -14,6 +14,6 @@ public interface CartService {
 
     void addItemToCart(CartItem item);
 
-    Optional<Cart> findCartByUserId(Long id);
+    Optional<Cart> findCartByUserId(Integer id);
 
 }

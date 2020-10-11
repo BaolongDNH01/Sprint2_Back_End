@@ -4,6 +4,9 @@ package com.example.sprint2be.model.product;
 
 import com.example.sprint2be.model.auction.Auction;
 import com.example.sprint2be.model.user.User;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.List;
@@ -18,13 +21,17 @@ public class Product {
     private Double initialPrice;
     private Double eachIncrease;
     private String productDetail;
+    private String datePost;
+
 
     @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "category_id")
+    @JsonManagedReference
     private Category category;
 
     @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "time_id")
+    @JsonManagedReference
     private AuctionTime auctionTime;
 
     @ManyToOne(cascade = CascadeType.DETACH)
@@ -130,4 +137,11 @@ public class Product {
         this.imageProductList = imageProductList;
     }
 
+    public String getDatePost() {
+        return datePost;
+    }
+
+    public void setDatePost(String datePost) {
+        this.datePost = datePost;
+    }
 }

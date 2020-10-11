@@ -43,11 +43,14 @@ public class UserServiceImpl implements UserService {
         roles.add(roleRepository.findById(2).orElse(null));
         user.setRoles(roles);
         List<Rank> ranks = rankService.findAll();
-        for (Rank rank: ranks){
-            if (rank.getName().equals(userDto.getRank())) {
-                user.setRank(rankService.findById(rank.getRankId()));
-            }
-        }
+        Rank newUserRank = rankService.findById(1);
+        user.setRank(newUserRank);
+//        for (Rank rank: ranks){
+//            if (rank.getName().equals(userDto.getRank())) {
+//                newUserRank = rankService.findById(rank.getRankId());
+//                user.setRank(newUserRank);
+//            }
+//        }
         user.setConfirmPassword(userDto.getConfirmPassword());
         user.setEnabled(userDto.getEnabled());
 

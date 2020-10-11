@@ -14,7 +14,7 @@ public class Rank {
     @GeneratedValue(strategy = GenerationType.IDENTITY) //Id tu tang, khong can them id
     private Integer rankId;
     private String name;
-    @OneToMany(mappedBy = "rank", cascade = CascadeType.DETACH)
+    @OneToMany(mappedBy = "rank", cascade = CascadeType.MERGE)
 //    @JsonManagedReference
     private Set<User> users;
 

@@ -35,9 +35,9 @@ public class User {
     private String enabled;
     @Column
     private String confirmPassword;
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "rankId")
-    @JsonIgnore
+//    @JsonIgnore
     private Rank rank;
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinTable (

@@ -187,7 +187,7 @@ public class UserRestController {
         userDto.setPassword(encoder.encode(userDto.getPassword()));
         this.userService.create(userDto);
         TokenDto tokenDto = new TokenDto();
-        userDto = userService.findTopById();
+        userDto = userService.convertToUserDto(userService.findByUsername(userDto.getUsername()));
         tokenDto.setIdUser(userDto.getUserId());
         tokenDto.setNameToken(Integer.toString((new Random()).nextInt()));
         tokenService.save(tokenDto);

@@ -1,5 +1,10 @@
 package com.example.sprint2be.model.product;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -7,9 +12,11 @@ import java.util.List;
 @Table(name = "category")
 public class Category {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer categoryId;
     private String categoryName;
 
+    @JsonBackReference
     @OneToMany(mappedBy = "category", cascade = CascadeType.DETACH)
     private List<Product> productList;
 

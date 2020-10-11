@@ -29,8 +29,7 @@ public class UserServiceImpl implements UserService {
         user.setUserId(userDto.getUserId());
         user.setFullName(userDto.getFullName());
         user.setUsername(userDto.getUsername());
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        user.setPassword(encoder.encode(userDto.getPassword()));
+        user.setPassword(userDto.getPassword());
         user.setEmail(userDto.getEmail());
         user.setPhone(userDto.getPhone());
         user.setBirthday(userDto.getBirthday());

@@ -39,14 +39,14 @@ public class CartItemServiceImpl implements CartItemService {
     public CartItem create(CartItemDTO cartItemDTO) {
         Optional<User> optionalUser = userRepository.findById(cartItemDTO.getUserId());
 
-        if (optionalUser.isEmpty()) {
+        if (!optionalUser.isPresent()) {
             return null;
         }
 
         Optional<Cart> optionalCart = cartRepository.findCartByUser_UserId(cartItemDTO.getUserId());
         Cart cart;
 
-        if (optionalCart.isEmpty()) {
+        if (optionalCart.isPresent()) {
             cart = new Cart();
             cart.setUser(optionalUser.get());
         } else {
@@ -55,7 +55,7 @@ public class CartItemServiceImpl implements CartItemService {
 
         Optional<Auction> optionalAuction = auctionRepository.findById(cartItemDTO.getAuctionId());
 
-        if (optionalAuction.isEmpty()) {
+        if (!optionalAuction.isPresent()) {
             return null;
         }
 

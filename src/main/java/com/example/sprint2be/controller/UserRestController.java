@@ -56,14 +56,6 @@ public class UserRestController {
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody Login loginRequest) throws AuthenticationException {
-//        quan
-        User user = userService.findByUsername(loginRequest.getUsername());
-        Date today = new Date(System.currentTimeMillis());
-        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss dd/MM/yyyy");
-        String s = timeFormat.format(today.getTime());
-        user.setSignInRecent(s);
-
-
         Authentication authentication = authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getUsername(),
@@ -81,6 +73,13 @@ public class UserRestController {
                 userPrincipal.getAvatar(),
                 userPrincipal.getAuthorities()
         );
+        //        quan
+        User user = userService.findByUsername(loginRequest.getUsername());
+        Date today = new Date(System.currentTimeMillis());
+        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss dd/MM/yyyy");
+        String s = timeFormat.format(today.getTime());
+        user.setSignInRecent(s);
+        userService.updateUser(user);
         return ResponseEntity.ok(response);
     }
 

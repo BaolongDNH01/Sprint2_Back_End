@@ -27,6 +27,7 @@ public interface UserService {
     List<UserDto> findAllUserActivated();
     void unlockUser(List<UserDto> userDtoList);
     void deleteUser(List<String> ids);
+    void updateUser(User user);
 }
 
 

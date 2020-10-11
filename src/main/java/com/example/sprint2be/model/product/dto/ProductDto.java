@@ -19,6 +19,7 @@ public class ProductDto {
     private List<Integer> auctionListId;
     private List<Integer> listImageProduct;
     private String imageURL;
+    private String datePost;
 
     public ProductDto() {
 
@@ -152,5 +153,13 @@ public class ProductDto {
 
     public void setImageURL(String imageURL) {
         this.imageURL = imageURL;
+    }
+
+    public String getDatePost() {
+        return datePost;
+    }
+
+    public void setDatePost(String datePost) {
+        this.datePost = datePost;
     }
 }

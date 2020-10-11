@@ -14,9 +14,9 @@ public class Rank {
     @GeneratedValue(strategy = GenerationType.IDENTITY) //Id tu tang, khong can them id
     private Integer rankId;
     private String name;
-//    @OneToMany(mappedBy = "userId", cascade = CascadeType.DETACH)
+    @OneToMany(mappedBy = "rank", cascade = CascadeType.DETACH)
 //    @JsonManagedReference
-//    private Set<User> users;
+    private Set<User> users;
 
     public Rank(){}
 
@@ -40,11 +40,11 @@ public class Rank {
         this.name = name;
     }
 
-//    public Set<User> getUsers() {
-//        return users;
-//    }
-//
-//    public void setUsers(Set<User> users) {
-//        this.users = users;
-//    }
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
 }

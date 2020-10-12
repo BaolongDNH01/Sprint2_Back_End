@@ -30,8 +30,8 @@ public class AuctionController {
     StatusAuctionService statusAuctionService;
 
     @PostMapping("/create-auction")
-    public ResponseEntity<Auction> createProduct(@RequestBody Auction auction, UriComponentsBuilder builder) {
-        auctionService.save(auction);
+    public ResponseEntity<Auction> createProduct(@RequestBody AuctionDto auction, UriComponentsBuilder builder) {
+        auctionService.saveAuctionDto(auction);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(builder.path("/get-auction/{id}").buildAndExpand(auction.getAuctionId()).toUri());
         return new ResponseEntity<>(HttpStatus.CREATED);

@@ -11,6 +11,7 @@ import java.util.List;
 @Table(name = "auction")
 public class Auction {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer auctionId;
     private String dayTimeStart;
     private String dayTimeEnd;

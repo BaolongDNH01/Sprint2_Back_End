@@ -9,6 +9,8 @@ import com.example.sprint2be.model.user.RecoverPassword;
 import com.example.sprint2be.model.user.User;
 import com.example.sprint2be.model.user.UserDto;
 import com.example.sprint2be.service.auction.BidderService;
+import com.example.sprint2be.service.captcha.CaptchaService;
+import com.example.sprint2be.service.captcha.ICaptchaService;
 import com.example.sprint2be.service.email.EmailService;
 import com.example.sprint2be.service.recoverPassword.RecoverPasswordService;
 import com.example.sprint2be.service.security.JwtProvider;
@@ -23,11 +25,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -53,6 +57,8 @@ public class UserRestController {
     com.example.sprint2be.service.EmailService getEmailService;
     @Autowired
     BidderService bidderService;
+    @Autowired
+    private ICaptchaService captchaService;
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody Login loginRequest) throws AuthenticationException {
@@ -169,14 +175,23 @@ public class UserRestController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto, BindingResult bindingResult) {
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto, BindingResult bindingResult,
+                                              HttpServletRequest request) {
+//        String response = request.getParameter("g-recaptcha-response");
+//        if (response.isEmpty()){
+//            return new ResponseEntity<>(HttpStatus.CONFLICT);
+//        }
+//        System.out.println(response);
+//        captchaService.processResponse(response, CaptchaService.REGISTER_ACTION);
         User user = userService.findByUsername(userDto.getUsername());
         if (null != user) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        userDto.setPassword(encoder.encode(userDto.getPassword()));
         this.userService.create(userDto);
         TokenDto tokenDto = new TokenDto();
-        userDto = userService.findTopById();
+        userDto = userService.convertToUserDto(userService.findByUsername(userDto.getUsername()));
         tokenDto.setIdUser(userDto.getUserId());
         tokenDto.setNameToken(Integer.toString((new Random()).nextInt()));
         tokenService.save(tokenDto);

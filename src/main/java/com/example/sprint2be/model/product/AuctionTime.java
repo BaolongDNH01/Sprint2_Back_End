@@ -1,5 +1,7 @@
 package com.example.sprint2be.model.product;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -10,7 +12,7 @@ public class AuctionTime {
     private Integer timeId;
 
     private Integer auctionTime;
-
+    @JsonBackReference
     @OneToMany(mappedBy = "auctionTime", cascade = CascadeType.DETACH)
     private List<Product> productList;
 

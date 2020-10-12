@@ -144,7 +144,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 Cart cartForMember = new Cart();
 
                 Rank defaultRank2 = new Rank();
-                defaultRank2.setName("Incase1");
+                defaultRank2.setName("Incase");
                 rankRepository.save(defaultRank2);
                 member.setUsername("member");
                 member.setPassword(passwordEncoder.encode("123123"));
@@ -155,7 +155,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 member.setAvatar(null);
                 member.setIdCard("123456789012");
                 member.setRoles(rolesForMember);
-                member.setRank(defaultRank2);
+                member.setRank(rankRepository.getOne(5));
                 member.setCart(cartForMember);
 
                 userRepository.save(member);

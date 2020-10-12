@@ -10,4 +10,8 @@ public interface CartItemService {
     List<CartItem> findAll();
 
     CartItem create(CartItemDTO cartItemDTO);
+
+    // chau
+    List<CartItemDTO> findAllCartItemDto();
+
 }

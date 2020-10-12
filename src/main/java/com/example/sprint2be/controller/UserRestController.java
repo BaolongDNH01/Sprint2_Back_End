@@ -177,8 +177,12 @@ public class UserRestController {
     @PostMapping("/register")
     public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto, BindingResult bindingResult,
                                               HttpServletRequest request) {
-//        String response = request.getParameter("g-recaptcha-response");
-//        captchaService.processResponse(response, CaptchaService.REGISTER_ACTION);
+        String response = request.getParameter("g-recaptcha-response");
+        if (response.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+        System.out.println(response);
+        captchaService.processResponse(response, CaptchaService.REGISTER_ACTION);
         User user = userService.findByUsername(userDto.getUsername());
         if (null != user) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

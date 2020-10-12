@@ -57,9 +57,9 @@ public class BidderServiceImpl implements BidderService {
     }
 
     @Override
-    public List<BidderDto> findBidderByAuction(Integer id) {
+    public List<BidderDto> findBiddersByAuctionOrderByBidPriceDesc(Integer id) {
         Auction auction = auctionRepository.findById(id).orElse(new Auction());
-        return bidderRepository.findBiddersByAuction(auction).stream().map(this::convertBidderToBidderDto).collect(Collectors.toList());
+        return bidderRepository.findBiddersByAuctionOrderByBidPriceDesc(auction).stream().map(this::convertBidderToBidderDto).collect(Collectors.toList());
     }
 
     @Override

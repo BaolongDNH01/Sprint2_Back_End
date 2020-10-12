@@ -9,6 +9,8 @@ import com.example.sprint2be.model.user.RecoverPassword;
 import com.example.sprint2be.model.user.User;
 import com.example.sprint2be.model.user.UserDto;
 import com.example.sprint2be.service.auction.BidderService;
+import com.example.sprint2be.service.captcha.CaptchaService;
+import com.example.sprint2be.service.captcha.ICaptchaService;
 import com.example.sprint2be.service.email.EmailService;
 import com.example.sprint2be.service.recoverPassword.RecoverPasswordService;
 import com.example.sprint2be.service.security.JwtProvider;
@@ -23,11 +25,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -53,17 +57,11 @@ public class UserRestController {
     com.example.sprint2be.service.EmailService getEmailService;
     @Autowired
     BidderService bidderService;
+    @Autowired
+    private ICaptchaService captchaService;
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody Login loginRequest) throws AuthenticationException {
-//        quan
-        User user = userService.findByUsername(loginRequest.getUsername());
-        Date today=new Date(System.currentTimeMillis());
-        SimpleDateFormat timeFormat= new SimpleDateFormat("hh:mm:ss dd/MM/yyyy");
-        String s = timeFormat.format(today.getTime());
-        user.setSignInRecent(s);
-
-
         Authentication authentication = authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getUsername(),
@@ -81,6 +79,13 @@ public class UserRestController {
                 userPrincipal.getAvatar(),
                 userPrincipal.getAuthorities()
         );
+        //        quan
+        User user = userService.findByUsername(loginRequest.getUsername());
+        Date today = new Date(System.currentTimeMillis());
+        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss dd/MM/yyyy");
+        String s = timeFormat.format(today.getTime());
+        user.setSignInRecent(s);
+        userService.updateUser(user);
         return ResponseEntity.ok(response);
     }
 
@@ -122,40 +127,45 @@ public class UserRestController {
         if ((user != null) && (user.getEmail().equals(recoverPassword.getEmail()))) {
             String confirmCode = emailService.genConfirmCode();
             Optional<RecoverPassword> checkExist = recoverPasswordService.loadByUsername(recoverPassword.getUsername());
-            if (checkExist.isPresent()){
+            if (checkExist.isPresent()) {
                 recoverPassword = checkExist.get();
             }
             recoverPassword.setConfirmCode(confirmCode);
             recoverPasswordService.save(recoverPassword);
-//Send Email
+            getEmailService.sendEmail(recoverPassword.getEmail(), "Phục Hồi Mật Khẩu",
+                    "Bạn vừa yêu cầu phục hồi lại mật khẩu đăng nhập của tài khoản: " + recoverPassword.getUsername() + "\n" +
+                            "Mã Xác Nhận: " + confirmCode + "\n" +
+                            "Xin sử dụng đường dẫn sau đây và nhập vào mã xác nhận trong email này để có thể thực hiệc việc đặt lại mật khẩu mới:" +
+                            " http://localhost:4200/recover-password?confirmCode=" + confirmCode +"&username="+ recoverPassword.getUsername() +"\n"+
+                            "Nếu đây không phải là bạn, xin hãy đăng nhập và thực hiện thay đổi mật khẩu hiện tại.");
             return new ResponseEntity<>(HttpStatus.OK);
-        }else {
+        } else {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
 
     @PostMapping("/check-code/{confirmCode}")
-    public ResponseEntity<?> checkConfirmCode(@PathVariable String confirmCode){
+    public ResponseEntity<?> checkConfirmCode(@PathVariable String confirmCode) {
         Optional<RecoverPassword> checkExist = recoverPasswordService.loadByConfirmCode(confirmCode);
-        if (checkExist.isPresent()){
+        if (checkExist.isPresent()) {
             User user = userService.findByUsername(checkExist.get().getUsername());
             UserDto userDto = userService.convertToUserDto(user);
             recoverPasswordService.delete(checkExist.get());
-            return new ResponseEntity<>(userDto,HttpStatus.OK);
+            return new ResponseEntity<>(userDto, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping("/change-password/{id}")
-    public ResponseEntity<?> changePassword(@PathVariable Integer id, @RequestParam String password){
-        if (Boolean.TRUE.equals(userService.changePassword(id,password))){
+    public ResponseEntity<?> changePassword(@PathVariable Integer id, @RequestParam String password) {
+        if (Boolean.TRUE.equals(userService.changePassword(id, password))) {
             return new ResponseEntity<>(HttpStatus.OK);
-        }else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
 
     @GetMapping("/getUserByUserName/{username}")
-    public ResponseEntity<UserDto> getUserByUserName(@PathVariable String username){
+    public ResponseEntity<UserDto> getUserByUserName(@PathVariable String username) {
         return new ResponseEntity<>(userService.getUserByUserName(username), HttpStatus.OK);
     }
 
@@ -163,15 +173,25 @@ public class UserRestController {
     public void editUserInfo(@PathVariable String username, @RequestBody UserDto userDto) {
         userService.editUser(userDto, username);
     }
+
     @PostMapping("/register")
-    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto, BindingResult bindingResult) {
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto, BindingResult bindingResult,
+                                              HttpServletRequest request) {
+//        String response = request.getParameter("g-recaptcha-response");
+//        if (response.isEmpty()){
+//            return new ResponseEntity<>(HttpStatus.CONFLICT);
+//        }
+//        System.out.println(response);
+//        captchaService.processResponse(response, CaptchaService.REGISTER_ACTION);
         User user = userService.findByUsername(userDto.getUsername());
-        if (null != user){
+        if (null != user) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        userDto.setPassword(encoder.encode(userDto.getPassword()));
         this.userService.create(userDto);
         TokenDto tokenDto = new TokenDto();
-        userDto = userService.findTopById();
+        userDto = userService.convertToUserDto(userService.findByUsername(userDto.getUsername()));
         tokenDto.setIdUser(userDto.getUserId());
         tokenDto.setNameToken(Integer.toString((new Random()).nextInt()));
         tokenService.save(tokenDto);
@@ -186,7 +206,7 @@ public class UserRestController {
         Timer timer = new Timer();
         timer.schedule(timerTask, 24 * 60 * 60 * 1000);
 
-        getEmailService.sendEmail(userDto.getEmail(), "Hello bà con", "Chào mừng bạn đã đến trang đấu giá vủa chúng tôi, vui lòng click vào đường link kích hoạt tài khoản " + userDto.getUsername() + " :\n http://localhost:4200/activated-account/"+ tokenDto.getNameToken() +
+        getEmailService.sendEmail(userDto.getEmail(), "Hello bà con", "Chào mừng bạn đã đến trang đấu giá vủa chúng tôi, vui lòng click vào đường link kích hoạt tài khoản " + userDto.getUsername() + " :\n http://localhost:4200/activated-account/" + tokenDto.getNameToken() +
                 '\n' + "đường dẫn có thời hạn 1 ngày");
         return new ResponseEntity<>(userDto, HttpStatus.CREATED);
     }
@@ -196,17 +216,19 @@ public class UserRestController {
         return new ResponseEntity<>(bidderService.findAllBidderByU(username), HttpStatus.OK);
     }
 
-        @GetMapping("/user-activated")
-        public ResponseEntity<List<UserDto>> findAllUserActivated() {
+    @GetMapping("/user-activated")
+    public ResponseEntity<List<UserDto>> findAllUserActivated() {
         return new ResponseEntity<>(userService.findAllUserActivated(), HttpStatus.OK);
     }
+
     @PostMapping("/unlock-user")
-    public ResponseEntity<Void>  unlockUser(@RequestBody List<UserDto> userDtoList){
+    public ResponseEntity<Void> unlockUser(@RequestBody List<UserDto> userDtoList) {
         userService.unlockUser(userDtoList);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
     @DeleteMapping("/delete-users/{ids}")
-    public ResponseEntity<Void> deleteUsers(@PathVariable List<String> ids){
+    public ResponseEntity<Void> deleteUsers(@PathVariable List<String> ids) {
         userService.deleteUser(ids);
         return new ResponseEntity<>(HttpStatus.OK);
     }

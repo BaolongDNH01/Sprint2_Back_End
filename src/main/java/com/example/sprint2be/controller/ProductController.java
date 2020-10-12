@@ -37,6 +37,26 @@ public class ProductController {
 
     @PostMapping("/create-product")
     public ResponseEntity<Product> createProduct(@RequestBody ProductDto product, UriComponentsBuilder builder) {
+//        khanh them truong ngay post san pham
+        String month = "";
+        if(java.time.LocalDateTime.now().getMonthValue() < 10){
+            month = "0" + java.time.LocalDateTime.now().getMonthValue();
+        }else {
+            month = "" + java.time.LocalDateTime.now().getMonthValue();
+        }
+
+        String date = "";
+        if(java.time.LocalDateTime.now().getMonthValue() < 10){
+            date = "0" + java.time.LocalDateTime.now().getDayOfMonth();
+        }else {
+            date = "" + java.time.LocalDateTime.now().getDayOfMonth();
+        }
+
+        String year = "" + java.time.LocalDateTime.now().getYear();
+
+        String datePostProduct = year + "-" + month + "-" + date;
+
+        product.setDatePost(datePostProduct);
         productService.saveProductDto(product);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(builder.path("/get-product/{id}").buildAndExpand(product.getProductId()).toUri());

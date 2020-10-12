@@ -21,6 +21,7 @@ public class Product {
     private Double initialPrice;
     private Double eachIncrease;
     private String productDetail;
+    private String datePost;
 
 
     @ManyToOne(cascade = CascadeType.DETACH)
@@ -136,4 +137,11 @@ public class Product {
         this.imageProductList = imageProductList;
     }
 
+    public String getDatePost() {
+        return datePost;
+    }
+
+    public void setDatePost(String datePost) {
+        this.datePost = datePost;
+    }
 }

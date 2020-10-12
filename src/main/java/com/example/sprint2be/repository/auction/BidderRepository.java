@@ -16,4 +16,6 @@ public interface BidderRepository extends JpaRepository<Bidder,Integer> {
     List<Bidder> findBiddersByUserBidder(User user);
 
     List<Bidder> findBiddersByAuctionOrderByBidPriceDesc(Auction auction);
+
+    Bidder findBidderByAuction_AuctionIdAndUserBidder_Username(Integer idAuction,String nameBidder);
 }

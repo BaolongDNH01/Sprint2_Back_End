@@ -52,7 +52,7 @@ public class BidderServiceImpl implements BidderService {
         bidder.setBidDateTime(bidderDto.getBidDateTime());
         bidder.setBidPrice(bidderDto.getBidPrice());
         bidder.setAuction_bidder(auctionRepository.findById(bidderDto.getAuctionId()).orElse(null));
-        bidder.setUser_bidder(userRepository.findById(bidderDto.getUserId()).orElse(null));
+        bidder.setUser_bidder(userRepository.findByUsername(bidderDto.getUserName()).orElse(null));
         bidderRepository.save(bidder);
     }
 

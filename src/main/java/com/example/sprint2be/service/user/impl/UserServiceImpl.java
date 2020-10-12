@@ -144,6 +144,8 @@ public class UserServiceImpl implements UserService {
                 @Override
                 public void run() {
                     userDto.setFlag("true");
+                    userDto.setPoint(0);
+                    userDto.setRank("Đồng");
                     userRepository.save(convertToUser(userDto));
                 }
             };

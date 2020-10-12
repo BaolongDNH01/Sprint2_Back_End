@@ -7,6 +7,7 @@ import java.util.List;
 @Table(name = "image")
 public class ImageProduct {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer imageId;
     private String imageURL;
 

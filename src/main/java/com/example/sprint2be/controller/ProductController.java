@@ -153,7 +153,7 @@ public class ProductController {
     public ResponseEntity<List<UserBidderDto>> getAllCart() {
         return new ResponseEntity<>(bidderRepository.getAllCart(), HttpStatus.OK);
 
-
+    }
     @PostMapping("/create-image")
     public ResponseEntity<ImageProduct> createImage(@RequestBody ImageProductDto image, UriComponentsBuilder builder) {
         imageProductService.saveDto(image);

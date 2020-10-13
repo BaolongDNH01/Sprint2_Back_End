@@ -110,6 +110,11 @@ public class CartItemServiceImpl implements CartItemService {
         return null;
     }
 
+    @Override
+    public void deleteCartItemById(Integer cartItemId) {
+        this.cartItemRepository.deleteById(cartItemId);
+    }
+
     private CartItemDTO convertToCartItemDto(CartItem cartItem) {
         CartItemDTO cartItemDTO = new CartItemDTO();
         cartItemDTO.setCartItemId(cartItem.getCartItemId());

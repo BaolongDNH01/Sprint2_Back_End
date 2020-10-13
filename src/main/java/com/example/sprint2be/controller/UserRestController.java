@@ -63,7 +63,12 @@ public class UserRestController {
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody Login loginRequest) throws AuthenticationException {
+//        quan
         User user = userService.findByUsername(loginRequest.getUsername());
+        if (user.getSignInRecent() != null && !user.getUsername().equals("admin")){
+            userService.increasePoint(user, userService.pointReductionNoLogin(user) * (-50));
+        }
+//
         if (!user.getEnabled().equals("false")) {
             Authentication authentication = authManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -241,4 +246,11 @@ public class UserRestController {
         userService.deleteUser(ids);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @PostMapping("/dsa/{point}")
+    public ResponseEntity<Void> increasePoint (@PathVariable double point, @RequestBody Integer id){
+        userService.increasePoint(userService.findByIdUser(id), point);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

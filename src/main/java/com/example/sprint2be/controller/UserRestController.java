@@ -31,6 +31,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+import sun.awt.AWTCharset;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -178,11 +179,14 @@ public class UserRestController {
 
     @GetMapping("/getUserByUserName/{username}")
     public ResponseEntity<UserDto> getUserByUserName(@PathVariable String username) {
-        return new ResponseEntity<>(userService.getUserByUserName(username), HttpStatus.OK);
+        UserDto userDto = userService.getUserByUserName(username);
+        return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
 
     @PostMapping("editUserInfo/{username}")
     public void editUserInfo(@PathVariable String username, @RequestBody UserDto userDto) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        userDto.setPassword(encoder.encode(userDto.getPassword()));
         userService.editUser(userDto, username);
     }
 

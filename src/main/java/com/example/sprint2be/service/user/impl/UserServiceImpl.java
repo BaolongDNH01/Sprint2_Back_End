@@ -100,13 +100,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Boolean changePassword(Integer id, String password) {
-        Optional<User> checkExist = findUserById(id);
-        if (checkExist.isPresent()){
-            User user = checkExist.get();
+    public Boolean changePassword(String username, String password) {
+        User checkExist = findByUsername(username);
+        if (checkExist != null){
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-            user.setPassword(encoder.encode(password));
-            userRepository.save(user);
+            checkExist.setPassword(encoder.encode(password));
+            userRepository.save(checkExist);
             return true;
         }else return false;
     }

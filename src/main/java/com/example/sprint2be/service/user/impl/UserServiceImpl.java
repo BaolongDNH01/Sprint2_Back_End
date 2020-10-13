@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -229,6 +230,73 @@ public class UserServiceImpl implements UserService {
     public void updateUser(User user) {
         userRepository.save(user);
     }
+
+    @Override
+    public void increasePoint(User user, double point) {
+        user.setPoint(user.getPoint() + point);
+        if (user.getPoint() > 2000){
+            user.setRank(rankService.findById(5));
+        }else if (1000 <= user.getPoint() && user.getPoint() < 2000){
+            user.setRank(rankService.findById(4));
+        }else if (500 <= user.getPoint() && user.getPoint() < 1000){
+            user.setRank(rankService.findById(3));
+        }else if (200 <= user.getPoint() && user.getPoint() < 500){
+            user.setRank(rankService.findById(2));
+        }else if (0 <= user.getPoint() && user.getPoint() < 200){
+            user.setRank(rankService.findById(1));
+        }
+        if (user.getPoint() > 0) {
+            userRepository.save(user);
+        }else if (-30 <= user.getPoint() && user.getPoint() < 0){
+            UserDto userDto = new UserDto();
+            userDto = convertToUserDto(user);
+            userRepository.save(user);
+            userDto.setTimeLock(7 * 24 * 60 * 60 * 1000);
+            List<UserDto> arr = new ArrayList<>();
+            arr.add(userDto);
+            lockUser(arr);
+        }else if (-50 <= user.getPoint() && -30 < user.getPoint()){
+            UserDto userDto = new UserDto();
+            userDto = convertToUserDto(user);
+            userRepository.save(user);
+            userDto.setTimeLock(30 * 24 * 60 * 60000);
+            List<UserDto> arr = new ArrayList<>();
+            arr.add(userDto);
+            lockUser(arr);
+        }else {
+            delete(user.getUserId());
+        }
+    }
+
+    @Override
+    public double pointReductionNoLogin(User user) {
+        String time = user.getSignInRecent();
+        String[] arrTime = time.substring(9).split("/");
+        Date today = new Date(System.currentTimeMillis());
+        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss dd/MM/yyyy");
+        String s = timeFormat.format(today.getTime());
+        String[] arrTimePresent = s.substring(9).split("/");
+        double difference;
+        double num = (Integer.parseInt(arrTimePresent[2]) - Integer.parseInt(arrTime[2]));
+        if (Integer.parseInt(arrTime[0]) <= Integer.parseInt(arrTimePresent[0])){
+            if (num == 0){
+                difference = Integer.parseInt(arrTimePresent[1]) - Integer.parseInt(arrTime[1]);
+                if (difference == 0){
+                    return 0;
+                }
+                System.out.println("b" + Math.floor(difference / 6));
+                return Math.floor(difference / 6);
+            }
+            System.out.print(num);
+             difference = Integer.parseInt(arrTimePresent[1]) - Integer.parseInt(arrTime[1]) + 12 * num;
+            System.out.println("c" + Math.floor(difference / 6));
+             return Math.floor(difference / 6);
+        }
+        return Math.floor((Integer.parseInt(arrTimePresent[1])*12*num - Integer.parseInt(arrTime[1]) -1)/6);
+
+
+    }
+
 
 }
 

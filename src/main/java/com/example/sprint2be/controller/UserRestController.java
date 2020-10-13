@@ -63,6 +63,7 @@ public class UserRestController {
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody Login loginRequest) throws AuthenticationException {
         User user = userService.findByUsername(loginRequest.getUsername());
+<<<<<<< HEAD
         if (user.getEnabled().equals("true")) {
             Authentication authentication = authManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -91,6 +92,33 @@ public class UserRestController {
             return ResponseEntity.ok(response);
         }
         return new ResponseEntity<>(HttpStatus.CONFLICT);
+=======
+        Date today=new Date(System.currentTimeMillis());
+        SimpleDateFormat timeFormat= new SimpleDateFormat("hh:mm:ss dd/MM/yyyy");
+        String s = timeFormat.format(today.getTime());
+        user.setSignInRecent(s);
+
+
+        Authentication authentication = authManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginRequest.getUsername(),
+                        loginRequest.getPassword()
+                )
+        );
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String token = jwtProvider.generatingJwt(authentication);
+        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+        JwtResponse response = new JwtResponse(
+                userPrincipal.getId().toString(),
+                token,
+                userPrincipal.getUsername(),
+                userPrincipal.getEmail(),
+                userPrincipal.getAvatar(),
+                userPrincipal.getAuthorities()
+        );
+        return ResponseEntity.ok(response);
+>>>>>>> e4900ec99bed5c3d855eaca80b74c0182aeddd63
     }
 
     @GetMapping("/user")

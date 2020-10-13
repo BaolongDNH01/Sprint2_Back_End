@@ -17,11 +17,12 @@ public class Cart {
     private Integer cartId;
 
     @Column
-    private double totalPrice = 0;
+    private Double shipCost;
 
     @Column
-    private double shipCost = 0;
+    private Double totalPrice;
 
+    //Thien: This field is setting for locked / unlocked user
     @Column
     private boolean status;
 
@@ -35,20 +36,30 @@ public class Cart {
     private Set<Order> orderSet;
 
     // Relationship with CartItem (1-n)
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.DETACH)
     @JsonIgnoreProperties(value = "cart")
     private List<CartItem> cartItemList;
+
+    // Thien: Setup relationship Order
+    @OneToMany(mappedBy = "cart")
+    private Set<Order> orderSet;
 
     public Cart() {
     }
 
+<<<<<<< HEAD
     public Cart(double totalPrice, double shipCost, boolean status, User user, List<CartItem> cartItemList, Set<Order> orderSet) {
         this.totalPrice = totalPrice;
+=======
+    public Cart(Double shipCost, Double totalPrice, boolean status, User user, List<CartItem> cartItemList, Set<Order> orderSet) {
+>>>>>>> e4900ec99bed5c3d855eaca80b74c0182aeddd63
         this.shipCost = shipCost;
+        this.totalPrice = totalPrice;
         this.status = status;
         this.user = user;
         this.cartItemList = cartItemList;
         this.orderSet = orderSet;
+<<<<<<< HEAD
     }
 
     public Set<Order> getOrderSet() {
@@ -57,6 +68,8 @@ public class Cart {
 
     public void setOrderSet(Set<Order> orderSet) {
         this.orderSet = orderSet;
+=======
+>>>>>>> e4900ec99bed5c3d855eaca80b74c0182aeddd63
     }
 
     public Integer getCartId() {
@@ -67,19 +80,11 @@ public class Cart {
         this.cartId = cartId;
     }
 
-    public double getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(double totalPrice) {
-        this.totalPrice = totalPrice;
-    }
-
-    public double getShipCost() {
+    public Double getShipCost() {
         return shipCost;
     }
 
-    public void setShipCost(double shipCost) {
+    public void setShipCost(Double shipCost) {
         this.shipCost = shipCost;
     }
 
@@ -105,5 +110,21 @@ public class Cart {
 
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+    public Double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(Double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public Set<Order> getOrderSet() {
+        return orderSet;
+    }
+
+    public void setOrderSet(Set<Order> orderSet) {
+        this.orderSet = orderSet;
     }
 }

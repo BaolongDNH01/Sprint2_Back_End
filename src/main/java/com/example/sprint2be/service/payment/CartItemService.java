@@ -9,12 +9,19 @@ public interface CartItemService {
 
     List<CartItem> findAll();
 
+<<<<<<< HEAD
     CartItem create(CartItemDTO cartItemDTO);
+=======
+    CartItem parse(CartItemDTO cartItemDTO);
+>>>>>>> e4900ec99bed5c3d855eaca80b74c0182aeddd63
 
     // Thien: return CartItem to set status: deleted
     CartItem delete(Integer cartItemId);
 
+<<<<<<< HEAD
     // chau
     List<CartItemDTO> findAllCartItemDto();
 
+=======
+>>>>>>> e4900ec99bed5c3d855eaca80b74c0182aeddd63
 }

@@ -34,6 +34,10 @@ public class JwtResponse {
         this.authorities = authorities;
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> e4900ec99bed5c3d855eaca80b74c0182aeddd63
     public String getUserId() {
         return userId;
     }

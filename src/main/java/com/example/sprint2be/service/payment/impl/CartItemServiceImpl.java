@@ -1,8 +1,12 @@
-package com.example.sprint2be.service.payment;
+package com.example.sprint2be.service.payment.impl;
 
 import com.example.sprint2be.model.auction.Auction;
+<<<<<<< HEAD:src/main/java/com/example/sprint2be/service/payment/CartItemServiceImpl.java
 import com.example.sprint2be.model.auction.Bidder;
 import com.example.sprint2be.model.auction.dto.UserBidderDto;
+=======
+import com.example.sprint2be.model.constant.ECartItemStatus;
+>>>>>>> e4900ec99bed5c3d855eaca80b74c0182aeddd63:src/main/java/com/example/sprint2be/service/payment/impl/CartItemServiceImpl.java
 import com.example.sprint2be.model.payment.Cart;
 import com.example.sprint2be.model.payment.CartItem;
 import com.example.sprint2be.model.payment.CartItemDTO;
@@ -13,9 +17,14 @@ import com.example.sprint2be.repository.auction.AuctionRepository;
 import com.example.sprint2be.repository.auction.BidderRepository;
 import com.example.sprint2be.repository.payment.CartItemRepository;
 import com.example.sprint2be.repository.payment.CartRepository;
+<<<<<<< HEAD:src/main/java/com/example/sprint2be/service/payment/CartItemServiceImpl.java
 import com.example.sprint2be.repository.product.ProductRepository;
 import com.example.sprint2be.service.auction.BidderService;
 import com.example.sprint2be.service.payment.constant.ECartItemStatus;
+=======
+import com.example.sprint2be.service.payment.CartItemService;
+import com.example.sprint2be.service.payment.CartService;
+>>>>>>> e4900ec99bed5c3d855eaca80b74c0182aeddd63:src/main/java/com/example/sprint2be/service/payment/impl/CartItemServiceImpl.java
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +52,7 @@ public class CartItemServiceImpl implements CartItemService {
     AuctionRepository auctionRepository;
 
     @Autowired
+<<<<<<< HEAD:src/main/java/com/example/sprint2be/service/payment/CartItemServiceImpl.java
     ProductRepository productRepository;
 
     @Autowired
@@ -50,6 +60,9 @@ public class CartItemServiceImpl implements CartItemService {
 
     @Autowired
     BidderService bidderService;
+=======
+    CartService cartService;
+>>>>>>> e4900ec99bed5c3d855eaca80b74c0182aeddd63:src/main/java/com/example/sprint2be/service/payment/impl/CartItemServiceImpl.java
 
     @Override
     public List<CartItem> findAll() {
@@ -57,7 +70,7 @@ public class CartItemServiceImpl implements CartItemService {
     }
 
     @Override
-    public CartItem create(CartItemDTO cartItemDTO) {
+    public CartItem parse(CartItemDTO cartItemDTO) {
         Optional<User> optionalUser = userRepository.findById(cartItemDTO.getUserId());
 
         if (!optionalUser.isPresent()) {
@@ -88,9 +101,8 @@ public class CartItemServiceImpl implements CartItemService {
         cartItem.setDeleted(false);
         cartItem.setStatus(ECartItemStatus.ITEM_ENABLED.name());
 
+        cartService.updateTotalPrice(cart.getCartId());
         cartItemRepository.save(cartItem);
-
-//        cartService.updateTotalCost(cart.getId());
 
         return cartItem;
     }
@@ -107,6 +119,7 @@ public class CartItemServiceImpl implements CartItemService {
         }
         return null;
     }
+<<<<<<< HEAD:src/main/java/com/example/sprint2be/service/payment/CartItemServiceImpl.java
 
     private CartItemDTO convertToCartItemDto(CartItem cartItem) {
         CartItemDTO cartItemDTO = new CartItemDTO();
@@ -134,4 +147,6 @@ public class CartItemServiceImpl implements CartItemService {
         return (cartItemRepository.findAll().stream().map(this::convertToCartItemDto).collect(Collectors.toList()));
     }
 
+=======
+>>>>>>> e4900ec99bed5c3d855eaca80b74c0182aeddd63:src/main/java/com/example/sprint2be/service/payment/impl/CartItemServiceImpl.java
 }

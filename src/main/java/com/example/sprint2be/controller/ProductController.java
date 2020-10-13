@@ -1,9 +1,6 @@
 package com.example.sprint2be.controller;
 
-import com.example.sprint2be.model.product.AuctionTime;
-import com.example.sprint2be.model.product.Category;
-import com.example.sprint2be.model.product.ImageProduct;
-import com.example.sprint2be.model.product.Product;
+import com.example.sprint2be.model.product.*;
 import com.example.sprint2be.model.product.dto.CategoryDto;
 import com.example.sprint2be.model.product.dto.ImageProductDto;
 import com.example.sprint2be.model.product.dto.ProductDto;
@@ -136,5 +133,13 @@ public class ProductController {
         for (int delCount: list) {
             productService.delete(delCount);
         }
+    }
+
+    @GetMapping("/changStatusProductToPost/{id}")
+    public void changStatusProductToPost(@PathVariable Integer id){
+        Product product = productService.findByIdProduct(id);
+        StatusProduct statusProduct = statusProductService.findById(1);
+        product.setStatusProduct(statusProduct);
+        productService.saveProductDto(product);
     }
 }

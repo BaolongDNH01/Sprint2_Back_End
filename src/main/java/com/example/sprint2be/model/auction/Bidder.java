@@ -10,6 +10,7 @@ import javax.persistence.*;
 public class Bidder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "bid_id")
     private Integer bidId;
 
     private Double bidPrice;

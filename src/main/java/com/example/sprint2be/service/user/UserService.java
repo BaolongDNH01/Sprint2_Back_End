@@ -21,7 +21,7 @@ public interface UserService {
     Boolean checkUsernameExist(String username);
     UserDto getUserByUserName(String userName);
     void editUser(UserDto user, String userName);
-    Boolean changePassword(Integer id, String password);
+    Boolean changePassword(String id, String password);
     boolean isCorrectConfirmPassword(UserDto userDto);
     UserDto findTopById();
     List<UserDto> findAllUserActivated();

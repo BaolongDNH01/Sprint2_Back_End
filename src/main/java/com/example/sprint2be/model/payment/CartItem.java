@@ -31,9 +31,6 @@ public class CartItem {
     @Column
     private String status;
 
-    @Column
-    private Double cartItemCost;
-
     // Relationship with Cart
     @ManyToOne(targetEntity = Cart.class)
     @JoinColumn(name = "cart_id", nullable = false)
@@ -49,13 +46,12 @@ public class CartItem {
     public CartItem() {
     }
 
-    public CartItem(boolean isDeleted, int quantity, double winPrice, Auction auction, String status, Double cartItemCost, Cart cart, Product product) {
+    public CartItem(boolean isDeleted, int quantity, double winPrice, Auction auction, String status, Cart cart, Product product) {
         this.isDeleted = isDeleted;
         this.quantity = quantity;
         this.winPrice = winPrice;
         this.auction = auction;
         this.status = status;
-        this.cartItemCost = cartItemCost;
         this.cart = cart;
         this.product = product;
     }
@@ -114,14 +110,6 @@ public class CartItem {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public Double getCartItemCost() {
-        return cartItemCost;
-    }
-
-    public void setCartItemCost(Double cartItemCost) {
-        this.cartItemCost = cartItemCost;
     }
 
     public Product getProduct() {

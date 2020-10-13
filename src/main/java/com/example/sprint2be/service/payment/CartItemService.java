@@ -9,7 +9,11 @@ public interface CartItemService {
 
     List<CartItem> findAll();
 
-    CartItem create(CartItemDTO cartItemDTO);
+    CartItem parse(CartItemDTO cartItemDTO);
+
+
+    // Thien: return CartItem to set status: deleted
+    CartItem delete(Integer cartItemId);
 
     // chau
     List<CartItemDTO> findAllCartItemDto();

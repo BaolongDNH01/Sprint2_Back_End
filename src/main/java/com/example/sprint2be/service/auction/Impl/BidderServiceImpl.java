@@ -25,6 +25,7 @@ public class BidderServiceImpl implements BidderService {
     AuctionRepository auctionRepository;
     @Autowired
     UserRepository userRepository;
+
     @Override
     public List<Bidder> findAll() {
         return bidderRepository.findAll();
@@ -47,42 +48,53 @@ public class BidderServiceImpl implements BidderService {
 
     @Override
     public void saveDto(BidderDto bidderDto) {
-        Bidder bidder=new Bidder();
-        bidder.setBidId(bidderDto.getBidId());
+        Bidder bidder = new Bidder();
+        Integer bidId;
+
+        try {
+            bidId = bidderRepository.findBidderByAuction_AuctionIdAndUserBidder_Username(
+                    auctionRepository.findById(bidderDto.getAuctionId()).orElse(null).getAuctionId(),
+                    userRepository.findByUsername(bidderDto.getUserName()).orElse(null).getUsername()
+            ).getBidId();
+        }catch (Exception e){
+            bidId=null;
+        }
+        bidder.setBidId(bidId);
+
         bidder.setBidDateTime(bidderDto.getBidDateTime());
         bidder.setBidPrice(bidderDto.getBidPrice());
         bidder.setAuction_bidder(auctionRepository.findById(bidderDto.getAuctionId()).orElse(null));
-        bidder.setUser_bidder(userRepository.findById(bidderDto.getUserId()).orElse(null));
+        bidder.setUser_bidder(userRepository.findByUsername(bidderDto.getUserName()).orElse(null));
         bidderRepository.save(bidder);
     }
 
     @Override
-    public List<BidderDto> findBidderByAuction(Integer id) {
+    public List<BidderDto> findBiddersByAuctionOrderByBidPriceDesc(Integer id) {
         Auction auction = auctionRepository.findById(id).orElse(new Auction());
-        return bidderRepository.findBiddersByAuction(auction).stream().map(this::convertBidderToBidderDto).collect(Collectors.toList());
+        return bidderRepository.findBiddersByAuctionOrderByBidPriceDesc(auction).stream().map(this::convertBidderToBidderDto).collect(Collectors.toList());
     }
 
     @Override
     public List<UserBidderDto> findAllBidderByU(String userName) {
-        User user =  userRepository.findByUsername(userName).orElse(new User());
+        User user = userRepository.findByUsername(userName).orElse(new User());
         return bidderRepository.findBiddersByUserBidder(user).stream().map(this::convertToUserBidderDto).collect(Collectors.toList());
     }
 
-    private UserBidderDto convertToUserBidderDto(Bidder bidder){
-      UserBidderDto userBidderDto = new UserBidderDto();
+    private UserBidderDto convertToUserBidderDto(Bidder bidder) {
+        UserBidderDto userBidderDto = new UserBidderDto();
 
-      Auction auction = auctionRepository.findAuctionByBidderListContaining(bidder);
-      userBidderDto.setProductName(auction.getProduct().getProductName());
+        Auction auction = auctionRepository.findAuctionByBidderListContaining(bidder);
+        userBidderDto.setProductName(auction.getProduct().getProductName());
 
-      userBidderDto.setAuctionStatus(auction.getStatusAuction().getStatusName());
-      userBidderDto.setDateBidder(bidder.getBidDateTime());
-      userBidderDto.setPriceBidder(bidder.getBidPrice());
-      userBidderDto.setProductId(auction.getProduct().getProductId());
-      userBidderDto.setProductDetail(auction.getProduct().getProductDetail());
-      return userBidderDto;
+        userBidderDto.setAuctionStatus(auction.getStatusAuction().getStatusName());
+        userBidderDto.setDateBidder(bidder.getBidDateTime());
+        userBidderDto.setPriceBidder(bidder.getBidPrice());
+        userBidderDto.setProductId(auction.getProduct().getProductId());
+        userBidderDto.setProductDetail(auction.getProduct().getProductDetail());
+        return userBidderDto;
     }
 
-    private BidderDto convertBidderToBidderDto(Bidder bidder){
+    private BidderDto convertBidderToBidderDto(Bidder bidder) {
         BidderDto bidderDto = new BidderDto();
         bidderDto.setAuctionId(bidder.getAuction_bidder().getAuctionId());
         bidderDto.setBidDateTime(bidder.getBidDateTime());

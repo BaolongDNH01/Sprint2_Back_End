@@ -12,4 +12,5 @@ public interface ImageProductService {
     ImageProductDto findByIdImageDto(Integer imageId);
     void save(ImageProduct imageProduct);
     void delete(Integer imageId);
+    void saveDto(ImageProductDto imageProductDto);
 }

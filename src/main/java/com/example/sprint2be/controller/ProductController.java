@@ -137,4 +137,12 @@ public class ProductController {
             productService.delete(delCount);
         }
     }
+
+    @PostMapping("/create-image")
+    public ResponseEntity<ImageProduct> createImage(@RequestBody ImageProductDto image, UriComponentsBuilder builder) {
+        imageProductService.saveDto(image);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(builder.path("/get-image/{id}").buildAndExpand(image.getImageId()).toUri());
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
 }

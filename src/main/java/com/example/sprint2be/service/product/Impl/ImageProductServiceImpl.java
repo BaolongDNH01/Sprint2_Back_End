@@ -4,6 +4,7 @@ import com.example.sprint2be.model.product.ImageProduct;
 import com.example.sprint2be.model.product.Product;
 import com.example.sprint2be.model.product.dto.ImageProductDto;
 import com.example.sprint2be.repository.product.ImageProductRepository;
+import com.example.sprint2be.repository.product.ProductRepository;
 import com.example.sprint2be.service.product.ImageProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,8 @@ import java.util.stream.Collectors;
 public class ImageProductServiceImpl implements ImageProductService {
     @Autowired
     ImageProductRepository imageProductRepository;
+    @Autowired
+    ProductRepository productRepository;
 
     private ImageProductDto convertToImageDto (ImageProduct imageProduct){
             ImageProductDto imageProductDto = new ImageProductDto();
@@ -56,6 +59,14 @@ public class ImageProductServiceImpl implements ImageProductService {
     @Override
     public void delete(Integer imageId) {
         imageProductRepository.deleteById(imageId);
+    }
+
+    @Override
+    public void saveDto(ImageProductDto imageProductDto) {
+        ImageProduct imageProduct = new ImageProduct();
+        imageProduct.setImageURL(imageProductDto.getImageURL());
+        imageProduct.setProduct(productRepository.findById(imageProductDto.getProductId()).orElse(null));
+        imageProductRepository.save(imageProduct);
     }
 
 

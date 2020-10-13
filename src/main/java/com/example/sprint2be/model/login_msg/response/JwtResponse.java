@@ -7,6 +7,9 @@ import java.util.Collection;
 
 public class JwtResponse {
 
+    // Thien: Return id to get cart
+    private String userId;
+
     private String token;
 
     private String username;
@@ -21,12 +24,22 @@ public class JwtResponse {
     public JwtResponse() {
     }
 
-    public JwtResponse(String token, String username, String email, String avatar, Collection<? extends GrantedAuthority> authorities) {
+    public JwtResponse(String userId, String token, String username, String email, String avatar, Collection<?
+            extends GrantedAuthority> authorities) {
+        this.userId = userId;
         this.token = token;
         this.username = username;
         this.email = email;
         this.avatar = avatar;
         this.authorities = authorities;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getToken() {

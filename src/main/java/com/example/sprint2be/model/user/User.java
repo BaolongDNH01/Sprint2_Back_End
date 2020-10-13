@@ -54,9 +54,7 @@ public class User {
     @OneToMany(mappedBy = "userBidder", cascade = CascadeType.DETACH)
     private List<Bidder> bidderList;
 
-    /**
-     * Thien: Setup relationship Cart - User
-     */
+    // Thien: Setup relationship Cart
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cart_id")
     @JsonManagedReference

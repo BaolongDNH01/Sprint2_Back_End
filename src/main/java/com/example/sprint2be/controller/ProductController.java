@@ -152,7 +152,7 @@ public class ProductController {
     @GetMapping("/getAllCartByBidder")
     public ResponseEntity<List<UserBidderDto>> getAllCart() {
         return new ResponseEntity<>(bidderRepository.getAllCart(), HttpStatus.OK);
-
+    }
 
     @PostMapping("/create-image")
     public ResponseEntity<ImageProduct> createImage(@RequestBody ImageProductDto image, UriComponentsBuilder builder) {
@@ -161,6 +161,11 @@ public class ProductController {
         headers.setLocation(builder.path("/get-image/{id}").buildAndExpand(image.getImageId()).toUri());
         return new ResponseEntity<>(HttpStatus.CREATED);
 
+    }
+
+    @GetMapping("/get-cart/{id}")
+    public ResponseEntity<List<UserBidderDto>> getCart(@PathVariable Integer id) {
+        return new ResponseEntity<>(bidderRepository.getCartByIdUser(id), HttpStatus.OK);
     }
 }
 

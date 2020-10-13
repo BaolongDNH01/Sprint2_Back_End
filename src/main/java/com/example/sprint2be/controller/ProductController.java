@@ -1,5 +1,7 @@
 package com.example.sprint2be.controller;
 
+import com.example.sprint2be.model.auction.Bidder;
+import com.example.sprint2be.model.auction.dto.UserBidderDto;
 import com.example.sprint2be.model.product.AuctionTime;
 import com.example.sprint2be.model.product.Category;
 import com.example.sprint2be.model.product.ImageProduct;
@@ -8,6 +10,8 @@ import com.example.sprint2be.model.product.dto.CategoryDto;
 import com.example.sprint2be.model.product.dto.ImageProductDto;
 import com.example.sprint2be.model.product.dto.ProductDto;
 import com.example.sprint2be.model.product.dto.StatusProductDto;
+import com.example.sprint2be.repository.auction.BidderRepository;
+import com.example.sprint2be.service.auction.BidderService;
 import com.example.sprint2be.service.product.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -34,6 +38,12 @@ public class ProductController {
 
     @Autowired
     AuctionTimeService auctionTimeService;
+
+    @Autowired
+    BidderService bidderService;
+
+    @Autowired
+    BidderRepository bidderRepository;
 
     @PostMapping("/create-product")
     public ResponseEntity<Product> createProduct(@RequestBody ProductDto product, UriComponentsBuilder builder) {
@@ -88,8 +98,8 @@ public class ProductController {
     }
 
     @GetMapping("/product/image/{id}")
-    public ResponseEntity<ImageProductDto> findImageById(@PathVariable Integer id){
-        return new ResponseEntity<>(imageProductService.findByIdImageDto(id),HttpStatus.OK);
+    public ResponseEntity<ImageProductDto> findImageById(@PathVariable Integer id) {
+        return new ResponseEntity<>(imageProductService.findByIdImageDto(id), HttpStatus.OK);
     }
     @PatchMapping("/product-edit/{id}")
     public ResponseEntity<String> updateProduct(@PathVariable Integer id, @RequestBody ProductDto productDtoForm) {
@@ -111,32 +121,38 @@ public class ProductController {
 
 
     @GetMapping("/getAllProductByUserName/{userName}")
-    public ResponseEntity<List<ProductDto>> getAllProductByUserName(@PathVariable String userName){
+    public ResponseEntity<List<ProductDto>> getAllProductByUserName(@PathVariable String userName) {
         return new ResponseEntity<>(productService.findAllProductByUser(userName), HttpStatus.OK);
     }
 
 
     @GetMapping("/list-category")
-    public ResponseEntity<List<Category>> getListCategory(){
+    public ResponseEntity<List<Category>> getListCategory() {
         return new ResponseEntity<>(categoryService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/list-time")
-    public ResponseEntity<List<AuctionTime>> getListAuctionTime(){
+    public ResponseEntity<List<AuctionTime>> getListAuctionTime() {
         return new ResponseEntity<>(auctionTimeService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/getAllCategoryDto")
-    public ResponseEntity<List<CategoryDto>> getAllCategoryDto(){
+    public ResponseEntity<List<CategoryDto>> getAllCategoryDto() {
         return new ResponseEntity<>(categoryService.findAllCategoryDto(), HttpStatus.OK);
     }
 
     @PostMapping("/deleteProducts")
-    public void deleteProducts(@RequestBody Integer[] list){
-        for (int delCount: list) {
+    public void deleteProducts(@RequestBody Integer[] list) {
+        for (int delCount : list) {
             productService.delete(delCount);
         }
     }
+
+    // Châu => GetAllCartByBidder
+    @GetMapping("/getAllCartByBidder")
+    public ResponseEntity<List<UserBidderDto>> getAllCart() {
+        return new ResponseEntity<>(bidderRepository.getAllCart(), HttpStatus.OK);
+
 
     @PostMapping("/create-image")
     public ResponseEntity<ImageProduct> createImage(@RequestBody ImageProductDto image, UriComponentsBuilder builder) {
@@ -144,5 +160,8 @@ public class ProductController {
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(builder.path("/get-image/{id}").buildAndExpand(image.getImageId()).toUri());
         return new ResponseEntity<>(HttpStatus.CREATED);
+
     }
 }
+
+

@@ -12,6 +12,7 @@ public class AuctionTime {
     private Integer timeId;
 
     private Integer auctionTime;
+    private String moTa;
     @JsonBackReference
     @OneToMany(mappedBy = "auctionTime", cascade = CascadeType.DETACH)
     private List<Product> productList;
@@ -38,5 +39,13 @@ public class AuctionTime {
 
     public void setProductList(List<Product> productList) {
         this.productList = productList;
+    }
+
+    public String getMoTa() {
+        return moTa;
+    }
+
+    public void setMoTa(String moTa) {
+        this.moTa = moTa;
     }
 }

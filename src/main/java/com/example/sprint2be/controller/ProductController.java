@@ -162,6 +162,11 @@ public class ProductController {
         return new ResponseEntity<>(HttpStatus.CREATED);
 
     }
+
+    @GetMapping("/get-cart/{id}")
+    public ResponseEntity<List<UserBidderDto>> getCart(@PathVariable Integer id) {
+        return new ResponseEntity<>(bidderRepository.getCartByIdUser(id), HttpStatus.OK);
+    }
 }
 
 

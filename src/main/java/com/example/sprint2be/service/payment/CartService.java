@@ -15,6 +15,10 @@ public interface CartService {
 
     void addItemToCart(CartItem item);
 
+    Optional<Cart> findById(Integer cartId);
+
+    Double updateTotalPrice(Integer idCart);
+
     Optional<Cart> findCartByUserId(Integer id);
 
     // chau

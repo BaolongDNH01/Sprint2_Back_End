@@ -11,6 +11,9 @@ public interface CartItemService {
 
     CartItem create(CartItemDTO cartItemDTO);
 
+    // Thien: return CartItem to set status: deleted
+    CartItem delete(Integer cartItemId);
+
     // chau
     List<CartItemDTO> findAllCartItemDto();
 

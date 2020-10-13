@@ -15,6 +15,7 @@ import com.example.sprint2be.repository.payment.CartItemRepository;
 import com.example.sprint2be.repository.payment.CartRepository;
 import com.example.sprint2be.repository.product.ProductRepository;
 import com.example.sprint2be.service.auction.BidderService;
+import com.example.sprint2be.service.payment.constant.ECartItemStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +35,9 @@ public class CartItemServiceImpl implements CartItemService {
 
     @Autowired
     CartRepository cartRepository;
+
+    @Autowired
+    CartService cartService;
 
     @Autowired
     AuctionRepository auctionRepository;
@@ -82,13 +86,26 @@ public class CartItemServiceImpl implements CartItemService {
         cartItem.setQuantity(1);
         cartItem.setAuction(optionalAuction.get());
         cartItem.setDeleted(false);
-        cartItem.setStatus("Loading...");
+        cartItem.setStatus(ECartItemStatus.ITEM_ENABLED.name());
 
         cartItemRepository.save(cartItem);
 
 //        cartService.updateTotalCost(cart.getId());
 
         return cartItem;
+    }
+
+    // Thien: This method is use to set status of item: deleted, not really deleted it
+    @Override
+    public CartItem delete(Integer cartItemId) {
+        Optional<CartItem> cartItemOptional = cartItemRepository.findById(cartItemId);
+        if(cartItemOptional.isPresent()) {
+            CartItem cartItem =cartItemOptional.get();
+            cartItem.setStatus(ECartItemStatus.ITEM_REMOVED.name());
+            cartService.updateTotalPrice(cartItem.getCart().getCartId());
+            return cartItemRepository.save(cartItem);
+        }
+        return null;
     }
 
     private CartItemDTO convertToCartItemDto(CartItem cartItem) {

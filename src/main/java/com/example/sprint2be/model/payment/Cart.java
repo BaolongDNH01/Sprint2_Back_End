@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "cart")
@@ -29,6 +30,10 @@ public class Cart {
     @JsonBackReference
     private User user;
 
+    // Thien: Setup relationship Order
+    @OneToMany(mappedBy = "cart")
+    private Set<Order> orderSet;
+
     // Relationship with CartItem (1-n)
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
     @JsonIgnoreProperties(value = "cart")
@@ -37,12 +42,21 @@ public class Cart {
     public Cart() {
     }
 
-    public Cart(double totalPrice, double shipCost, boolean status, User user, List<CartItem> cartItemList) {
+    public Cart(double totalPrice, double shipCost, boolean status, User user, List<CartItem> cartItemList, Set<Order> orderSet) {
         this.totalPrice = totalPrice;
         this.shipCost = shipCost;
         this.status = status;
         this.user = user;
         this.cartItemList = cartItemList;
+        this.orderSet = orderSet;
+    }
+
+    public Set<Order> getOrderSet() {
+        return orderSet;
+    }
+
+    public void setOrderSet(Set<Order> orderSet) {
+        this.orderSet = orderSet;
     }
 
     public Integer getCartId() {

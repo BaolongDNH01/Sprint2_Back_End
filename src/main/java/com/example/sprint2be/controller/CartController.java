@@ -27,14 +27,12 @@ public class CartController {
 
     // Thien: Load cart by user id
     @GetMapping("/cart/{userId}")
-    public ResponseEntity<Cart> getCartByUserId(@PathVariable Integer userId) throws Exception {
+    public ResponseEntity<Cart> getCartByUserId(@PathVariable Integer userId) throws ResourceNotFoundException {
         Cart cart = cartService
                 .findCartByUserId(userId)
-                .orElseThrow(() -> new Exception("Cart not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Cart not found"));
         return ResponseEntity.ok(cart);
     }
-
-    // Thien:  Update Total cost of cart
 
     // Thien:  Add product to cart
     @PostMapping("/cart/add")
@@ -47,19 +45,26 @@ public class CartController {
         }
     }
 
-
-    // Update quantity of cart item
-
     // Delete item of cart
+    @DeleteMapping("/delete/{cartItemId}")
+    public ResponseEntity<CartItem> deleteCartItem(@PathVariable Integer cartItemId) throws ResourceNotFoundException {
+
+        CartItem cartItem = cartItemService.delete(cartItemId);
+        if (cartItem != null) {
+            return ResponseEntity.ok().body(cartItem);
+        } else {
+            throw new ResourceNotFoundException("Resource not found: [" + cartItemId + "]");
+        }
+    }
 
     // Chau => GetAllCart and GetAllCartItem
     @GetMapping("/getAllCart")
-    public ResponseEntity<List<CartDto>> getAllCartDto(){
+    public ResponseEntity<List<CartDto>> getAllCartDto() {
         return new ResponseEntity<>(this.cartService.findAllCartDto(), HttpStatus.OK);
     }
 
     @GetMapping("/getAllCartItem")
-    public ResponseEntity<List<CartItemDTO>> getAllCartItemDto(){
+    public ResponseEntity<List<CartItemDTO>> getAllCartItemDto() {
         return new ResponseEntity<>(this.cartItemService.findAllCartItemDto(), HttpStatus.OK);
     }
 

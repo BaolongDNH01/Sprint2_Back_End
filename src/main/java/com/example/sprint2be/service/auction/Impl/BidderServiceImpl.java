@@ -49,14 +49,16 @@ public class BidderServiceImpl implements BidderService {
     @Override
     public void saveDto(BidderDto bidderDto) {
         Bidder bidder = new Bidder();
-        Integer bidId = null;
+        Integer bidId;
 
-        //help
-        bidId = bidderRepository.findBidderByAuction_AuctionIdAndUserBidder_Username(
-                auctionRepository.findById(bidderDto.getAuctionId()).orElse(null).getAuctionId(),
-                userRepository.findByUsername(bidderDto.getUserName()).orElse(null).getUsername()
-        ).getBidId();
-
+        try {
+            bidId = bidderRepository.findBidderByAuction_AuctionIdAndUserBidder_Username(
+                    auctionRepository.findById(bidderDto.getAuctionId()).orElse(null).getAuctionId(),
+                    userRepository.findByUsername(bidderDto.getUserName()).orElse(null).getUsername()
+            ).getBidId();
+        }catch (Exception e){
+            bidId=null;
+        }
         bidder.setBidId(bidId);
 
         bidder.setBidDateTime(bidderDto.getBidDateTime());

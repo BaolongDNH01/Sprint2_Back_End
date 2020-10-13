@@ -62,31 +62,34 @@ public class UserRestController {
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody Login loginRequest) throws AuthenticationException {
-        Authentication authentication = authManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginRequest.getUsername(),
-                        loginRequest.getPassword()
-                )
-        );
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String token = jwtProvider.generatingJwt(authentication);
-        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
-        JwtResponse response = new JwtResponse(
-                token,
-                userPrincipal.getUsername(),
-                userPrincipal.getEmail(),
-                userPrincipal.getAvatar(),
-                userPrincipal.getAuthorities()
-        );
-        //        quan
         User user = userService.findByUsername(loginRequest.getUsername());
-        Date today = new Date(System.currentTimeMillis());
-        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss dd/MM/yyyy");
-        String s = timeFormat.format(today.getTime());
-        user.setSignInRecent(s);
-        userService.updateUser(user);
-        return ResponseEntity.ok(response);
+        if (user.getEnabled().equals("true")) {
+            Authentication authentication = authManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            loginRequest.getUsername(),
+                            loginRequest.getPassword()
+                    )
+            );
+
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String token = jwtProvider.generatingJwt(authentication);
+            UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+            JwtResponse response = new JwtResponse(
+                    token,
+                    userPrincipal.getUsername(),
+                    userPrincipal.getEmail(),
+                    userPrincipal.getAvatar(),
+                    userPrincipal.getAuthorities()
+            );
+            //        quan
+            Date today = new Date(System.currentTimeMillis());
+            SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss dd/MM/yyyy");
+            String s = timeFormat.format(today.getTime());
+            user.setSignInRecent(s);
+            userService.updateUser(user);
+            return ResponseEntity.ok(response);
+        }
+        return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 
     @GetMapping("/user")

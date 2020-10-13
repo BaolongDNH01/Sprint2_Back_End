@@ -147,10 +147,20 @@ public class ProductController {
             productService.delete(delCount);
         }
     }
+
     // Châu => GetAllCartByBidder
     @GetMapping("/getAllCartByBidder")
     public ResponseEntity<List<UserBidderDto>> getAllCart() {
         return new ResponseEntity<>(bidderRepository.getAllCart(), HttpStatus.OK);
+
+
+    @PostMapping("/create-image")
+    public ResponseEntity<ImageProduct> createImage(@RequestBody ImageProductDto image, UriComponentsBuilder builder) {
+        imageProductService.saveDto(image);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(builder.path("/get-image/{id}").buildAndExpand(image.getImageId()).toUri());
+        return new ResponseEntity<>(HttpStatus.CREATED);
+
     }
 }
 

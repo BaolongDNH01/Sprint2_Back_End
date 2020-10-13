@@ -15,7 +15,7 @@ public class ProductDto {
     private Integer timeId;
     private Integer auctionTime;
     private Integer userId;
-    private String fullName;
+    private String userName;
     private List<Integer> auctionListId;
     private List<Integer> listImageProduct;
     private String imageURL;
@@ -124,11 +124,11 @@ public class ProductDto {
     }
 
     public String getFullName() {
-        return fullName;
+        return userName;
     }
 
     public void setFullName(String fullName) {
-        this.fullName = fullName;
+        this.userName = fullName;
     }
 
     public String getCategoryName() {

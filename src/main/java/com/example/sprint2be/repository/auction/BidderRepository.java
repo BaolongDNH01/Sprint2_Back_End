@@ -16,10 +16,16 @@ public interface BidderRepository extends JpaRepository<Bidder, Integer> {
     //    khanh
     List<Bidder> findBiddersByUserBidder(User user);
 
+
     //Chau
     @Query(
             value = "select product.product_id ,bidder.user_id,max(bid_price) as winPrice from bidder join auction" +
                     " on auction.auction_id=bidder.auction_id right join product on product.product_id=auction.auction_id" +
                     " where product.status_id=3 group by(auction.auction_id)", nativeQuery = true)
     List getAllCart();
+
+    List<Bidder> findBiddersByAuctionOrderByBidPriceDesc(Auction auction);
+
+    Bidder findBidderByAuction_AuctionIdAndUserBidder_Username(Integer idAuction,String nameBidder);
+
 }

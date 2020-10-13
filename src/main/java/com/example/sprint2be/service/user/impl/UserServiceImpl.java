@@ -54,6 +54,10 @@ public class UserServiceImpl implements UserService {
 
         // Thien: Add cart when user is created
         Cart cart = new Cart();
+        cart.setShipCost(30000.0);
+        cart.setTotalPrice(0.0);
+        cart.setStatus(true);
+
         user.setCart(cart);
 
         return user;

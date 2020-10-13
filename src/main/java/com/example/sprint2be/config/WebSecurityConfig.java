@@ -26,14 +26,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-
-import sun.util.calendar.BaseCalendar;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Configuration
@@ -94,22 +87,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     () -> new RuntimeException("Role doesn't exist")
                 ));
 
-
                 User admin = new User();
-                for (Role role: roles) {
-                    System.out.println(role.getRoleName());
-                }
-
-                User admin = new User(
-//                    adminUsername,
-////                    passwordEncoder.encode(adminPassword),
-////                    "ADMIN",
-////                    "admin@gmail.com",
-////                    "Da Nang",
-////                    "0123456799",
-////                    null,
-////                     roles
-                );
+                Cart cart = new Cart();
 
                 String[] ranks = {"Đồng", "Bạc", "Bạch kim", "Kim cương"};
                 for (String s : ranks) {
@@ -131,6 +110,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 admin.setIdCard("123456789012");
                 admin.setRoles(roles);
                 admin.setRank(defaultRank);
+                admin.setCart(cart);
 
                 userRepository.save(admin);
 
@@ -142,6 +122,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // Thien: Create member account to test feature
                 User member = new User();
                 Cart cartForMember = new Cart();
+                cartForMember.setShipCost(30000.0);
+                cartForMember.setTotalPrice(0.0);
 
                 Rank defaultRank2 = new Rank();
                 defaultRank2.setName("Incase1");

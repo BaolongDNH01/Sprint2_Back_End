@@ -75,6 +75,7 @@ public class UserRestController {
         String token = jwtProvider.generatingJwt(authentication);
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
         JwtResponse response = new JwtResponse(
+                userPrincipal.getId().toString(),
                 token,
                 userPrincipal.getUsername(),
                 userPrincipal.getEmail(),

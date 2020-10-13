@@ -1,6 +1,7 @@
-package com.example.sprint2be.service.payment;
+package com.example.sprint2be.service.payment.impl;
 
 import com.example.sprint2be.model.auction.Auction;
+import com.example.sprint2be.model.constant.ECartItemStatus;
 import com.example.sprint2be.model.payment.Cart;
 import com.example.sprint2be.model.payment.CartItem;
 import com.example.sprint2be.model.payment.CartItemDTO;
@@ -9,6 +10,8 @@ import com.example.sprint2be.repository.UserRepository;
 import com.example.sprint2be.repository.auction.AuctionRepository;
 import com.example.sprint2be.repository.payment.CartItemRepository;
 import com.example.sprint2be.repository.payment.CartRepository;
+import com.example.sprint2be.service.payment.CartItemService;
+import com.example.sprint2be.service.payment.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,13 +33,16 @@ public class CartItemServiceImpl implements CartItemService {
     @Autowired
     AuctionRepository auctionRepository;
 
+    @Autowired
+    CartService cartService;
+
     @Override
     public List<CartItem> findAll() {
         return cartItemRepository.findAll();
     }
 
     @Override
-    public CartItem create(CartItemDTO cartItemDTO) {
+    public CartItem parse(CartItemDTO cartItemDTO) {
         Optional<User> optionalUser = userRepository.findById(cartItemDTO.getUserId());
 
         if (optionalUser.isEmpty()) {
@@ -65,12 +71,24 @@ public class CartItemServiceImpl implements CartItemService {
         cartItem.setQuantity(1);
         cartItem.setAuction(optionalAuction.get());
         cartItem.setDeleted(false);
-        cartItem.setStatus("Loading...");
+        cartItem.setStatus(ECartItemStatus.ITEM_ENABLED.name());
 
+        cartService.updateTotalPrice(cart.getCartId());
         cartItemRepository.save(cartItem);
 
-//        cartService.updateTotalCost(cart.getId());
-
         return cartItem;
+    }
+
+    // Thien: This method is use to set status of item: deleted, not really deleted it
+    @Override
+    public CartItem delete(Integer cartItemId) {
+        Optional<CartItem> cartItemOptional = cartItemRepository.findById(cartItemId);
+        if(cartItemOptional.isPresent()) {
+            CartItem cartItem =cartItemOptional.get();
+            cartItem.setStatus(ECartItemStatus.ITEM_REMOVED.name());
+            cartService.updateTotalPrice(cartItem.getCart().getCartId());
+            return cartItemRepository.save(cartItem);
+        }
+        return null;
     }
 }

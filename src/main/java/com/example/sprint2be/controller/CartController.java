@@ -6,12 +6,12 @@ import com.example.sprint2be.model.payment.CartItem;
 import com.example.sprint2be.model.payment.CartItemDTO;
 import com.example.sprint2be.service.payment.CartItemService;
 import com.example.sprint2be.service.payment.CartService;
-import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/cart")
 @CrossOrigin(origins = "http://localhost:4200")
 public class CartController {
 
@@ -22,20 +22,20 @@ public class CartController {
     CartItemService cartItemService;
 
     // Thien: Load cart by user id
-    @GetMapping("/cart/{userId}")
-    public ResponseEntity<Cart> getCartByUserId(@PathVariable Integer userId) throws Exception {
+    @GetMapping("/get/{userId}")
+    public ResponseEntity<Cart> getCartByUserId(@PathVariable Integer userId) throws ResourceNotFoundException {
         Cart cart = cartService
                 .findCartByUserId(userId)
-                .orElseThrow(() -> new Exception("Cart not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Cart not found"));
         return ResponseEntity.ok(cart);
     }
 
     // Thien:  Update Total cost of cart
 
     // Thien:  Add product to cart
-    @PostMapping("/cart/add")
+    @PostMapping("/add")
     public ResponseEntity<CartItem> addProductToCart(@RequestBody CartItemDTO cartItemDTO) throws ResourceNotFoundException {
-        CartItem cartItem = cartItemService.create(cartItemDTO);
+        CartItem cartItem = cartItemService.parse(cartItemDTO);
         if (cartItem != null) {
             return ResponseEntity.ok().body(cartItem);
         } else {
@@ -43,9 +43,16 @@ public class CartController {
         }
     }
 
+    // Thien: Update quantity of cart item
 
-    // Update quantity of cart item
-
-    // Delete item of cart
-
+    // Thien: Delete item of cart
+    @DeleteMapping("/delete/{cartItemId}")
+    public ResponseEntity<CartItem> deleteCartItem(@PathVariable Integer cartItemId) throws ResourceNotFoundException{
+        CartItem cartItem = cartItemService.delete(cartItemId);
+        if(cartItem != null) {
+            return ResponseEntity.ok().body(cartItem);
+        } else {
+            throw new ResourceNotFoundException("Resource not found: [" + cartItemId + "]");
+        }
+    }
 }

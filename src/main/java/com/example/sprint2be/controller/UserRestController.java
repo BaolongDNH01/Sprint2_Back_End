@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -63,7 +64,7 @@ public class UserRestController {
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody Login loginRequest) throws AuthenticationException {
         User user = userService.findByUsername(loginRequest.getUsername());
-        if (user.getEnabled().equals("true")) {
+        if (!user.getEnabled().equals("false")) {
             Authentication authentication = authManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             loginRequest.getUsername(),
@@ -113,12 +114,14 @@ public class UserRestController {
     }
 
     @DeleteMapping("/delete-user/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
         userService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/lock-user")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> lockUser(@RequestBody List<UserDto> userDtoList) {
         userService.lockUser(userDtoList);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -178,6 +181,7 @@ public class UserRestController {
     }
 
     @PostMapping("/register")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto, BindingResult bindingResult,
                                               HttpServletRequest request) {
 //        String response = request.getParameter("g-recaptcha-response");
@@ -225,12 +229,14 @@ public class UserRestController {
     }
 
     @PostMapping("/unlock-user")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> unlockUser(@RequestBody List<UserDto> userDtoList) {
         userService.unlockUser(userDtoList);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/delete-users/{ids}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteUsers(@PathVariable List<String> ids) {
         userService.deleteUser(ids);
         return new ResponseEntity<>(HttpStatus.OK);

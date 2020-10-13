@@ -111,7 +111,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 ////                     roles
 //                );
 
-                String[] ranks = {"Đồng", "Bạc", "Bạch kim", "Kim cương"};
+                String[] ranks = {"Đồng", "Bạc", "Vàng", "Bạch kim", "Kim cương"};
                 for (String s : ranks) {
                     Rank rank = new Rank();
                     rank.setName(s);

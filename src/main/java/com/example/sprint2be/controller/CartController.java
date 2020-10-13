@@ -26,11 +26,7 @@ public class CartController {
     CartItemService cartItemService;
 
     // Thien: Load cart by user id
-<<<<<<< HEAD
     @GetMapping("/cart/{userId}")
-=======
-    @GetMapping("/get/{userId}")
->>>>>>> e4900ec99bed5c3d855eaca80b74c0182aeddd63
     public ResponseEntity<Cart> getCartByUserId(@PathVariable Integer userId) throws ResourceNotFoundException {
         Cart cart = cartService
                 .findCartByUserId(userId)
@@ -49,7 +45,6 @@ public class CartController {
         }
     }
 
-<<<<<<< HEAD
     // Delete item of cart
     @DeleteMapping("/delete/{cartItemId}")
     public ResponseEntity<CartItem> deleteCartItem(@PathVariable Integer cartItemId) throws ResourceNotFoundException {
@@ -72,19 +67,4 @@ public class CartController {
     public ResponseEntity<List<CartItemDTO>> getAllCartItemDto() {
         return new ResponseEntity<>(this.cartItemService.findAllCartItemDto(), HttpStatus.OK);
     }
-
-=======
-    // Thien: Update quantity of cart item
-
-    // Thien: Delete item of cart
-    @DeleteMapping("/delete/{cartItemId}")
-    public ResponseEntity<CartItem> deleteCartItem(@PathVariable Integer cartItemId) throws ResourceNotFoundException{
-        CartItem cartItem = cartItemService.delete(cartItemId);
-        if(cartItem != null) {
-            return ResponseEntity.ok().body(cartItem);
-        } else {
-            throw new ResourceNotFoundException("Resource not found: [" + cartItemId + "]");
-        }
-    }
->>>>>>> e4900ec99bed5c3d855eaca80b74c0182aeddd63
 }

@@ -40,36 +40,16 @@ public class Cart {
     @JsonIgnoreProperties(value = "cart")
     private List<CartItem> cartItemList;
 
-    // Thien: Setup relationship Order
-    @OneToMany(mappedBy = "cart")
-    private Set<Order> orderSet;
-
     public Cart() {
     }
 
-<<<<<<< HEAD
-    public Cart(double totalPrice, double shipCost, boolean status, User user, List<CartItem> cartItemList, Set<Order> orderSet) {
-        this.totalPrice = totalPrice;
-=======
-    public Cart(Double shipCost, Double totalPrice, boolean status, User user, List<CartItem> cartItemList, Set<Order> orderSet) {
->>>>>>> e4900ec99bed5c3d855eaca80b74c0182aeddd63
+    public Cart(Double shipCost, Double totalPrice, boolean status, User user, Set<Order> orderSet, List<CartItem> cartItemList) {
         this.shipCost = shipCost;
         this.totalPrice = totalPrice;
         this.status = status;
         this.user = user;
+        this.orderSet = orderSet;
         this.cartItemList = cartItemList;
-        this.orderSet = orderSet;
-<<<<<<< HEAD
-    }
-
-    public Set<Order> getOrderSet() {
-        return orderSet;
-    }
-
-    public void setOrderSet(Set<Order> orderSet) {
-        this.orderSet = orderSet;
-=======
->>>>>>> e4900ec99bed5c3d855eaca80b74c0182aeddd63
     }
 
     public Integer getCartId() {
@@ -88,20 +68,12 @@ public class Cart {
         this.shipCost = shipCost;
     }
 
-    public User getUser() {
-        return user;
+    public Double getTotalPrice() {
+        return totalPrice;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public List<CartItem> getCartItemList() {
-        return cartItemList;
-    }
-
-    public void setCartItemList(List<CartItem> cartItemList) {
-        this.cartItemList = cartItemList;
+    public void setTotalPrice(Double totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     public boolean isStatus() {
@@ -112,12 +84,12 @@ public class Cart {
         this.status = status;
     }
 
-    public Double getTotalPrice() {
-        return totalPrice;
+    public User getUser() {
+        return user;
     }
 
-    public void setTotalPrice(Double totalPrice) {
-        this.totalPrice = totalPrice;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Set<Order> getOrderSet() {
@@ -126,5 +98,13 @@ public class Cart {
 
     public void setOrderSet(Set<Order> orderSet) {
         this.orderSet = orderSet;
+    }
+
+    public List<CartItem> getCartItemList() {
+        return cartItemList;
+    }
+
+    public void setCartItemList(List<CartItem> cartItemList) {
+        this.cartItemList = cartItemList;
     }
 }

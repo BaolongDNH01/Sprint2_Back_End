@@ -89,12 +89,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 User admin = new User();
                 Cart cart = new Cart();
-<<<<<<< HEAD
                 for (Role role: roles) {
                     System.out.println(role.getRoleName());
                 }
-=======
->>>>>>> e4900ec99bed5c3d855eaca80b74c0182aeddd63
 
                 String[] ranks = {"Đồng", "Bạc", "Bạch kim", "Kim cương"};
                 for (String s : ranks) {

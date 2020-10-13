@@ -61,10 +61,6 @@ public class UserServiceImpl implements UserService {
         cart.setStatus(true);
 
         user.setCart(cart);
-        cart.setShipCost(30000.0);
-        cart.setTotalPrice(0.0);
-        cart.setStatus(true);
-
         return user;
     }
     @Override

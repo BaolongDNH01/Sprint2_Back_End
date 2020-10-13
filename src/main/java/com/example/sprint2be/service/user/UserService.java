@@ -28,6 +28,8 @@ public interface UserService {
     void unlockUser(List<UserDto> userDtoList);
     void deleteUser(List<String> ids);
     void updateUser(User user);
+    void increasePoint(User user, double point);
+    double pointReductionNoLogin(User user);
 }
 
 

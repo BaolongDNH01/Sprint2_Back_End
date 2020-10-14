@@ -113,9 +113,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 admin.setIdCard("123456789012");
                 admin.setRoles(roles);
                 admin.setPoint(10000);
+                admin.setFlag("true");
 
                 admin.setRank(rankRepository.findById(4).orElse(null));
-                admin.setEnabled("true");;
+                admin.setEnabled("true");
                 admin.setCart(cart);
 
                 userRepository.save(admin);
@@ -146,6 +147,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 member.setCart(cartForMember);
                 member.setEnabled("true");
                 member.setPoint(10);
+                member.setFlag("true");
                 userRepository.save(member);
             }
         };

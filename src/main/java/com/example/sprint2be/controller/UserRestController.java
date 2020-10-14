@@ -66,11 +66,11 @@ public class UserRestController {
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody Login loginRequest) throws AuthenticationException {
 //        quan
         User user = userService.findByUsername(loginRequest.getUsername());
-        if (user.getSignInRecent() != null && user.getUserId() != 1){
-            userService.increasePoint(user, userService.pointReductionNoLogin(user) * (-50));
-        }
 //
         if (!user.getEnabled().equals("false")) {
+            if (user.getSignInRecent() != null && user.getUserId() != 1){
+                userService.increasePoint(user, userService.pointReductionNoLogin(user) * (-50));
+            }
             Authentication authentication = authManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             loginRequest.getUsername(),

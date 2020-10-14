@@ -4,6 +4,7 @@ import com.example.sprint2be.model.payment.Cart;
 
 import com.example.sprint2be.model.payment.CartDTO;
 import com.example.sprint2be.model.payment.CartItem;
+import com.example.sprint2be.model.payment.CartResponseDTO;
 
 
 import java.util.List;
@@ -20,6 +21,8 @@ public interface CartService {
     Double updateTotalPrice(Integer idCart);
 
     Optional<Cart> findCartByUserId(Integer id);
+
+    CartResponseDTO parse(Integer id);
 
     // chau
     List<CartDTO> findAllCartDto();

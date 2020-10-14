@@ -54,7 +54,7 @@ public class AuctionServiceImpl implements AuctionService {
         ImageProduct imageProduct = this.imageProductService.findById(product.getProductId());
         auctionDto.setImageURL(imageProduct.getImageURL());
 
-        AuctionTime auctionTime = this.auctionTimeService.findById(product.getProductId());
+        AuctionTime auctionTime = this.auctionTimeService.findById(product.getAuctionTime().getTimeId());
         auctionDto.setAuctionTime(auctionTime.getAuctionTime());
 
         StatusAuction statusAuction = auction.getStatusAuction();

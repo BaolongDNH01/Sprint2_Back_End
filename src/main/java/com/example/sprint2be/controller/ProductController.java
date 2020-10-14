@@ -1,6 +1,7 @@
 package com.example.sprint2be.controller;
 
 import com.example.sprint2be.model.auction.Bidder;
+import com.example.sprint2be.model.auction.dto.BidderDto;
 import com.example.sprint2be.model.auction.dto.UserBidderDto;
 import com.example.sprint2be.model.product.*;
 import com.example.sprint2be.model.product.dto.CategoryDto;
@@ -170,6 +171,12 @@ public class ProductController {
         StatusProduct statusProduct = statusProductService.findById(1);
         product.setStatusProduct(statusProduct);
         productService.saveProductDto(product);
+    }
+
+    @GetMapping(value = "/get-image-product/{id}")
+    public ResponseEntity<List<ImageProductDto>> getListImage(@PathVariable("id") Integer id) {
+        List<ImageProductDto> imageProductDtos = imageProductService.findImageProductsByProduct(id);
+        return new ResponseEntity<>(imageProductDtos, HttpStatus.OK);
     }
 }
 

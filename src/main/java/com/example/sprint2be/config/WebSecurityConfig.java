@@ -115,7 +115,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 admin.setRank(rankRepository.findById(4).orElse(null));
                 admin.setEnabled("true");
-                admin.setRank(defaultRank);
                 admin.setCart(cart);
 
                 userRepository.save(admin);

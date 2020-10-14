@@ -7,14 +7,16 @@ import com.example.sprint2be.model.payment.CartItem;
 import com.example.sprint2be.model.user.User;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name="product")
-public class Product {
+public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer productId;
@@ -40,15 +42,16 @@ public class Product {
     private StatusProduct statusProduct;
 
     @ManyToOne(cascade = CascadeType.DETACH)
+    @JsonIgnore
     @JoinColumn(name = "user_id")
     private User userId;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.DETACH)
+    @JsonIgnore
     private List<Auction> auctionList;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.DETACH)
     private List<ImageProduct> imageProductList;
-
 
     public Integer getProductId() {
         return productId;

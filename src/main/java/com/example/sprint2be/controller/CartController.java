@@ -10,6 +10,7 @@ import com.example.sprint2be.service.payment.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -62,17 +63,20 @@ public class CartController {
 
     // Chau => GetAllCart and GetAllCartItem
     @GetMapping("/getAllCart")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<CartDTO>> getAllCartDto() {
         return new ResponseEntity<>(this.cartService.findAllCartDto(), HttpStatus.OK);
     }
 
     @GetMapping("/getAllCartItem")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<CartItemDTO>> getAllCartItemDto() {
         System.out.println("vo day roi nghe");
         return new ResponseEntity<>(this.cartItemService.findAllCartItemDto(), HttpStatus.OK);
     }
 
     @PostMapping("/removeCartItem")
+    @PreAuthorize("hasRole('ADMIN')")
     public void removeCartItem(@RequestBody Integer[] cartIds) {
         for (int delCart : cartIds){
             cartItemService.deleteCartItemById(delCart);

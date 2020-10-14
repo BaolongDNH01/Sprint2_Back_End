@@ -147,13 +147,21 @@ public class UserServiceImpl implements UserService {
                 @Override
                 public void run() {
                     userDto.setFlag("true");
-                    userDto.setPoint(0);
+                    userDto.setPoint(10);
                     userDto.setRank("Đồng");
+                    Date today = new Date(System.currentTimeMillis());
+                    SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss dd/MM/yyyy");
+                    String s = timeFormat.format(today.getTime());
+                    userDto.setSignInRecent(s);
                     userRepository.save(convertToUser(userDto));
                 }
             };
 //        1000 time = 1s
             userDto.setFlag("false");
+            Date today = new Date(System.currentTimeMillis());
+            SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss dd/MM/yyyy");
+            String s = timeFormat.format(today.getTime());
+            userDto.setSignInRecent(s);
             userRepository.save(convertToUser(userDto));
             Timer timer = new Timer();
             timer.schedule(timerTask, userDto.getTimeLock());
@@ -216,6 +224,10 @@ public class UserServiceImpl implements UserService {
     public void unlockUser(List<UserDto> userDtoList) {
         for (UserDto userDto: userDtoList){
             userDto.setFlag("true");
+            Date today = new Date(System.currentTimeMillis());
+            SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss dd/MM/yyyy");
+            String s = timeFormat.format(today.getTime());
+            userDto.setSignInRecent(s);
             userRepository.save(convertToUser(userDto));
         }
     }
@@ -245,7 +257,7 @@ public class UserServiceImpl implements UserService {
         }else if (0 <= user.getPoint() && user.getPoint() < 200){
             user.setRank(rankService.findById(1));
         }
-        if (user.getPoint() > 0) {
+        if (user.getPoint() >= 0) {
             userRepository.save(user);
         }else if (-30 <= user.getPoint() && user.getPoint() < 0){
             UserDto userDto = new UserDto();
@@ -255,7 +267,7 @@ public class UserServiceImpl implements UserService {
             List<UserDto> arr = new ArrayList<>();
             arr.add(userDto);
             lockUser(arr);
-        }else if (-50 <= user.getPoint() && -30 < user.getPoint()){
+        }else if (-50 <= user.getPoint() && user.getPoint() < -30){
             UserDto userDto = new UserDto();
             userDto = convertToUserDto(user);
             userRepository.save(user);

@@ -32,14 +32,14 @@ public class CartItem {
     private String cartItemStatus;
 
     // Relationship with Cart
-    @ManyToOne(targetEntity = Cart.class)
+    @ManyToOne(targetEntity = Cart.class, cascade = CascadeType.DETACH)
     @JoinColumn(name = "cart_id", nullable = false)
     @JsonIgnore
     private Cart cart;
 
     // Relationship with Product
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "product_id", nullable = false)
+    @OneToOne(targetEntity = Product.class, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "product_id")
     @JsonIgnore
     private Product product;
 

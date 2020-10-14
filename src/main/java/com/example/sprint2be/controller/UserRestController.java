@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -30,6 +31,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+import sun.awt.AWTCharset;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -62,8 +64,13 @@ public class UserRestController {
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody Login loginRequest) throws AuthenticationException {
+//        quan
         User user = userService.findByUsername(loginRequest.getUsername());
-        if (user.getEnabled().equals("true")) {
+        if (user.getSignInRecent() != null && !user.getUsername().equals("admin")){
+            userService.increasePoint(user, userService.pointReductionNoLogin(user) * (-50));
+        }
+//
+        if (!user.getEnabled().equals("false")) {
             Authentication authentication = authManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             loginRequest.getUsername(),
@@ -114,12 +121,14 @@ public class UserRestController {
     }
 
     @DeleteMapping("/delete-user/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
         userService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/lock-user")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> lockUser(@RequestBody List<UserDto> userDtoList) {
         userService.lockUser(userDtoList);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -140,7 +149,7 @@ public class UserRestController {
                     "Bạn vừa yêu cầu phục hồi lại mật khẩu đăng nhập của tài khoản: " + recoverPassword.getUsername() + "\n" +
                             "Mã Xác Nhận: " + confirmCode + "\n" +
                             "Xin sử dụng đường dẫn sau đây và nhập vào mã xác nhận trong email này để có thể thực hiệc việc đặt lại mật khẩu mới:" +
-                            " http://localhost:4200/recover-password?confirmCode=" + confirmCode +"&username="+ recoverPassword.getUsername() +"\n"+
+                            " http://localhost:4200/recover-password?username" + recoverPassword.getUsername() +"\n"+
                             "Nếu đây không phải là bạn, xin hãy đăng nhập và thực hiện thay đổi mật khẩu hiện tại.");
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
@@ -149,9 +158,9 @@ public class UserRestController {
     }
 
     @PostMapping("/check-code/{confirmCode}")
-    public ResponseEntity<?> checkConfirmCode(@PathVariable String confirmCode) {
+    public ResponseEntity<?> checkConfirmCode(@PathVariable String confirmCode, @RequestParam String username) {
         Optional<RecoverPassword> checkExist = recoverPasswordService.loadByConfirmCode(confirmCode);
-        if (checkExist.isPresent()) {
+        if ((checkExist.isPresent()) && (checkExist.get().getUsername().equals(username))) {
             User user = userService.findByUsername(checkExist.get().getUsername());
             UserDto userDto = userService.convertToUserDto(user);
             recoverPasswordService.delete(checkExist.get());
@@ -160,9 +169,9 @@ public class UserRestController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @PostMapping("/change-password/{id}")
-    public ResponseEntity<?> changePassword(@PathVariable Integer id, @RequestParam String password) {
-        if (Boolean.TRUE.equals(userService.changePassword(id, password))) {
+    @PostMapping("/change-password/{username}")
+    public ResponseEntity<?> changePassword(@PathVariable String username, @RequestParam String password) {
+        if (Boolean.TRUE.equals(userService.changePassword(username, password))) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
@@ -170,15 +179,19 @@ public class UserRestController {
 
     @GetMapping("/getUserByUserName/{username}")
     public ResponseEntity<UserDto> getUserByUserName(@PathVariable String username) {
-        return new ResponseEntity<>(userService.getUserByUserName(username), HttpStatus.OK);
+        UserDto userDto = userService.getUserByUserName(username);
+        return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
 
     @PostMapping("editUserInfo/{username}")
     public void editUserInfo(@PathVariable String username, @RequestBody UserDto userDto) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        userDto.setPassword(encoder.encode(userDto.getPassword()));
         userService.editUser(userDto, username);
     }
 
     @PostMapping("/register")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto, BindingResult bindingResult,
                                               HttpServletRequest request) {
 //        String response = request.getParameter("g-recaptcha-response");
@@ -226,14 +239,22 @@ public class UserRestController {
     }
 
     @PostMapping("/unlock-user")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> unlockUser(@RequestBody List<UserDto> userDtoList) {
         userService.unlockUser(userDtoList);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/delete-users/{ids}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteUsers(@PathVariable List<String> ids) {
         userService.deleteUser(ids);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/increase-point/{point}")
+    public ResponseEntity<Void> increasePoint (@PathVariable double point, @RequestBody Integer id){
+        userService.increasePoint(userService.findByIdUser(id), point);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

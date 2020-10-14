@@ -68,6 +68,14 @@ public class CartController {
 
     @GetMapping("/getAllCartItem")
     public ResponseEntity<List<CartItemDTO>> getAllCartItemDto() {
+        System.out.println("vo day roi nghe");
         return new ResponseEntity<>(this.cartItemService.findAllCartItemDto(), HttpStatus.OK);
+    }
+
+    @PostMapping("/removeCartItem")
+    public void removeCartItem(@RequestBody Integer[] cartIds) {
+        for (int delCart : cartIds){
+            cartItemService.deleteCartItemById(delCart);
+        }
     }
 }

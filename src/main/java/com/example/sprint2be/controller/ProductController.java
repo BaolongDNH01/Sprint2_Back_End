@@ -2,10 +2,7 @@ package com.example.sprint2be.controller;
 
 import com.example.sprint2be.model.auction.Bidder;
 import com.example.sprint2be.model.auction.dto.UserBidderDto;
-import com.example.sprint2be.model.product.AuctionTime;
-import com.example.sprint2be.model.product.Category;
-import com.example.sprint2be.model.product.ImageProduct;
-import com.example.sprint2be.model.product.Product;
+import com.example.sprint2be.model.product.*;
 import com.example.sprint2be.model.product.dto.CategoryDto;
 import com.example.sprint2be.model.product.dto.ImageProductDto;
 import com.example.sprint2be.model.product.dto.ProductDto;
@@ -83,7 +80,6 @@ public class ProductController {
 
     @GetMapping("/getAllProduct")
     public ResponseEntity<List<ProductDto>> getAllProduct() {
-        System.out.println("okokok");
         return new ResponseEntity<>(productService.findAllProduct(), HttpStatus.OK);
     }
 
@@ -152,8 +148,8 @@ public class ProductController {
     @GetMapping("/getAllCartByBidder")
     public ResponseEntity<List<UserBidderDto>> getAllCart() {
         return new ResponseEntity<>(bidderRepository.getAllCart(), HttpStatus.OK);
-
     }
+
     @PostMapping("/create-image")
     public ResponseEntity<ImageProduct> createImage(@RequestBody ImageProductDto image, UriComponentsBuilder builder) {
         imageProductService.saveDto(image);
@@ -161,6 +157,19 @@ public class ProductController {
         headers.setLocation(builder.path("/get-image/{id}").buildAndExpand(image.getImageId()).toUri());
         return new ResponseEntity<>(HttpStatus.CREATED);
 
+    }
+
+    @GetMapping("/get-cart/{id}")
+    public ResponseEntity<List<UserBidderDto>> getCart(@PathVariable Integer id) {
+        return new ResponseEntity<>(bidderRepository.getCartByIdUser(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/changStatusProductToPost/{id}")
+    public void changStatusProductToPost(@PathVariable Integer id){
+        Product product = productService.findByIdProduct(id);
+        StatusProduct statusProduct = statusProductService.findById(1);
+        product.setStatusProduct(statusProduct);
+        productService.saveProductDto(product);
     }
 }
 

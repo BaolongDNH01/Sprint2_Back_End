@@ -38,7 +38,7 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     UserService userService;
 
-    private ProductDto convertToProductDto(Product product){
+    private ProductDto convertToProductDto(Product product) {
         ProductDto productDto = new ProductDto();
         productDto.setProductId(product.getProductId());
         productDto.setProductName(product.getProductName());
@@ -66,13 +66,13 @@ public class ProductServiceImpl implements ProductService {
         List<ImageProduct> imageProductList = product.getImageProductList();
         List<Integer> id = new ArrayList<>();
         String imgUrl = null;
-        for (ImageProduct img: imageProductList) {
-                    id.add(img.getImageId());
-                    imgUrl = img.getImageURL();
+        for (ImageProduct img : imageProductList) {
+            id.add(img.getImageId());
+            imgUrl = img.getImageURL();
         }
         productDto.setImageURL(imgUrl);
         productDto.setListImageProduct(id);
-
+        productDto.setDatePost(product.getDatePost());
 
         return productDto;
 

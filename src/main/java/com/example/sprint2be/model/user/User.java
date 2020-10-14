@@ -28,7 +28,7 @@ public class User {
     private String birthday;
     private String address;
     private String idCard;
-    private Integer point;
+    private double point;
     private String signInRecent;
     private String avatar;
     private String flag;
@@ -124,11 +124,11 @@ public class User {
         this.idCard = idCard;
     }
 
-    public Integer getPoint() {
+    public double getPoint() {
         return point;
     }
 
-    public void setPoint(Integer point) {
+    public void setPoint(double point) {
         this.point = point;
     }
 

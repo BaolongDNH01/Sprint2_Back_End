@@ -23,12 +23,12 @@ public class Cart {
     private String cartStatus;
 
     // Relationship with User
-    @OneToOne(mappedBy = "cart")
+    @OneToOne(mappedBy = "cart", cascade = CascadeType.DETACH)
     @JsonBackReference
     private User user;
 
     // Thien: Setup relationship Order
-    @OneToMany(mappedBy = "cart")
+    @OneToMany(mappedBy = "cart", mappedBy = "cart", cascade = CascadeType.DETACH)
     private List<Order> listOrder;
 
     // Thien: Relationship with CartItem (1-n)

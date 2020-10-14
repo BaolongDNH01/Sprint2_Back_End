@@ -9,23 +9,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 
 import java.net.URI;
-@Service("captchaServiceV3")
+@Service("captchaService")
 public class CaptchaService extends AbstractCaptchaService {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(CaptchaService.class);
 
-    public static final String REGISTER_ACTION = "register";
-
     @Override
-    public void processResponse(String response, final String action) throws ReCaptchaInvalidException {
+    public void processResponse(final String response) {
         securityCheck(response);
 
         final URI verifyUri = URI.create(String.format(RECAPTCHA_URL_TEMPLATE, getReCaptchaSecret(), response, getClientIP()));
         try {
             final GoogleResponse googleResponse = restTemplate.getForObject(verifyUri, GoogleResponse.class);
-            LOGGER.debug("Google's response: {} ", googleResponse.toString());
-
-            if (!googleResponse.isSuccess() || !googleResponse.getAction().equals(action) || googleResponse.getScore() < captchaSettings.getThreshold()) {
+            LOGGER.debug("Google's response: {} ", googleResponse);
+            assert googleResponse != null;
+            if (!googleResponse.isSuccess()) {
                 if (googleResponse.hasClientError()) {
                     reCaptchaAttemptService.reCaptchaFailed(getClientIP());
                 }

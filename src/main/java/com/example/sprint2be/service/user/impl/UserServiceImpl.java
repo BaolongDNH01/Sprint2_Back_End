@@ -44,15 +44,8 @@ public class UserServiceImpl implements UserService {
         Set<Role> roles = new HashSet<>();
         roles.add(roleRepository.findById(2).orElse(null));
         user.setRoles(roles);
-        List<Rank> ranks = rankService.findAll();
         Rank newUserRank = rankService.findById(1);
         user.setRank(newUserRank);
-//        for (Rank rank: ranks){
-//            if (rank.getName().equals(userDto.getRank())) {
-//                newUserRank = rankService.findById(rank.getRankId());
-//                user.setRank(newUserRank);
-//            }
-//        }
         user.setConfirmPassword(userDto.getConfirmPassword());
         user.setEnabled(userDto.getEnabled());
 
@@ -147,7 +140,7 @@ public class UserServiceImpl implements UserService {
                 @Override
                 public void run() {
                     userDto.setFlag("true");
-                    userDto.setPoint(10);
+                    userDto.setPoint(10.0);
                     userDto.setRank("Đồng");
                     Date today = new Date(System.currentTimeMillis());
                     SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss dd/MM/yyyy");
@@ -224,7 +217,7 @@ public class UserServiceImpl implements UserService {
     public void unlockUser(List<UserDto> userDtoList) {
         for (UserDto userDto: userDtoList){
             userDto.setFlag("true");
-            userDto.setPoint(10);
+            userDto.setPoint(10.0);
             userDto.setRank("Đồng");
             Date today = new Date(System.currentTimeMillis());
             SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss dd/MM/yyyy");

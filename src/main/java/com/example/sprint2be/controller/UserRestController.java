@@ -5,6 +5,7 @@ import com.example.sprint2be.model.auction.dto.UserBidderDto;
 import com.example.sprint2be.model.login_msg.request.Login;
 import com.example.sprint2be.model.login_msg.response.JwtResponse;
 import com.example.sprint2be.model.token.TokenDto;
+import com.example.sprint2be.model.user.ChangePassword;
 import com.example.sprint2be.model.user.RecoverPassword;
 import com.example.sprint2be.model.user.User;
 import com.example.sprint2be.model.user.UserDto;
@@ -68,7 +69,7 @@ public class UserRestController {
         User user = userService.findByUsername(loginRequest.getUsername());
 //
         if (!user.getEnabled().equals("false")) {
-            if (user.getSignInRecent() != null && user.getUserId() != 1){
+            if ((user.getSignInRecent() != null) && (user.getRank().getRankId() != 1)){
                 userService.increasePoint(user, userService.pointReductionNoLogin(user) * (-50));
             }
             Authentication authentication = authManager.authenticate(
@@ -149,7 +150,7 @@ public class UserRestController {
                     "Bạn vừa yêu cầu phục hồi lại mật khẩu đăng nhập của tài khoản: " + recoverPassword.getUsername() + "\n" +
                             "Mã Xác Nhận: " + confirmCode + "\n" +
                             "Xin sử dụng đường dẫn sau đây và nhập vào mã xác nhận trong email này để có thể thực hiệc việc đặt lại mật khẩu mới:" +
-                            " http://localhost:4200/recover-password?username" + recoverPassword.getUsername() +"\n"+
+                            " http://localhost:4200/recover-password/" + recoverPassword.getUsername() +"\n"+
                             "Nếu đây không phải là bạn, xin hãy đăng nhập và thực hiện thay đổi mật khẩu hiện tại.");
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
@@ -157,8 +158,8 @@ public class UserRestController {
         }
     }
 
-    @PostMapping("/check-code/{confirmCode}")
-    public ResponseEntity<?> checkConfirmCode(@PathVariable String confirmCode, @RequestParam String username) {
+    @GetMapping("/check-code/{confirmCode}/{username}")
+    public ResponseEntity<?> checkConfirmCode(@PathVariable String confirmCode, @PathVariable String username) {
         Optional<RecoverPassword> checkExist = recoverPasswordService.loadByConfirmCode(confirmCode);
         if ((checkExist.isPresent()) && (checkExist.get().getUsername().equals(username))) {
             User user = userService.findByUsername(checkExist.get().getUsername());
@@ -169,9 +170,9 @@ public class UserRestController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @PostMapping("/change-password/{username}")
-    public ResponseEntity<?> changePassword(@PathVariable String username, @RequestParam String password) {
-        if (Boolean.TRUE.equals(userService.changePassword(username, password))) {
+    @PostMapping("/change-password")
+    public ResponseEntity<?> changePassword(@RequestBody ChangePassword changePassword) {
+        if (Boolean.TRUE.equals(userService.changePassword(changePassword.getUsername(), changePassword.getPassword()))) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
@@ -191,17 +192,16 @@ public class UserRestController {
     }
 
     @PostMapping("/register")
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto, BindingResult bindingResult,
                                               HttpServletRequest request) {
-//        String response = request.getParameter("g-recaptcha-response");
-//        if (response.isEmpty()){
-//            return new ResponseEntity<>(HttpStatus.CONFLICT);
-//        }
-//        System.out.println(response);
-//        captchaService.processResponse(response, CaptchaService.REGISTER_ACTION);
+        String response = request.getParameter("g-recaptcha-response");
+        if (response.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+        captchaService.processResponse(response);
         User user = userService.findByUsername(userDto.getUsername());
-        if (null != user) {
+        if (user != null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -256,5 +256,14 @@ public class UserRestController {
     public ResponseEntity<Void> increasePoint (@PathVariable double point, @RequestBody Integer id){
         userService.increasePoint(userService.findByIdUser(id), point);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/delete-code/{username}")
+    public ResponseEntity<Void> deleteConfirmCode(@PathVariable String username){
+        RecoverPassword recoverPassword = recoverPasswordService.loadByUsername(username).orElse(null);
+        if (recoverPassword != null) {
+            recoverPasswordService.delete(recoverPassword);
+        }
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 }

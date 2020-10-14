@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -42,7 +43,7 @@ public class ProductController {
 
     @Autowired
     BidderRepository bidderRepository;
-
+    @PreAuthorize("hasRole('MEMBER') or hasRole('ADMIN')")
     @PostMapping("/create-product")
     public ResponseEntity<Product> createProduct(@RequestBody ProductDto product, UriComponentsBuilder builder) {
 //        khanh them truong ngay post san pham

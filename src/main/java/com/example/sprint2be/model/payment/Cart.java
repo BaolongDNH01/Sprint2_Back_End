@@ -28,7 +28,7 @@ public class Cart {
     private User user;
 
     // Thien: Setup relationship Order
-    @OneToMany(mappedBy = "cart", mappedBy = "cart", cascade = CascadeType.DETACH)
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.DETACH)
     private List<Order> listOrder;
 
     // Thien: Relationship with CartItem (1-n)

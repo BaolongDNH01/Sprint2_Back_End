@@ -37,7 +37,6 @@ public class User {
     private String confirmPassword;
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "rankId")
-//    @JsonIgnore
     private Rank rank;
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinTable (
@@ -45,7 +44,6 @@ public class User {
             joinColumns = @JoinColumn(name="user_id"),
             inverseJoinColumns = @JoinColumn(name="role_id")
     )
-    @JsonIgnore
     private Set<Role> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "userId", cascade = CascadeType.DETACH)

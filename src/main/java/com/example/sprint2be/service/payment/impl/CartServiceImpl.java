@@ -3,7 +3,9 @@ package com.example.sprint2be.service.payment.impl;
 import com.example.sprint2be.model.payment.Cart;
 import com.example.sprint2be.model.payment.CartDTO;
 import com.example.sprint2be.model.payment.CartItem;
+import com.example.sprint2be.model.payment.CartResponseDTO;
 import com.example.sprint2be.model.product.Product;
+import com.example.sprint2be.model.product.dto.ProductDto;
 import com.example.sprint2be.repository.payment.CartRepository;
 import com.example.sprint2be.service.payment.CartService;
 import com.example.sprint2be.service.payment.constant.ECartItemStatus;
@@ -97,6 +99,45 @@ public class CartServiceImpl implements CartService {
             save(cart);
         }
         return optionalCart;
+    }
+
+    @Override
+    public CartResponseDTO parse(Integer id) {
+        Optional<Cart> optionalCart = cartRepository.findCartByUser_UserId(id);
+        CartResponseDTO cartResponseDTO = new CartResponseDTO();
+        if (optionalCart.isPresent()) {
+            Cart cart = optionalCart.get();
+            double total = 0.0;
+
+            // Thien: Check cart empty
+            if(cart.getCartItemList().isEmpty()) {
+                cart.setCartStatus(ECartStatus.CART_EMPTY.name());
+                cart.setCurrentTotalPrice(total);
+            } else {
+                cart.setCartStatus(ECartStatus.CART_EXIST_ITEM.name());
+                List<CartItem> cartItemsList = cart.getCartItemList();
+
+                cartItemsList.removeIf(item -> item.getCartItemStatus().equalsIgnoreCase(ECartItemStatus.ITEM_REMOVED.name()));
+
+                for(CartItem item : cartItemsList) {
+                    total += item.getWinPrice();
+                }
+            }
+            cart.setCurrentTotalPrice(total);
+            save(cart);
+
+            for(CartItem item: cart.getCartItemList()) {
+                cartResponseDTO.getProductList().add(item.getProduct());
+            }
+
+
+
+            cartResponseDTO.setCartId(cart.getCartId());
+            cartResponseDTO.setCurrentTotalPrice(total);
+//            cartResponseDTO.setProductList(productService.findAllByCartItem);
+        }
+        return cartResponseDTO;
+
     }
 
     @Override

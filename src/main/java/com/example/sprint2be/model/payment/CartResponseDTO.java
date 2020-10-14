@@ -1,53 +1,32 @@
 package com.example.sprint2be.model.payment;
 
-import com.example.sprint2be.model.user.User;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.example.sprint2be.model.product.Product;
 
-import javax.persistence.*;
-import java.io.Serializable;
 import java.util.List;
 
-@Entity
-@Table(name = "cart")
-public class Cart implements Serializable {
+public class CartResponseDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer cartId;
 
-    @Column
     private Double currentTotalPrice;
 
-    //Thien: This field is setting for locked / unlocked user
-    @Column
     private String cartStatus;
 
-    // Relationship with User
-    @OneToOne(mappedBy = "cart", cascade = CascadeType.DETACH)
-    @JsonBackReference
-    private User user;
-
-    // Thien: Setup relationship Order
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.DETACH)
     private List<Order> listOrder;
 
-    // Thien: Relationship with CartItem (1-n)
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.DETACH)
-//    @JsonIgnoreProperties(value = "cart")
-    @JsonManagedReference
     private List<CartItem> cartItemList;
 
-    public Cart() {
+    private List<Product> productList;
+
+    public CartResponseDTO() {
     }
 
-    public Cart(Double currentTotalPrice, String cartStatus, User user, List<Order> listOrder, List<CartItem> cartItemList) {
+    public CartResponseDTO(Double currentTotalPrice, String cartStatus, List<Order> listOrder, List<CartItem> cartItemList, List<Product> productList) {
         this.currentTotalPrice = currentTotalPrice;
         this.cartStatus = cartStatus;
-        this.user = user;
         this.listOrder = listOrder;
         this.cartItemList = cartItemList;
+        this.productList = productList;
     }
 
     public Integer getCartId() {
@@ -74,14 +53,6 @@ public class Cart implements Serializable {
         this.cartStatus = cartStatus;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public List<Order> getListOrder() {
         return listOrder;
     }
@@ -96,5 +67,13 @@ public class Cart implements Serializable {
 
     public void setCartItemList(List<CartItem> cartItemList) {
         this.cartItemList = cartItemList;
+    }
+
+    public List<Product> getProductList() {
+        return productList;
+    }
+
+    public void setProductList(List<Product> productList) {
+        this.productList = productList;
     }
 }

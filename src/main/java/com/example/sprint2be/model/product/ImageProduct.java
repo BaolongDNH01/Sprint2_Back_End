@@ -1,5 +1,7 @@
 package com.example.sprint2be.model.product;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -13,6 +15,7 @@ public class ImageProduct {
 
     @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "product_id")
+    @JsonIgnore
     private Product product;
 
     public Integer getImageId() {

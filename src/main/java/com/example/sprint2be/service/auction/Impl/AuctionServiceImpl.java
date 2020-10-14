@@ -49,7 +49,7 @@ public class AuctionServiceImpl implements AuctionService {
         auctionDto.setProductId(product.getProductId());
         auctionDto.setProductName(product.getProductName());
         auctionDto.setEachIncrease(product.getEachIncrease());
-
+        auctionDto.setInitialPrice(product.getInitialPrice());
 
         StatusAuction statusAuction = auction.getStatusAuction();
         auctionDto.setStatusId(statusAuction.getStatusId());

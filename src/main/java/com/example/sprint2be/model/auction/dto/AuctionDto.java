@@ -14,7 +14,7 @@ public class AuctionDto {
     private Double eachIncrease;
     private Integer auctionTime;
     private List<Integer> bidderListId;
-
+    private Double initialPrice;
     public AuctionDto() {
 
     }
@@ -108,5 +108,13 @@ public class AuctionDto {
 
     public void setStatusName(String statusName) {
         this.statusName = statusName;
+    }
+
+    public Double getInitialPrice() {
+        return initialPrice;
+    }
+
+    public void setInitialPrice(Double initialPrice) {
+        this.initialPrice = initialPrice;
     }
 }

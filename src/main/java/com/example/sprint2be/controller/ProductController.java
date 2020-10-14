@@ -178,6 +178,11 @@ public class ProductController {
         List<ImageProductDto> imageProductDtos = imageProductService.findImageProductsByProduct(id);
         return new ResponseEntity<>(imageProductDtos, HttpStatus.OK);
     }
+
+    @GetMapping("/get-bidder-max/{id}")
+    public ResponseEntity<Integer> getBidderMax(@PathVariable Integer id) {
+        return new ResponseEntity<>(bidderRepository.getMaxBidderByAuctionId(id), HttpStatus.OK);
+    }
 }
 
 

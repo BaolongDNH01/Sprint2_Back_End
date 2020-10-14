@@ -2,7 +2,7 @@ package com.example.sprint2be.controller;
 
 import com.example.sprint2be.exceptions.ResourceNotFoundException;
 import com.example.sprint2be.model.payment.Cart;
-import com.example.sprint2be.model.payment.CartDto;
+import com.example.sprint2be.model.payment.CartDTO;
 import com.example.sprint2be.model.payment.CartItem;
 import com.example.sprint2be.model.payment.CartItemDTO;
 import com.example.sprint2be.service.payment.CartItemService;
@@ -31,6 +31,9 @@ public class CartController {
         Cart cart = cartService
                 .findCartByUserId(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Cart not found"));
+        for(CartItem item : cart.getCartItemList()) {
+            System.out.println(item.getProduct().getProductName());
+        }
         return ResponseEntity.ok(cart);
     }
 
@@ -59,7 +62,7 @@ public class CartController {
 
     // Chau => GetAllCart and GetAllCartItem
     @GetMapping("/getAllCart")
-    public ResponseEntity<List<CartDto>> getAllCartDto() {
+    public ResponseEntity<List<CartDTO>> getAllCartDto() {
         return new ResponseEntity<>(this.cartService.findAllCartDto(), HttpStatus.OK);
     }
 

@@ -7,6 +7,7 @@ import com.example.sprint2be.model.user.User;
 import com.example.sprint2be.model.user.UserDto;
 import com.example.sprint2be.repository.RoleRepository;
 import com.example.sprint2be.repository.UserRepository;
+import com.example.sprint2be.service.payment.constant.ECartStatus;
 import com.example.sprint2be.service.rank.RankService;
 import com.example.sprint2be.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,9 +58,8 @@ public class UserServiceImpl implements UserService {
 
         // Thien: Add cart when user is created
         Cart cart = new Cart();
-        cart.setShipCost(30000.0);
-        cart.setTotalPrice(0.0);
-        cart.setStatus(true);
+        cart.setCurrentTotalPrice(0.0);
+        cart.setCartStatus(ECartStatus.CART_ENABLED.name());
 
         user.setCart(cart);
         return user;

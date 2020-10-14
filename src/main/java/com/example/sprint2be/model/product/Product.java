@@ -3,6 +3,7 @@ package com.example.sprint2be.model.product;
 
 
 import com.example.sprint2be.model.auction.Auction;
+import com.example.sprint2be.model.payment.CartItem;
 import com.example.sprint2be.model.user.User;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;

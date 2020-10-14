@@ -2,7 +2,10 @@ package com.example.sprint2be.model.payment;
 
 import com.example.sprint2be.model.auction.Auction;
 import com.example.sprint2be.model.product.Product;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 
@@ -13,9 +16,6 @@ public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer cartItemId;
-
-    @Column
-    private boolean isDeleted;
 
     @Column
     private int quantity;
@@ -29,7 +29,7 @@ public class CartItem {
     private Auction auction;
 
     @Column
-    private String status;
+    private String cartItemStatus;
 
     // Relationship with Cart
     @ManyToOne(targetEntity = Cart.class, cascade = CascadeType.DETACH)
@@ -46,12 +46,11 @@ public class CartItem {
     public CartItem() {
     }
 
-    public CartItem(boolean isDeleted, int quantity, double winPrice, Auction auction, String status, Cart cart, Product product) {
-        this.isDeleted = isDeleted;
+    public CartItem(int quantity, double winPrice, Auction auction, String cartItemStatus, Cart cart, Product product) {
         this.quantity = quantity;
         this.winPrice = winPrice;
         this.auction = auction;
-        this.status = status;
+        this.cartItemStatus = cartItemStatus;
         this.cart = cart;
         this.product = product;
     }
@@ -64,28 +63,12 @@ public class CartItem {
         this.cartItemId = cartItemId;
     }
 
-    public boolean isDeleted() {
-        return isDeleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        isDeleted = deleted;
-    }
-
     public int getQuantity() {
         return quantity;
     }
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
-    }
-
-    public Cart getCart() {
-        return cart;
-    }
-
-    public void setCart(Cart cart) {
-        this.cart = cart;
     }
 
     public double getWinPrice() {
@@ -104,12 +87,20 @@ public class CartItem {
         this.auction = auction;
     }
 
-    public String getStatus() {
-        return status;
+    public String getCartItemStatus() {
+        return cartItemStatus;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setCartItemStatus(String cartItemStatus) {
+        this.cartItemStatus = cartItemStatus;
+    }
+
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
     }
 
     public Product getProduct() {

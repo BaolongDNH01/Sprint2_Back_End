@@ -8,6 +8,7 @@ import com.example.sprint2be.model.user.User;
 import com.example.sprint2be.repository.RankRepository;
 import com.example.sprint2be.repository.RoleRepository;
 import com.example.sprint2be.repository.UserRepository;
+import com.example.sprint2be.service.payment.constant.ECartStatus;
 import com.example.sprint2be.service.security.JwtEntryPoint;
 import com.example.sprint2be.service.security.JwtFilter;
 import com.example.sprint2be.service.user.impl.UserDetailsServiceImpl;
@@ -127,8 +128,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // Thien: Create member account to test feature
                 User member = new User();
                 Cart cartForMember = new Cart();
-                cartForMember.setShipCost(30000.0);
-                cartForMember.setTotalPrice(0.0);
+                cartForMember.setCurrentTotalPrice(0.0);
+                cartForMember.setCartStatus(ECartStatus.CART_ENABLED.name());
 
                
 

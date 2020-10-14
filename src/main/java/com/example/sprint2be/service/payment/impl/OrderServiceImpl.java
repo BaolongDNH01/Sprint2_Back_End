@@ -1,16 +1,14 @@
 package com.example.sprint2be.service.payment.impl;
 
-import com.example.sprint2be.model.constant.ECartItemStatus;
-import com.example.sprint2be.model.constant.EOrderStatus;
 import com.example.sprint2be.model.payment.Cart;
 import com.example.sprint2be.model.payment.CartItem;
 import com.example.sprint2be.model.payment.Order;
 import com.example.sprint2be.model.payment.OrderDTO;
 import com.example.sprint2be.model.user.User;
-import com.example.sprint2be.repository.UserRepository;
 import com.example.sprint2be.repository.payment.OrderRepository;
 import com.example.sprint2be.service.payment.CartService;
 import com.example.sprint2be.service.payment.OrderService;
+import com.example.sprint2be.service.payment.constant.ECartItemStatus;
 import com.example.sprint2be.service.user.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,14 +45,14 @@ public class OrderServiceImpl implements OrderService {
         User owner = userService.findByIdUser(orderDTO.getCartId());
 
         if (cart != null) {
-            cart.setStatus(false);
+//            cart.setStatus(false);
             List<CartItem> cartItemList = cart.getCartItemList();
-            cartItemList.removeIf(item -> !item.getStatus().equals(ECartItemStatus.ITEM_ENABLED.name()));
+//            cartItemList.removeIf(item -> !item.getStatus().equals(ECartItemStatus.ITEM_ENABLED.name()));
             for (CartItem item : cartItemList) {
-                item.setStatus(ECartItemStatus.ITEM_PAID.name());
+//                item.setStatus(ECartItemStatus.ITEM_PAID.name());
             }
             order.setCart(cart);
-            order.setOrderStatus(EOrderStatus.ORDER_ASSIGNED.name());
+//            order.setOrderStatus(EOrderStatus.ORDER_ASSIGNED.name());
             order.setDeliveryDate((LocalDate.now()).toString());
             order.setOrderCode("ORD" + Math.random() * 1000000);
 
@@ -62,7 +60,7 @@ public class OrderServiceImpl implements OrderService {
 
             Cart cartFreshed = new Cart();
 
-            cartFreshed.setStatus(true);
+//            cartFreshed.setStatus(true);
             owner.setCart(cartFreshed);
         }
     }

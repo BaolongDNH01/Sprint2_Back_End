@@ -4,6 +4,7 @@ import com.example.sprint2be.model.product.Product;
 import com.example.sprint2be.model.product.dto.ProductDto;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ProductService {
     List<ProductDto> findAllProduct();
@@ -15,4 +16,7 @@ public interface ProductService {
 
 //    khanh
     List<ProductDto> findAllProductByUser(String userName);
+
+    // Thien
+    Optional<Product> findProductByUserId(Integer userId);
 }

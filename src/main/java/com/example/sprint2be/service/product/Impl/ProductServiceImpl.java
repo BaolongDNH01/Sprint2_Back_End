@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -129,5 +130,10 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductDto> findAllProductByUser(String userName) {
         User user = userRepository.findByUsername(userName).orElse(new User());
         return productRepository.findProductsByUserId(user).stream().map(this::convertToProductDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<Product> findProductByUserId(Integer userId) {
+        return productRepository.findProductByUserId(userId);
     }
 }

@@ -1,12 +1,14 @@
 package com.example.sprint2be.service.payment.impl;
 
 import com.example.sprint2be.model.payment.Cart;
-import com.example.sprint2be.model.payment.CartDto;
+import com.example.sprint2be.model.payment.CartDTO;
 import com.example.sprint2be.model.payment.CartItem;
-import com.example.sprint2be.model.payment.CartItemDTO;
+import com.example.sprint2be.model.product.Product;
 import com.example.sprint2be.repository.payment.CartRepository;
 import com.example.sprint2be.service.payment.CartService;
 import com.example.sprint2be.service.payment.constant.ECartItemStatus;
+import com.example.sprint2be.service.payment.constant.ECartStatus;
+import com.example.sprint2be.service.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,12 +22,18 @@ public class CartServiceImpl implements CartService {
     @Autowired
     CartRepository cartRepository;
 
-    private CartDto convertToCartDto(Cart cart) {
-        CartDto cartDto = new CartDto();
+    @Autowired
+    ProductService productService;
+
+    // Chau
+    private CartDTO convertToCartDto(Cart cart) {
+        CartDTO cartDto = new CartDTO();
         cartDto.setCartId(cart.getCartId());
-        cartDto.setShipCost(cart.getShipCost());
-        cartDto.setStatus(cart.isStatus());
-        cartDto.setTotalPrice(cart.getTotalPrice());
+        // Thien: Change field of this table
+        // cartDto.setShipCost(cart.getShipCost());
+
+        cartDto.setCartStatus(cart.getCartStatus());
+        cartDto.setCurrentTotalPrice(cart.getCurrentTotalPrice());
         return cartDto;
     }
 
@@ -40,10 +48,6 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void addItemToCart(CartItem item) {
-    }
-
-    @Override
     public Optional<Cart> findById(Integer cartId) {
         return cartRepository.findById(cartId);
     }
@@ -51,43 +55,52 @@ public class CartServiceImpl implements CartService {
     @Override
     public Double updateTotalPrice(Integer idCart) {
         Optional<Cart> optionalCart = cartRepository.findById(idCart);
-        if (optionalCart.isPresent()) {
-            Cart cart = optionalCart.get();
-            double totalPriceUpdate = 0.0;
-
-            for (CartItem item : cart.getCartItemList()) {
-                if (item.getStatus().equalsIgnoreCase(ECartItemStatus.ITEM_ENABLED.name())) {
-                    totalPriceUpdate += item.getWinPrice();
-                }
-            }
-            cart.setTotalPrice(totalPriceUpdate);
-            cartRepository.save(cart);
-            return totalPriceUpdate;
-        }
+//        if (optionalCart.isPresent()) {
+//            Cart cart = optionalCart.get();
+//            double totalPriceUpdate = 0.0;
+//
+//            for (CartItem item : cart.getCartItemList()) {
+//                if (item.getStatus().equalsIgnoreCase(ECartItemStatus.ITEM_ENABLED.name())) {
+//                    totalPriceUpdate += item.getWinPrice();
+//                }
+//            }
+//            cart.setTotalPrice(totalPriceUpdate);
+//            cartRepository.save(cart);
+//            return totalPriceUpdate;
+//        }
         return null;
     }
 
     @Override
     public Optional<Cart> findCartByUserId(Integer id) {
         Optional<Cart> optionalCart = cartRepository.findCartByUser_UserId(id);
-        double totalPrice = 0.0;
+
         if (optionalCart.isPresent()) {
             Cart cart = optionalCart.get();
-            List<CartItem> cartItemsList = cart.getCartItemList();
-            cartItemsList.removeIf(item -> !item.getStatus().equals(ECartItemStatus.ITEM_ENABLED.name()));
-            totalPrice += cart.getShipCost();
+            double total = 0.0;
 
-            for(CartItem item : cartItemsList) {
-                totalPrice += item.getWinPrice();
+            // Thien: Check cart empty
+            if(cart.getCartItemList().isEmpty()) {
+                cart.setCartStatus(ECartStatus.CART_EMPTY.name());
+                cart.setCurrentTotalPrice(total);
+            } else {
+                cart.setCartStatus(ECartStatus.CART_EXIST_ITEM.name());
+                List<CartItem> cartItemsList = cart.getCartItemList();
+
+                cartItemsList.removeIf(item -> item.getCartItemStatus().equalsIgnoreCase(ECartItemStatus.ITEM_REMOVED.name()));
+
+                for(CartItem item : cartItemsList) {
+                    total += item.getWinPrice();
+                }
             }
-            cart.setTotalPrice(totalPrice);
-            cartRepository.save(cart);
+            cart.setCurrentTotalPrice(total);
+            save(cart);
         }
         return optionalCart;
     }
 
     @Override
-    public List<CartDto> findAllCartDto() {
+    public List<CartDTO> findAllCartDto() {
         return (this.cartRepository.findAll().stream().map(this::convertToCartDto).collect(Collectors.toList()));
     }
 }

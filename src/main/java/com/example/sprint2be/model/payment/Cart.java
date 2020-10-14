@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "cart")
@@ -17,14 +16,11 @@ public class Cart {
     private Integer cartId;
 
     @Column
-    private Double shipCost;
-
-    @Column
-    private Double totalPrice;
+    private Double currentTotalPrice;
 
     //Thien: This field is setting for locked / unlocked user
     @Column
-    private boolean status;
+    private String cartStatus;
 
     // Relationship with User
     @OneToOne(mappedBy = "cart")
@@ -33,9 +29,9 @@ public class Cart {
 
     // Thien: Setup relationship Order
     @OneToMany(mappedBy = "cart")
-    private Set<Order> orderSet;
+    private List<Order> listOrder;
 
-    // Relationship with CartItem (1-n)
+    // Thien: Relationship with CartItem (1-n)
     @OneToMany(mappedBy = "cart", cascade = CascadeType.DETACH)
     @JsonIgnoreProperties(value = "cart")
     private List<CartItem> cartItemList;
@@ -43,12 +39,11 @@ public class Cart {
     public Cart() {
     }
 
-    public Cart(Double shipCost, Double totalPrice, boolean status, User user, Set<Order> orderSet, List<CartItem> cartItemList) {
-        this.shipCost = shipCost;
-        this.totalPrice = totalPrice;
-        this.status = status;
+    public Cart(Double currentTotalPrice, String cartStatus, User user, List<Order> listOrder, List<CartItem> cartItemList) {
+        this.currentTotalPrice = currentTotalPrice;
+        this.cartStatus = cartStatus;
         this.user = user;
-        this.orderSet = orderSet;
+        this.listOrder = listOrder;
         this.cartItemList = cartItemList;
     }
 
@@ -60,28 +55,20 @@ public class Cart {
         this.cartId = cartId;
     }
 
-    public Double getShipCost() {
-        return shipCost;
+    public Double getCurrentTotalPrice() {
+        return currentTotalPrice;
     }
 
-    public void setShipCost(Double shipCost) {
-        this.shipCost = shipCost;
+    public void setCurrentTotalPrice(Double currentTotalPrice) {
+        this.currentTotalPrice = currentTotalPrice;
     }
 
-    public Double getTotalPrice() {
-        return totalPrice;
+    public String getCartStatus() {
+        return cartStatus;
     }
 
-    public void setTotalPrice(Double totalPrice) {
-        this.totalPrice = totalPrice;
-    }
-
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
+    public void setCartStatus(String cartStatus) {
+        this.cartStatus = cartStatus;
     }
 
     public User getUser() {
@@ -92,12 +79,12 @@ public class Cart {
         this.user = user;
     }
 
-    public Set<Order> getOrderSet() {
-        return orderSet;
+    public List<Order> getListOrder() {
+        return listOrder;
     }
 
-    public void setOrderSet(Set<Order> orderSet) {
-        this.orderSet = orderSet;
+    public void setListOrder(List<Order> listOrder) {
+        this.listOrder = listOrder;
     }
 
     public List<CartItem> getCartItemList() {

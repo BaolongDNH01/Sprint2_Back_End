@@ -66,8 +66,8 @@ public class AuctionController {
     }
 
     @GetMapping("/auction/{id}")
-    public ResponseEntity<Auction> findByIdDto(@PathVariable Integer id) {
-        return new ResponseEntity<>(auctionService.findById(id), HttpStatus.OK);
+    public ResponseEntity<AuctionDto> findByIdDto(@PathVariable Integer id) {
+        return new ResponseEntity<>(auctionService.findByIdDto(id), HttpStatus.OK);
     }
 
     @GetMapping("/getAllStatusAuction")

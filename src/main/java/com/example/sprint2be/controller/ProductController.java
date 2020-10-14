@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -79,6 +80,7 @@ public class ProductController {
     }
 
     @GetMapping("/getAllProduct")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<ProductDto>> getAllProduct() {
         return new ResponseEntity<>(productService.findAllProduct(), HttpStatus.OK);
     }
@@ -138,6 +140,7 @@ public class ProductController {
     }
 
     @PostMapping("/deleteProducts")
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteProducts(@RequestBody Integer[] list) {
         for (int delCount : list) {
             productService.delete(delCount);

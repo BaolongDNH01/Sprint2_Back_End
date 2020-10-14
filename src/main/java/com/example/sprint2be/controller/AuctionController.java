@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -71,6 +72,7 @@ public class AuctionController {
     }
 
     @GetMapping("/getAllStatusAuction")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<StatusAuctionDto>> getAllStatusAuction(){
         return new ResponseEntity<>(this.statusAuctionService.findAllStatusAuctionDto(), HttpStatus.OK);
     }

@@ -69,5 +69,11 @@ public class ImageProductServiceImpl implements ImageProductService {
         imageProductRepository.save(imageProduct);
     }
 
+    @Override
+    public List<ImageProductDto> findImageProductsByProduct(Integer id) {
+        Product product =productRepository.findById(id).orElse(new Product());
+        return imageProductRepository.findImageProductsByProduct(product).stream().map(this::convertToImageDto).collect(Collectors.toList());
+    }
+
 
 }

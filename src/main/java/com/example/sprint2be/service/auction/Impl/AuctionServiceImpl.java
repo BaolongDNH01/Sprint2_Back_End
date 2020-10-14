@@ -4,7 +4,6 @@ import com.example.sprint2be.model.auction.Auction;
 import com.example.sprint2be.model.auction.StatusAuction;
 import com.example.sprint2be.model.auction.dto.AuctionDto;
 import com.example.sprint2be.model.product.AuctionTime;
-import com.example.sprint2be.model.product.ImageProduct;
 import com.example.sprint2be.model.product.Product;
 import com.example.sprint2be.repository.auction.AuctionRepository;
 import com.example.sprint2be.repository.auction.StatusAuctionRepository;
@@ -50,12 +49,7 @@ public class AuctionServiceImpl implements AuctionService {
         auctionDto.setProductId(product.getProductId());
         auctionDto.setProductName(product.getProductName());
         auctionDto.setEachIncrease(product.getEachIncrease());
-
-        ImageProduct imageProduct = this.imageProductService.findById(product.getProductId());
-        auctionDto.setImageURL(imageProduct.getImageURL());
-
-        AuctionTime auctionTime = this.auctionTimeService.findById(product.getProductId());
-        auctionDto.setAuctionTime(auctionTime.getAuctionTime());
+        auctionDto.setInitialPrice(product.getInitialPrice());
 
         StatusAuction statusAuction = auction.getStatusAuction();
         auctionDto.setStatusId(statusAuction.getStatusId());

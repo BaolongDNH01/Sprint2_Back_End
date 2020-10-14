@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,7 +38,7 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     UserService userService;
 
-    private ProductDto convertToProductDto(Product product){
+    private ProductDto convertToProductDto(Product product) {
         ProductDto productDto = new ProductDto();
         productDto.setProductId(product.getProductId());
         productDto.setProductName(product.getProductName());
@@ -65,13 +66,13 @@ public class ProductServiceImpl implements ProductService {
         List<ImageProduct> imageProductList = product.getImageProductList();
         List<Integer> id = new ArrayList<>();
         String imgUrl = null;
-        for (ImageProduct img: imageProductList) {
-                    id.add(img.getImageId());
-                    imgUrl = img.getImageURL();
+        for (ImageProduct img : imageProductList) {
+            id.add(img.getImageId());
+            imgUrl = img.getImageURL();
         }
         productDto.setImageURL(imgUrl);
         productDto.setListImageProduct(id);
-
+        productDto.setDatePost(product.getDatePost());
 
         return productDto;
 
@@ -129,5 +130,10 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductDto> findAllProductByUser(String userName) {
         User user = userRepository.findByUsername(userName).orElse(new User());
         return productRepository.findProductsByUserId(user).stream().map(this::convertToProductDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<Product> findProductByUserId(Integer userId) {
+        return productRepository.findProductByUserId(userId);
     }
 }

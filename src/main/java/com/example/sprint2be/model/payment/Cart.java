@@ -16,32 +16,34 @@ public class Cart {
     private Integer cartId;
 
     @Column
-    private double totalPrice = 0;
+    private Double currentTotalPrice;
 
+    //Thien: This field is setting for locked / unlocked user
     @Column
-    private double shipCost = 0;
-
-    @Column
-    private boolean status;
+    private String cartStatus;
 
     // Relationship with User
-    @OneToOne(mappedBy = "cart")
+    @OneToOne(mappedBy = "cart", cascade = CascadeType.DETACH)
     @JsonBackReference
     private User user;
 
-    // Relationship with CartItem (1-n)
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
+    // Thien: Setup relationship Order
+    @OneToMany(mappedBy = "cart", mappedBy = "cart", cascade = CascadeType.DETACH)
+    private List<Order> listOrder;
+
+    // Thien: Relationship with CartItem (1-n)
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.DETACH)
     @JsonIgnoreProperties(value = "cart")
     private List<CartItem> cartItemList;
 
     public Cart() {
     }
 
-    public Cart(double totalPrice, double shipCost, boolean status, User user, List<CartItem> cartItemList) {
-        this.totalPrice = totalPrice;
-        this.shipCost = shipCost;
-        this.status = status;
+    public Cart(Double currentTotalPrice, String cartStatus, User user, List<Order> listOrder, List<CartItem> cartItemList) {
+        this.currentTotalPrice = currentTotalPrice;
+        this.cartStatus = cartStatus;
         this.user = user;
+        this.listOrder = listOrder;
         this.cartItemList = cartItemList;
     }
 
@@ -53,20 +55,20 @@ public class Cart {
         this.cartId = cartId;
     }
 
-    public double getTotalPrice() {
-        return totalPrice;
+    public Double getCurrentTotalPrice() {
+        return currentTotalPrice;
     }
 
-    public void setTotalPrice(double totalPrice) {
-        this.totalPrice = totalPrice;
+    public void setCurrentTotalPrice(Double currentTotalPrice) {
+        this.currentTotalPrice = currentTotalPrice;
     }
 
-    public double getShipCost() {
-        return shipCost;
+    public String getCartStatus() {
+        return cartStatus;
     }
 
-    public void setShipCost(double shipCost) {
-        this.shipCost = shipCost;
+    public void setCartStatus(String cartStatus) {
+        this.cartStatus = cartStatus;
     }
 
     public User getUser() {
@@ -77,19 +79,19 @@ public class Cart {
         this.user = user;
     }
 
+    public List<Order> getListOrder() {
+        return listOrder;
+    }
+
+    public void setListOrder(List<Order> listOrder) {
+        this.listOrder = listOrder;
+    }
+
     public List<CartItem> getCartItemList() {
         return cartItemList;
     }
 
     public void setCartItemList(List<CartItem> cartItemList) {
         this.cartItemList = cartItemList;
-    }
-
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
     }
 }

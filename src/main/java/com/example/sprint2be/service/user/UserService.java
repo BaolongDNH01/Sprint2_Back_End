@@ -21,13 +21,15 @@ public interface UserService {
     Boolean checkUsernameExist(String username);
     UserDto getUserByUserName(String userName);
     void editUser(UserDto user, String userName);
-    Boolean changePassword(Integer id, String password);
+    Boolean changePassword(String id, String password);
     boolean isCorrectConfirmPassword(UserDto userDto);
     UserDto findTopById();
     List<UserDto> findAllUserActivated();
     void unlockUser(List<UserDto> userDtoList);
     void deleteUser(List<String> ids);
     void updateUser(User user);
+    void increasePoint(User user, double point);
+    double pointReductionNoLogin(User user);
 }
 
 

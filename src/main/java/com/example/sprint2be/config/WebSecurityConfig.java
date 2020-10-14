@@ -8,6 +8,7 @@ import com.example.sprint2be.model.user.User;
 import com.example.sprint2be.repository.RankRepository;
 import com.example.sprint2be.repository.RoleRepository;
 import com.example.sprint2be.repository.UserRepository;
+import com.example.sprint2be.service.payment.constant.ECartStatus;
 import com.example.sprint2be.service.security.JwtEntryPoint;
 import com.example.sprint2be.service.security.JwtFilter;
 import com.example.sprint2be.service.user.impl.UserDetailsServiceImpl;
@@ -26,14 +27,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-
-import sun.util.calendar.BaseCalendar;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Configuration
@@ -94,43 +88,35 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     () -> new RuntimeException("Role doesn't exist")
                 ));
 
-
                 User admin = new User();
+                Cart cart = new Cart();
                 for (Role role: roles) {
                     System.out.println(role.getRoleName());
                 }
 
-//                User admin = new User(
-//                    adminUsername,
-////                    passwordEncoder.encode(adminPassword),
-////                    "ADMIN",
-////                    "admin@gmail.com",
-////                    "Da Nang",
-////                    "0123456799",
-////                    null,
-////                     roles
-//                );
 
-                String[] ranks = {"Đồng", "Bạc", "Bạch kim", "Kim cương"};
+
+                String[] ranks = {"Đồng", "Bạc", "Vàng", "Bạch kim", "Kim cương"};
+
                 for (String s : ranks) {
                     Rank rank = new Rank();
                     rank.setName(s);
                     rankRepository.save(rank);
                 }
-              
-                Rank defaultRank = new Rank();
-                defaultRank.setName("Incase");
-                rankRepository.save(defaultRank);
                 admin.setUsername(adminUsername);
                 admin.setPassword(passwordEncoder.encode(adminPassword));
                 admin.setFullName("ADMIN");
                 admin.setEmail("admin@gmail.com");
                 admin.setAddress("Da Nang");
                 admin.setPhone("0123456799");
-                admin.setAvatar(null);
+                admin.setAvatar("https://firebasestorage.googleapis.com/v0/b/real-estate-d8b23.appspot.com/o/mWBlKu8IIggRNhyUutW8?alt=media&token=7f0c3569-e638-4160-bdb5-28cf4dfe22eb");
                 admin.setIdCard("123456789012");
                 admin.setRoles(roles);
+
+                admin.setRank(rankRepository.findById(4).orElse(null));
+                admin.setEnabled("true");
                 admin.setRank(defaultRank);
+                admin.setCart(cart);
 
                 userRepository.save(admin);
 
@@ -142,22 +128,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // Thien: Create member account to test feature
                 User member = new User();
                 Cart cartForMember = new Cart();
+                cartForMember.setCurrentTotalPrice(0.0);
+                cartForMember.setCartStatus(ECartStatus.CART_ENABLED.name());
 
-                Rank defaultRank2 = new Rank();
-                defaultRank2.setName("Incase");
-                rankRepository.save(defaultRank2);
+               
+
                 member.setUsername("member");
                 member.setPassword(passwordEncoder.encode("123123"));
                 member.setFullName("MEMBER");
                 member.setEmail("member@gmail.com");
                 member.setAddress("Da Nang");
                 member.setPhone("0123456799");
-                member.setAvatar(null);
+                member.setAvatar("https://firebasestorage.googleapis.com/v0/b/real-estate-d8b23.appspot.com/o/mWBlKu8IIggRNhyUutW8?alt=media&token=7f0c3569-e638-4160-bdb5-28cf4dfe22eb");
                 member.setIdCard("123456789012");
                 member.setRoles(rolesForMember);
-                member.setRank(rankRepository.getOne(5));
+                member.setRank(rankRepository.findById(4).orElse(null));
                 member.setCart(cartForMember);
-
+                member.setEnabled("true");
+                member.setPoint(10);
                 userRepository.save(member);
             }
         };

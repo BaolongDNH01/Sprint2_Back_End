@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -28,7 +29,7 @@ public class AuctionController {
 
     @Autowired
     StatusAuctionService statusAuctionService;
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/create-auction")
     public ResponseEntity<Auction> createProduct(@RequestBody AuctionDto auction, UriComponentsBuilder builder) {
         auctionService.saveAuctionDto(auction);
@@ -48,7 +49,7 @@ public class AuctionController {
     public ResponseEntity<List<AuctionDto>> getAllAution() {
         return new  ResponseEntity<>(this.auctionService.findAllAuctionDto(), HttpStatus.OK);
     }
-
+    @PreAuthorize("hasRole('MEMBER') or hasRole('ADMIN')")
     @PostMapping("/create-bidder")
     public ResponseEntity<Bidder> createBidder(@RequestBody BidderDto bidder, UriComponentsBuilder builder) {
         bidderService.saveDto(bidder);
@@ -66,7 +67,7 @@ public class AuctionController {
     }
 
     @GetMapping("/auction/{id}")
-    public ResponseEntity<AuctionDto> findAuctionById(@PathVariable Integer id) {
+    public ResponseEntity<AuctionDto> findByIdDto(@PathVariable Integer id) {
         return new ResponseEntity<>(auctionService.findByIdDto(id), HttpStatus.OK);
     }
 

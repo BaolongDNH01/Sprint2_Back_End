@@ -1,6 +1,7 @@
 package com.example.sprint2be.controller;
 
 import com.example.sprint2be.model.auction.Bidder;
+import com.example.sprint2be.model.auction.dto.BidderDto;
 import com.example.sprint2be.model.auction.dto.UserBidderDto;
 import com.example.sprint2be.model.product.*;
 import com.example.sprint2be.model.product.dto.CategoryDto;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -41,7 +43,7 @@ public class ProductController {
 
     @Autowired
     BidderRepository bidderRepository;
-
+    @PreAuthorize("hasRole('MEMBER') or hasRole('ADMIN')")
     @PostMapping("/create-product")
     public ResponseEntity<Product> createProduct(@RequestBody ProductDto product, UriComponentsBuilder builder) {
 //        khanh them truong ngay post san pham
@@ -170,6 +172,17 @@ public class ProductController {
         StatusProduct statusProduct = statusProductService.findById(1);
         product.setStatusProduct(statusProduct);
         productService.saveProductDto(product);
+    }
+
+    @GetMapping(value = "/get-image-product/{id}")
+    public ResponseEntity<List<ImageProductDto>> getListImage(@PathVariable("id") Integer id) {
+        List<ImageProductDto> imageProductDtos = imageProductService.findImageProductsByProduct(id);
+        return new ResponseEntity<>(imageProductDtos, HttpStatus.OK);
+    }
+
+    @GetMapping("/get-bidder-max/{id}")
+    public ResponseEntity<Integer> getBidderMax(@PathVariable Integer id) {
+        return new ResponseEntity<>(bidderRepository.getMaxBidderByAuctionId(id), HttpStatus.OK);
     }
 }
 

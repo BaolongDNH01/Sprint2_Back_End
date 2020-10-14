@@ -12,10 +12,9 @@ public class AuctionDto {
     private Integer productId;
     private String productName;
     private Double eachIncrease;
-    private String imageURL;
     private Integer auctionTime;
     private List<Integer> bidderListId;
-
+    private Double initialPrice;
     public AuctionDto() {
 
     }
@@ -94,13 +93,6 @@ public class AuctionDto {
         this.eachIncrease = eachIncrease;
     }
 
-    public String getImageURL() {
-        return imageURL;
-    }
-
-    public void setImageURL(String imageURL) {
-        this.imageURL = imageURL;
-    }
 
     public Integer getAuctionTime() {
         return auctionTime;
@@ -116,5 +108,13 @@ public class AuctionDto {
 
     public void setStatusName(String statusName) {
         this.statusName = statusName;
+    }
+
+    public Double getInitialPrice() {
+        return initialPrice;
+    }
+
+    public void setInitialPrice(Double initialPrice) {
+        this.initialPrice = initialPrice;
     }
 }

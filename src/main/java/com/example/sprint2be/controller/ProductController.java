@@ -80,7 +80,6 @@ public class ProductController {
 
     @GetMapping("/getAllProduct")
     public ResponseEntity<List<ProductDto>> getAllProduct() {
-        System.out.println("okokok");
         return new ResponseEntity<>(productService.findAllProduct(), HttpStatus.OK);
     }
 

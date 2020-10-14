@@ -190,6 +190,18 @@ public class UserRestController {
         userService.editUser(userDto, username);
     }
 
+    @PostMapping("/checkPassword/{password}")
+    public ResponseEntity<Boolean> checkPassword(@PathVariable String password, @RequestBody String userName) {
+       UserDto user = userService.getUserByUserName(userName);
+       BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+       if(encoder.matches(password, user.getPassword())){
+           return new ResponseEntity<>(true,  HttpStatus.OK);
+       }else {
+           System.out.println("not ok");
+           return new ResponseEntity<>(false,  HttpStatus.OK);
+       }
+    }
+
     @PostMapping("/register")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto, BindingResult bindingResult,

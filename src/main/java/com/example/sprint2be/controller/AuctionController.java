@@ -72,6 +72,7 @@ public class AuctionController {
     }
 
     @GetMapping("/getAllStatusAuction")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<StatusAuctionDto>> getAllStatusAuction(){
         return new ResponseEntity<>(this.statusAuctionService.findAllStatusAuctionDto(), HttpStatus.OK);
     }

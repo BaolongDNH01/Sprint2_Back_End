@@ -81,6 +81,7 @@ public class ProductController {
     }
 
     @GetMapping("/getAllProduct")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<ProductDto>> getAllProduct() {
         return new ResponseEntity<>(productService.findAllProduct(), HttpStatus.OK);
     }
@@ -140,6 +141,7 @@ public class ProductController {
     }
 
     @PostMapping("/deleteProducts")
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteProducts(@RequestBody Integer[] list) {
         for (int delCount : list) {
             productService.delete(delCount);

@@ -116,9 +116,12 @@ public class ProductServiceImpl implements ProductService {
         product.setStatusProduct(statusProductRepository.findById(productDto.getStatusId()).orElse(null));
         product.setAuctionTime(auctionTimeRepository.findById(productDto.getTimeId()).orElse(null));
         product.setCategory(categoryRepository.findById(productDto.getCategoryId()).orElse(null));
-        product.setUserId(userRepository.findByUsername(productDto.getFullName()).orElse(null));
+        if (product.getUserId() == null) {
+            product.setUserId(userRepository.findByUsername(productDto.getFullName()).orElse(null));
+        }else {
+            product.setUserId(userRepository.findById(productDto.getUserId()).orElse(null));
+        }
         productRepository.save(product);
-
         System.out.println("da toi");
     }
 

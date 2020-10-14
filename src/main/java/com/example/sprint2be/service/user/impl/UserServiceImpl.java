@@ -224,6 +224,8 @@ public class UserServiceImpl implements UserService {
     public void unlockUser(List<UserDto> userDtoList) {
         for (UserDto userDto: userDtoList){
             userDto.setFlag("true");
+            userDto.setPoint(10);
+            userDto.setRank("Đồng");
             Date today = new Date(System.currentTimeMillis());
             SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss dd/MM/yyyy");
             String s = timeFormat.format(today.getTime());

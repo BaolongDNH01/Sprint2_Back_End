@@ -16,7 +16,6 @@ import java.util.List;
 @Table(name="product")
 public class Product {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer productId;
     private String productName;
     private Double initialPrice;

@@ -11,7 +11,7 @@ public class UserDto {
     private String birthday;
     private String address;
     private String idCard;
-    private double point;
+    private Double point;
     private String signInRecent;
     private String avatar;
     private String flag;
@@ -92,11 +92,11 @@ public class UserDto {
         this.idCard = idCard;
     }
 
-    public double getPoint() {
+    public Double getPoint() {
         return point;
     }
 
-    public void setPoint(double point) {
+    public void setPoint(Double point) {
         this.point = point;
     }
 

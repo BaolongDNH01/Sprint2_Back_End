@@ -3,6 +3,7 @@ package com.example.sprint2be.model.auction;
 
 
 import com.example.sprint2be.model.product.Product;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 import java.util.List;
@@ -18,6 +19,7 @@ public class Auction {
 
     @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "status_id")
+    @JsonBackReference
     private StatusAuction statusAuction;
 
     @ManyToOne(cascade = CascadeType.DETACH)

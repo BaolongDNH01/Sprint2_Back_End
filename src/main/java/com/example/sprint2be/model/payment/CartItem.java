@@ -2,16 +2,14 @@ package com.example.sprint2be.model.payment;
 
 import com.example.sprint2be.model.auction.Auction;
 import com.example.sprint2be.model.product.Product;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "cart_item")
-public class CartItem {
+public class CartItem implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,12 +33,15 @@ public class CartItem {
     @ManyToOne(targetEntity = Cart.class, cascade = CascadeType.DETACH)
     @JoinColumn(name = "cart_id", nullable = false)
     @JsonIgnore
+//    @JsonBackReference
     private Cart cart;
 
     // Relationship with Product
     @OneToOne(targetEntity = Product.class, cascade = CascadeType.DETACH)
     @JoinColumn(name = "product_id")
-    @JsonIgnore
+    @JsonManagedReference
+
+//    @JsonIdentityReference(alwaysAsId = true)
     private Product product;
 
     public CartItem() {

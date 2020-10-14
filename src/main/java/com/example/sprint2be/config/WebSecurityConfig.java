@@ -112,10 +112,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 admin.setAvatar("https://firebasestorage.googleapis.com/v0/b/real-estate-d8b23.appspot.com/o/mWBlKu8IIggRNhyUutW8?alt=media&token=7f0c3569-e638-4160-bdb5-28cf4dfe22eb");
                 admin.setIdCard("123456789012");
                 admin.setRoles(roles);
-                admin.setPoint(10000);
-
+                admin.setPoint(10000.0);
+                admin.setFlag("true");
                 admin.setRank(rankRepository.findById(4).orElse(null));
-                admin.setEnabled("true");;
+                admin.setEnabled("true");
                 admin.setCart(cart);
 
                 userRepository.save(admin);
@@ -145,7 +145,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 member.setRank(rankRepository.findById(4).orElse(null));
                 member.setCart(cartForMember);
                 member.setEnabled("true");
-                member.setPoint(10);
+                member.setPoint(10.0);
+                member.setFlag("true");
                 userRepository.save(member);
             }
         };

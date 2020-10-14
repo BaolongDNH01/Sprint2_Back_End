@@ -1,5 +1,7 @@
 package com.example.sprint2be.model.auction;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -13,6 +15,7 @@ public class StatusAuction {
     private String statusName;
 
     @OneToMany(mappedBy = "statusAuction", cascade = CascadeType.DETACH)
+    @JsonManagedReference
     private List<Auction> auctionList;
 
     public Integer getStatusId() {

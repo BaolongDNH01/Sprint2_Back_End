@@ -28,7 +28,7 @@ public class User {
     private String birthday;
     private String address;
     private String idCard;
-    private double point;
+    private Double point;
     private String signInRecent;
     private String avatar;
     private String flag;
@@ -37,7 +37,6 @@ public class User {
     private String confirmPassword;
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "rankId")
-//    @JsonIgnore
     private Rank rank;
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinTable (
@@ -45,7 +44,6 @@ public class User {
             joinColumns = @JoinColumn(name="user_id"),
             inverseJoinColumns = @JoinColumn(name="role_id")
     )
-    @JsonIgnore
     private Set<Role> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "userId", cascade = CascadeType.DETACH)
@@ -124,11 +122,11 @@ public class User {
         this.idCard = idCard;
     }
 
-    public double getPoint() {
+    public Double getPoint() {
         return point;
     }
 
-    public void setPoint(double point) {
+    public void setPoint(Double point) {
         this.point = point;
     }
 

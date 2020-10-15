@@ -1,7 +1,10 @@
 package com.example.sprint2be.controller;
 
 import com.example.sprint2be.exceptions.ResourceNotFoundException;
+import com.example.sprint2be.model.auction.dto.UserBidderDto;
 import com.example.sprint2be.model.payment.*;
+import com.example.sprint2be.repository.payment.CartItemRepository;
+import com.example.sprint2be.repository.payment.CartRepository;
 import com.example.sprint2be.service.payment.CartItemService;
 import com.example.sprint2be.service.payment.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +25,9 @@ public class CartController {
 
     @Autowired
     CartItemService cartItemService;
+
+    @Autowired
+    CartRepository cartRepository;
 
     // Thien: Load cart by user id
     @GetMapping("/get/{userId}")
@@ -85,4 +91,11 @@ public class CartController {
             cartItemService.deleteCartItemById(delCart);
         }
     }
+
+    @GetMapping("/get-cart/{id}")
+    public ResponseEntity<List<UserBidderDto>> getCart(@PathVariable Integer id) {
+        return new ResponseEntity<>(cartRepository.getCartByIdUser(id), HttpStatus.OK);
+    }
+    
+
 }

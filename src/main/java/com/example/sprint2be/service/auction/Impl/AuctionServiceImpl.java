@@ -51,10 +51,12 @@ public class AuctionServiceImpl implements AuctionService {
         auctionDto.setProductName(product.getProductName());
         auctionDto.setEachIncrease(product.getEachIncrease());
 
-
-        ImageProduct imageProduct = this.imageProductService.findById(product.getProductId());
-        auctionDto.setImageURL(imageProduct.getImageURL());
-
+        try {
+            ImageProduct imageProduct = this.imageProductService.findById(product.getProductId());
+            auctionDto.setImageURL(imageProduct.getImageURL());
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
         AuctionTime auctionTime = this.auctionTimeService.findById(product.getAuctionTime().getTimeId());
         auctionDto.setAuctionTime(auctionTime.getAuctionTime());
 

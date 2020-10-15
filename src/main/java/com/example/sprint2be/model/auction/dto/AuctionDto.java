@@ -15,6 +15,8 @@ public class AuctionDto {
     private Integer auctionTime;
     private List<Integer> bidderListId;
     private Double initialPrice;
+    private String ImageURL;
+
     public AuctionDto() {
 
     }
@@ -116,5 +118,13 @@ public class AuctionDto {
 
     public void setInitialPrice(Double initialPrice) {
         this.initialPrice = initialPrice;
+    }
+
+    public String getImageURL() {
+        return ImageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        ImageURL = imageURL;
     }
 }

@@ -71,8 +71,9 @@ public class AuctionController {
         return new ResponseEntity<>(auctionService.findByIdDto(id), HttpStatus.OK);
     }
 
+    // Chau comment phan quyen vi dang bi loi phan quyen
     @GetMapping("/getAllStatusAuction")
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<StatusAuctionDto>> getAllStatusAuction(){
         return new ResponseEntity<>(this.statusAuctionService.findAllStatusAuctionDto(), HttpStatus.OK);
     }

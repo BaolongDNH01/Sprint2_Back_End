@@ -5,6 +5,7 @@ import com.example.sprint2be.model.Role;
 import com.example.sprint2be.model.auction.Bidder;
 import com.example.sprint2be.model.payment.Cart;
 import com.example.sprint2be.model.product.Product;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.OnDelete;
@@ -47,6 +48,7 @@ public class User {
     private Set<Role> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "userId", cascade = CascadeType.DETACH)
+    @JsonBackReference
     private List<Product> productList;
 
     @OneToMany(mappedBy = "userBidder", cascade = CascadeType.DETACH)

@@ -19,4 +19,6 @@ public interface ProductService {
 
     // Thien
     Optional<Product> findProductByUserId(Integer userId);
+//    Long
+    void editProduct(ProductDto productDto);
 }

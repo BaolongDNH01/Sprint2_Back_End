@@ -41,7 +41,7 @@ public class Product implements Serializable {
     private StatusProduct statusProduct;
 
     @ManyToOne(cascade = CascadeType.DETACH)
-    @JsonIgnore
+    @JsonManagedReference
     @JoinColumn(name = "user_id")
     private User userId;
 

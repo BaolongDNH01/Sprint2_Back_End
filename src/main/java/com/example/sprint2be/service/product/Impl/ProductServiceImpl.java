@@ -38,7 +38,7 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     UserService userService;
 
-    private ProductDto convertToProductDto(Product product) {
+    public ProductDto convertToProductDto(Product product) {
         ProductDto productDto = new ProductDto();
         productDto.setProductId(product.getProductId());
         productDto.setProductName(product.getProductName());
@@ -75,8 +75,21 @@ public class ProductServiceImpl implements ProductService {
         productDto.setDatePost(product.getDatePost());
 
         return productDto;
+    }
 
-
+    private Product convertToProduct(ProductDto productDto){
+        Product product = new Product();
+        product.setUserId(userService.findByIdUser(productDto.getUserId()));
+        product.setAuctionTime(auctionTimeRepository.findById(productDto.getTimeId()).orElse(null));
+        product.setCategory(categoryRepository.findById(productDto.getCategoryId()).orElse(null));
+        product.setDatePost(productDto.getDatePost());
+        product.setEachIncrease(productDto.getEachIncrease());
+        product.setInitialPrice(productDto.getInitialPrice());
+        product.setProductDetail(productDto.getProductDetail());
+        product.setProductId(productDto.getProductId());
+        product.setProductName(productDto.getProductName());
+        product.setStatusProduct(statusProductRepository.findById(productDto.getStatusId()).orElse(null));
+        return product;
     }
 
     @Override
@@ -139,5 +152,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Optional<Product> findProductByUserId(Integer userId) {
         return productRepository.findProductByUserId(userId);
+    }
+
+    @Override
+    public void editProduct(ProductDto productDto) {
+        productRepository.save(convertToProduct(productDto));
     }
 }

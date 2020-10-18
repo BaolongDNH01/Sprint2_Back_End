@@ -73,7 +73,7 @@ public class ProductController {
     }
 
     @PostMapping("/edit-product")
-    public ResponseEntity<Product> editProduct(@RequestBody Product product, UriComponentsBuilder builder) {
+    public ResponseEntity<Product> editProduct(@RequestBody ProductDto product, UriComponentsBuilder builder) {
         productService.saveProductDto(product);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(builder.path("/get-product/{id}").buildAndExpand(product.getProductId()).toUri());
@@ -182,6 +182,18 @@ public class ProductController {
     @GetMapping("/get-bidder-max/{id}")
     public ResponseEntity<Integer> getBidderMax(@PathVariable Integer id) {
         return new ResponseEntity<>(bidderRepository.getMaxBidderByAuctionId(id), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete-image/{id}")
+    public void deleteImageById(@PathVariable Integer id){
+        imageProductService.delete(id);
+    }
+
+    @PostMapping("/admin-edit")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> adminEditProduct(@RequestBody ProductDto productDto){
+        productService.editProduct(productDto);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
 

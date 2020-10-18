@@ -8,7 +8,7 @@ public class OrderDTO {
     private Integer cartId;
 
     @NotNull
-    private String orderCode;
+    private String shipMethod;
 
     @NotNull
     private String paymentMethod;
@@ -17,30 +17,37 @@ public class OrderDTO {
     private String paymentAddress;
 
     @NotNull
-    private String orderStatus;
+    private Double shipCost;
 
     @NotNull
-    private String deliveryDate;
+    private Double totalPrice;
 
     public OrderDTO() {
     }
 
-    public OrderDTO(Integer cartId, String orderCode, String paymentMethod, String paymentAddress, String orderStatus,
-                    String deliveryDate) {
-        this.cartId = cartId;
-        this.orderCode = orderCode;
+    public OrderDTO(@NotNull String shipMethod, @NotNull String paymentMethod, @NotNull String paymentAddress,
+                    @NotNull Double shipCost, @NotNull Double totalPrice) {
+        this.shipMethod = shipMethod;
         this.paymentMethod = paymentMethod;
         this.paymentAddress = paymentAddress;
-        this.orderStatus = orderStatus;
-        this.deliveryDate = deliveryDate;
+        this.shipCost = shipCost;
+        this.totalPrice = totalPrice;
     }
 
-    public String getOrderCode() {
-        return orderCode;
+    public Integer getCartId() {
+        return cartId;
     }
 
-    public void setOrderCode(String orderCode) {
-        this.orderCode = orderCode;
+    public void setCartId(Integer cartId) {
+        this.cartId = cartId;
+    }
+
+    public String getShipMethod() {
+        return shipMethod;
+    }
+
+    public void setShipMethod(String shipMethod) {
+        this.shipMethod = shipMethod;
     }
 
     public String getPaymentMethod() {
@@ -55,31 +62,23 @@ public class OrderDTO {
         return paymentAddress;
     }
 
-    public void setPaymentAddress(String deliveryMethod) {
-        this.paymentAddress = deliveryMethod;
+    public void setPaymentAddress(String paymentAddress) {
+        this.paymentAddress = paymentAddress;
     }
 
-    public String getOrderStatus() {
-        return orderStatus;
+    public Double getShipCost() {
+        return shipCost;
     }
 
-    public void setOrderStatus(String orderStatus) {
-        this.orderStatus = orderStatus;
+    public void setShipCost(Double shipCost) {
+        this.shipCost = shipCost;
     }
 
-    public Integer getCartId() {
-        return cartId;
+    public Double getTotalPrice() {
+        return totalPrice;
     }
 
-    public void setCartId(Integer cartId) {
-        this.cartId = cartId;
-    }
-
-    public String getDeliveryDate() {
-        return deliveryDate;
-    }
-
-    public void setDeliveryDate(String deliveryDate) {
-        this.deliveryDate = deliveryDate;
+    public void setTotalPrice(Double totalPrice) {
+        this.totalPrice = totalPrice;
     }
 }

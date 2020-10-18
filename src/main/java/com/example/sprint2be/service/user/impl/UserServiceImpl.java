@@ -7,7 +7,7 @@ import com.example.sprint2be.model.user.User;
 import com.example.sprint2be.model.user.UserDto;
 import com.example.sprint2be.repository.RoleRepository;
 import com.example.sprint2be.repository.UserRepository;
-import com.example.sprint2be.service.payment.constant.ECartStatus;
+import com.example.sprint2be.model.constant.ECartStatus;
 import com.example.sprint2be.service.rank.RankService;
 import com.example.sprint2be.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

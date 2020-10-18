@@ -8,7 +8,7 @@ import com.example.sprint2be.model.user.User;
 import com.example.sprint2be.repository.RankRepository;
 import com.example.sprint2be.repository.RoleRepository;
 import com.example.sprint2be.repository.UserRepository;
-import com.example.sprint2be.service.payment.constant.ECartStatus;
+import com.example.sprint2be.model.constant.ECartStatus;
 import com.example.sprint2be.service.security.JwtEntryPoint;
 import com.example.sprint2be.service.security.JwtFilter;
 import com.example.sprint2be.service.user.impl.UserDetailsServiceImpl;

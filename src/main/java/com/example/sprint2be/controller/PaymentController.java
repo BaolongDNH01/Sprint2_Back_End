@@ -3,6 +3,7 @@ package com.example.sprint2be.controller;
 import com.example.sprint2be.exceptions.ResourceNotFoundException;
 import com.example.sprint2be.model.payment.Order;
 import com.example.sprint2be.model.payment.OrderDTO;
+import com.example.sprint2be.model.payment.OrderResDTO;
 import com.example.sprint2be.repository.payment.OrderRepository;
 import com.example.sprint2be.service.payment.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,8 @@ public class PaymentController {
     }
 
     @PostMapping("/create-order")
-    public ResponseEntity<Void> createOrder(@RequestBody OrderDTO orderDTO) {
-        orderService.save(orderDTO);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<OrderResDTO> createOrder(@RequestBody OrderDTO orderDTO) {
+        OrderResDTO ord  = orderService.save(orderDTO);
+        return ResponseEntity.ok(ord);
     }
 }

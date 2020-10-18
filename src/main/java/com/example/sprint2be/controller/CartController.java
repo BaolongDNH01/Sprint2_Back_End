@@ -30,6 +30,7 @@ public class CartController {
     CartRepository cartRepository;
 
     // Thien: Load cart by user id
+//    @PreAuthorize("hasRole('MEMBER')")
     @GetMapping("/get/{userId}")
     public ResponseEntity<Cart> getCartByUserId(@PathVariable Integer userId) throws ResourceNotFoundException {
         Cart cart = cartService
@@ -39,12 +40,6 @@ public class CartController {
             System.out.println(item.getProduct().getProductName());
         }
         return ResponseEntity.ok(cart);
-    }
-
-    @GetMapping("/get-response/{userId}")
-    public ResponseEntity<CartResponseDTO> getCartByUserId2(@PathVariable Integer userId)  {
-        CartResponseDTO cartResponseDTO = cartService.parse(userId);
-        return ResponseEntity.ok(cartResponseDTO);
     }
 
     // Thien:  Add product to cart
@@ -96,6 +91,4 @@ public class CartController {
     public ResponseEntity<List<UserBidderDto>> getCart(@PathVariable Integer id) {
         return new ResponseEntity<>(cartRepository.getCartByIdUser(id), HttpStatus.OK);
     }
-    
-
 }

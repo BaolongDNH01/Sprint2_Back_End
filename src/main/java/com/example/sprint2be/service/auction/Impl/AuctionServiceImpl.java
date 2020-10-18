@@ -16,6 +16,7 @@ import com.example.sprint2be.service.product.ImageProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,9 +52,17 @@ public class AuctionServiceImpl implements AuctionService {
         auctionDto.setProductName(product.getProductName());
         auctionDto.setEachIncrease(product.getEachIncrease());
 
+        // Chau update lay anh theo id image
         try {
-            ImageProduct imageProduct = this.imageProductService.findById(product.getProductId());
-            auctionDto.setImageURL(imageProduct.getImageURL());
+            List<ImageProduct> imageProductList = product.getImageProductList();
+            List<Integer> id = new ArrayList<>();
+            for(ImageProduct imageProduct : imageProductList){
+                    id.add(imageProduct.getImageId());
+            }
+            for (int i = 0; i < id.size(); i++) {
+                auctionDto.setImageURL(this.imageProductService.findById(id.get(i)).getImageURL());
+            }
+
         }catch (Exception e){
             System.out.println(e.getMessage());
         }

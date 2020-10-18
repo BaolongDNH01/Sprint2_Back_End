@@ -1,4 +1,4 @@
-package com.example.sprint2be.service.payment.constant;
+package com.example.sprint2be.model.constant;
 
 public enum EPaymentMethod {
     PAYMENT_NORMAL,

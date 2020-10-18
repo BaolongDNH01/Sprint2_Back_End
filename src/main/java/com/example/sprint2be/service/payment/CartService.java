@@ -18,11 +18,7 @@ public interface CartService {
 
     Optional<Cart> findById(Integer cartId);
 
-    Double updateTotalPrice(Integer idCart);
-
     Optional<Cart> findCartByUserId(Integer id);
-
-    CartResponseDTO parse(Integer id);
 
     // chau
     List<CartDTO> findAllCartDto();

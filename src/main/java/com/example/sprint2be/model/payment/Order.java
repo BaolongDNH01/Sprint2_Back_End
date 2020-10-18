@@ -31,7 +31,7 @@ public class Order {
     private String orderStatus;
 
     @Column
-    private Double finalTotalPrice;
+    private Double totalPrice;
 
     @ManyToOne(targetEntity = Cart.class)
     @JoinColumn(name = "cart_id", nullable = false)
@@ -43,14 +43,14 @@ public class Order {
 
     public Order(String orderCode, String paymentMethod, String deliveryDate,
                  String paymentAddress, Double shipCost, String orderStatus,
-                 Double finalTotalPrice, Cart cart) {
+                 Double totalPrice, Cart cart) {
         this.orderCode = orderCode;
         this.paymentMethod = paymentMethod;
         this.deliveryDate = deliveryDate;
         this.paymentAddress = paymentAddress;
         this.shipCost = shipCost;
         this.orderStatus = orderStatus;
-        this.finalTotalPrice = finalTotalPrice;
+        this.totalPrice = totalPrice;
         this.cart = cart;
     }
 
@@ -110,12 +110,12 @@ public class Order {
         this.orderStatus = orderStatus;
     }
 
-    public Double getFinalTotalPrice() {
-        return finalTotalPrice;
+    public Double getTotalPrice() {
+        return totalPrice;
     }
 
-    public void setFinalTotalPrice(Double finalTotalPrice) {
-        this.finalTotalPrice = finalTotalPrice;
+    public void setTotalPrice(Double totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     public Cart getCart() {

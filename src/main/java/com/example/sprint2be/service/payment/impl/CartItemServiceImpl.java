@@ -16,7 +16,7 @@ import com.example.sprint2be.repository.product.ProductRepository;
 import com.example.sprint2be.service.auction.BidderService;
 import com.example.sprint2be.service.payment.CartItemService;
 import com.example.sprint2be.service.payment.CartService;
-import com.example.sprint2be.service.payment.constant.ECartItemStatus;
+import com.example.sprint2be.model.constant.ECartItemStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

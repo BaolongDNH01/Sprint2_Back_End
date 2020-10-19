@@ -29,7 +29,7 @@ public class AuctionController {
 
     @Autowired
     StatusAuctionService statusAuctionService;
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('MEMBER') or hasRole('ADMIN')")
     @PostMapping("/create-auction")
     public ResponseEntity<Auction> createProduct(@RequestBody AuctionDto auction, UriComponentsBuilder builder) {
         auctionService.saveAuctionDto(auction);

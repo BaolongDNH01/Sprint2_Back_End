@@ -68,7 +68,7 @@ public class UserRestController {
 //        quan
         User user = userService.findByUsername(loginRequest.getUsername());
 //
-        if (!(user.getEnabled().equals("false"))) {
+        if ((user.getEnabled().equals("true")) && (user.getFlag().equals("true"))) {
             if ((user.getSignInRecent() != null) && (user.getRank().getRankId() != 1)){
                 userService.increasePoint(user, userService.pointReductionNoLogin(user) * (-50));
             }

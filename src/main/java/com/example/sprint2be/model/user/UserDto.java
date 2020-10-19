@@ -19,6 +19,7 @@ public class UserDto {
     private String rank;
     private String confirmPassword = "false";
     private String enabled;
+    private Long wallet;
 
     public Integer getUserId() {
         return userId;
@@ -154,5 +155,13 @@ public class UserDto {
 
     public void setEnabled(String enabled) {
         this.enabled = enabled;
+    }
+
+    public Long getWallet() {
+        return wallet;
+    }
+
+    public void setWallet(Long wallet) {
+        this.wallet = wallet;
     }
 }

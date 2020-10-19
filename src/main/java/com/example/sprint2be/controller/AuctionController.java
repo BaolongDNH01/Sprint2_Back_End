@@ -7,11 +7,14 @@ import com.example.sprint2be.model.auction.dto.AuctionDto;
 import com.example.sprint2be.model.auction.dto.BidderDto;
 import com.example.sprint2be.model.auction.dto.StatusAuctionDto;
 import com.example.sprint2be.model.product.Product;
+import com.example.sprint2be.model.user.User;
+import com.example.sprint2be.repository.auction.BidderRepository;
 import com.example.sprint2be.service.auction.AuctionService;
 import com.example.sprint2be.service.auction.BidderService;
 import com.example.sprint2be.service.auction.StatusAuctionService;
 import com.example.sprint2be.service.product.CategoryService;
 import com.example.sprint2be.service.product.ProductService;
+import com.example.sprint2be.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -34,6 +37,15 @@ public class AuctionController {
 
     @Autowired
     StatusAuctionService statusAuctionService;
+
+    @Autowired
+    com.example.sprint2be.service.EmailService getEmailService;
+
+    @Autowired
+    BidderRepository bidderRepository;
+
+    @Autowired
+    UserService userService;
 
     @PostMapping("/create-auction")
 	@PreAuthorize("hasRole('MEMBER') or hasRole('ADMIN')")
@@ -70,6 +82,14 @@ public class AuctionController {
         Auction auction = auctionService.findById(id);
         auctionDto.setAuctionId(auction.getAuctionId());
         auctionService.saveAuctionDto(auctionDto);
+
+        if (auctionDto.getStatusId() == 3) {
+            Integer idUser=bidderRepository.getUserWinByAuctionId(id);
+            Integer maxBidder=bidderRepository.getMaxBidderByAuctionId(id);
+            User user = userService.findByIdUser(idUser);
+            getEmailService.sendEmail(user.getEmail(), "Đấu giá thành công", "Chúc mừng bạn đã đấu giá thành công : http://localhost:4200/product-details/" + auctionDto.getAuctionId() +
+                    '\n' + "Với mức giá :"+ maxBidder +" .Điền thông tin nhận hàng tại :");
+        }
     }
 //    @PatchMapping("/auction-edit/{id}")
 //    public static void test(@RequestBody AuctionDto auctionDto){

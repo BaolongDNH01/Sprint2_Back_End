@@ -34,6 +34,7 @@ public class User {
     private String avatar;
     private String flag;
     private String enabled;
+    private Long wallet;
     @Column
     private String confirmPassword;
     @ManyToOne(cascade = CascadeType.MERGE)
@@ -199,6 +200,14 @@ public class User {
     public void setRank(Rank rank) {
         this.rank = rank;
 
+    }
+
+    public Long getWallet() {
+        return wallet;
+    }
+
+    public void setWallet(Long wallet) {
+        this.wallet = wallet;
     }
 
     public String getEnabled() {

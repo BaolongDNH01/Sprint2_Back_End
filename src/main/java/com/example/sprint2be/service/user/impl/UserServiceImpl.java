@@ -48,6 +48,7 @@ public class UserServiceImpl implements UserService {
             user.setRank(checkRoleExist.getRank());
             user.setRoles(checkRoleExist.getRoles());
             user.setCart(checkRoleExist.getCart());
+            user.setWallet(userDto.getWallet());
         } else {
             Set<Role> roles = new HashSet<>();
             roles.add(roleRepository.findById(2).orElse(null));
@@ -59,6 +60,7 @@ public class UserServiceImpl implements UserService {
             cart.setCurrentTotalPrice(0.0);
             cart.setCartStatus(ECartStatus.CART_ENABLED.name());
             user.setCart(cart);
+            user.setWallet(0L);
         }
         user.setConfirmPassword(userDto.getConfirmPassword());
         user.setEnabled(userDto.getEnabled());
@@ -78,6 +80,7 @@ public class UserServiceImpl implements UserService {
         userDto.setAddress(user.getAddress());
         userDto.setIdCard(user.getIdCard());
         userDto.setPoint(user.getPoint());
+        userDto.setWallet(user.getWallet());
         userDto.setSignInRecent(user.getSignInRecent());
         userDto.setFlag(user.getFlag());
         userDto.setAvatar(user.getAvatar());

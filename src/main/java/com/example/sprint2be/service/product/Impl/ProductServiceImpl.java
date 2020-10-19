@@ -158,4 +158,9 @@ public class ProductServiceImpl implements ProductService {
     public void editProduct(ProductDto productDto) {
         productRepository.save(convertToProduct(productDto));
     }
+
+    @Override
+    public List<Product> findProductByCategory(Category category) {
+        return productRepository.findProductsByCategory(category);
+    }
 }

@@ -30,6 +30,8 @@ public interface UserService {
     void updateUser(User user);
     void increasePoint(User user, double point);
     double pointReductionNoLogin(User user);
+
+    List<UserDto> findTop5();
 }
 
 

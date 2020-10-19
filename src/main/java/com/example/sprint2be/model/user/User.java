@@ -38,7 +38,8 @@ public class User {
     private String confirmPassword;
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "rankId")
-    @JsonBackReference
+
+    @JsonManagedReference
     private Rank rank;
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinTable (

@@ -2,6 +2,7 @@ package com.example.sprint2be.model;
 
 
 import com.example.sprint2be.model.user.User;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -15,7 +16,8 @@ public class Rank {
     private Integer rankId;
     private String name;
     @OneToMany(mappedBy = "rank", cascade = CascadeType.MERGE)
-    @JsonManagedReference
+
+    @JsonBackReference
     private Set<User> users;
 
     public Rank(){}

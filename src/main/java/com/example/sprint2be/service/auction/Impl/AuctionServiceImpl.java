@@ -110,9 +110,15 @@ public class AuctionServiceImpl implements AuctionService {
         return (auctionRepository.findById(auctionId).map(this::convertToAuctionDto).orElse(null));
     }
 
+    @Override
+    public AuctionDto findAuctionByProduct(Product product) {
+        return auctionRepository.findAuctionByProduct(product).map(this::convertToAuctionDto).orElse(null);
+    }
+
     // Chau => Update status auction
     @Override
     public void saveAuctionDto(AuctionDto auctionDto) {
+        System.out.println("da xoa roi");
         Auction auction = new Auction();
         auction.setAuctionId(auctionDto.getAuctionId());
         auction.setDayTimeStart(auctionDto.getDayTimeStart());

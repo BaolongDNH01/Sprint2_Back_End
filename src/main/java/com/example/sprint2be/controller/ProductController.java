@@ -1,6 +1,7 @@
 package com.example.sprint2be.controller;
 
 import com.example.sprint2be.model.auction.Bidder;
+import com.example.sprint2be.model.auction.dto.AuctionDto;
 import com.example.sprint2be.model.auction.dto.BidderDto;
 import com.example.sprint2be.model.auction.dto.UserBidderDto;
 import com.example.sprint2be.model.product.*;

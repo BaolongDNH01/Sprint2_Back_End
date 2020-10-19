@@ -35,6 +35,12 @@ public class AuctionController {
     @Autowired
     StatusAuctionService statusAuctionService;
 
+    @Autowired
+    ProductService productService;
+
+    @Autowired
+    CategoryService categoryService;
+
     @PostMapping("/create-auction")
 	@PreAuthorize("hasRole('MEMBER') or hasRole('ADMIN')")
     public ResponseEntity<Auction> createProduct(@RequestBody AuctionDto auction, UriComponentsBuilder builder) {

@@ -26,7 +26,8 @@ public class UserServiceImpl implements UserService {
     RoleRepository roleRepository;
     @Autowired
     RankService rankService;
-    private User convertToUser(UserDto userDto){
+
+    private User convertToUser(UserDto userDto) {
         User user = new User();
         user.setUserId(userDto.getUserId());
         user.setFullName(userDto.getFullName());
@@ -41,24 +42,31 @@ public class UserServiceImpl implements UserService {
         user.setSignInRecent(userDto.getSignInRecent());
         user.setFlag(userDto.getFlag());
         user.setAvatar("https://firebasestorage.googleapis.com/v0/b/real-estate-d8b23.appspot.com/o/mWBlKu8IIggRNhyUutW8?alt=media&token=7f0c3569-e638-4160-bdb5-28cf4dfe22eb");
-        Set<Role> roles = new HashSet<>();
-        roles.add(roleRepository.findById(2).orElse(null));
-        user.setRoles(roles);
-        Rank newUserRank = rankService.findById(1);
-        user.setRank(newUserRank);
+        User checkRoleExist = userRepository.findAllByUsername(userDto.getUsername());
+//        Fix loi mat quyen, chia truong hop neu tk vua tao hoac da ton tai
+        if (checkRoleExist != null) {
+            user.setRank(checkRoleExist.getRank());
+            user.setRoles(checkRoleExist.getRoles());
+            user.setCart(checkRoleExist.getCart());
+        } else {
+            Set<Role> roles = new HashSet<>();
+            roles.add(roleRepository.findById(2).orElse(null));
+            user.setRoles(roles);
+            Rank newUserRank = rankService.findById(1);
+            user.setRank(newUserRank);
+            // Thien: Add cart when user is created
+            Cart cart = new Cart();
+            cart.setCurrentTotalPrice(0.0);
+            cart.setCartStatus(ECartStatus.CART_ENABLED.name());
+            user.setCart(cart);
+        }
         user.setConfirmPassword(userDto.getConfirmPassword());
         user.setEnabled(userDto.getEnabled());
-
-        // Thien: Add cart when user is created
-        Cart cart = new Cart();
-        cart.setCurrentTotalPrice(0.0);
-        cart.setCartStatus(ECartStatus.CART_ENABLED.name());
-
-        user.setCart(cart);
         return user;
     }
+
     @Override
-    public UserDto convertToUserDto(User user){
+    public UserDto convertToUserDto(User user) {
         UserDto userDto = new UserDto();
         userDto.setUserId(user.getUserId());
         userDto.setFullName(user.getFullName());
@@ -91,7 +99,7 @@ public class UserServiceImpl implements UserService {
     }
 
 
-        @Override
+    @Override
     public Boolean checkUsernameExist(String username) {
         return (userRepository.findByUsername(username).orElse(null) != null);
     }
@@ -99,12 +107,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean changePassword(String username, String password) {
         User checkExist = findByUsername(username);
-        if (checkExist != null){
+        if (checkExist != null) {
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
             checkExist.setPassword(encoder.encode(password));
             userRepository.save(checkExist);
             return true;
-        }else return false;
+        } else return false;
     }
 
     @Override
@@ -135,7 +143,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void lockUser(List<UserDto> userDtoList) {
-        for (UserDto userDto: userDtoList){
+        for (UserDto userDto : userDtoList) {
             TimerTask timerTask = new TimerTask() {
                 @Override
                 public void run() {
@@ -169,7 +177,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void editUser(UserDto userEdit, String userName) {
         User user = userRepository.findByUsername(userName).orElse(null);
-        if(user != null){
+        if (user != null) {
             user.setUsername(userEdit.getUsername());
             user.setFullName(userEdit.getFullName());
             user.setEmail(userEdit.getEmail());
@@ -181,6 +189,7 @@ public class UserServiceImpl implements UserService {
             userRepository.save(user);
         }
     }
+
     @Override
     public UserDto findByEmail(String email) {
         User user = userRepository.findByEmail(email);
@@ -215,7 +224,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void unlockUser(List<UserDto> userDtoList) {
-        for (UserDto userDto: userDtoList){
+        for (UserDto userDto : userDtoList) {
             userDto.setFlag("true");
             userDto.setPoint(10.0);
             userDto.setRank("Đồng");
@@ -226,9 +235,10 @@ public class UserServiceImpl implements UserService {
             userRepository.save(convertToUser(userDto));
         }
     }
+
     @Override
     public void deleteUser(List<String> ids) {
-        for (String id: ids){
+        for (String id : ids) {
             userRepository.deleteById(Integer.parseInt(id));
         }
     }
@@ -241,20 +251,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public void increasePoint(User user, double point) {
         user.setPoint(user.getPoint() + point);
-        if (user.getPoint() > 2000){
+        if (user.getPoint() > 2000) {
             user.setRank(rankService.findById(5));
-        }else if (1000 <= user.getPoint() && user.getPoint() < 2000){
+        } else if (1000 <= user.getPoint() && user.getPoint() < 2000) {
             user.setRank(rankService.findById(4));
-        }else if (500 <= user.getPoint() && user.getPoint() < 1000){
+        } else if (500 <= user.getPoint() && user.getPoint() < 1000) {
             user.setRank(rankService.findById(3));
-        }else if (200 <= user.getPoint() && user.getPoint() < 500){
+        } else if (200 <= user.getPoint() && user.getPoint() < 500) {
             user.setRank(rankService.findById(2));
-        }else if (0 <= user.getPoint() && user.getPoint() < 200){
+        } else if (0 <= user.getPoint() && user.getPoint() < 200) {
             user.setRank(rankService.findById(1));
         }
         if (user.getPoint() >= 0) {
             userRepository.save(user);
-        }else if (-30 <= user.getPoint() && user.getPoint() < 0){
+        } else if (-30 <= user.getPoint() && user.getPoint() < 0) {
             UserDto userDto = new UserDto();
             userDto = convertToUserDto(user);
             userRepository.save(user);
@@ -262,7 +272,7 @@ public class UserServiceImpl implements UserService {
             List<UserDto> arr = new ArrayList<>();
             arr.add(userDto);
             lockUser(arr);
-        }else if (-50 <= user.getPoint() && user.getPoint() < -30){
+        } else if (-50 <= user.getPoint() && user.getPoint() < -30) {
             UserDto userDto = new UserDto();
             userDto = convertToUserDto(user);
             userRepository.save(user);
@@ -270,7 +280,7 @@ public class UserServiceImpl implements UserService {
             List<UserDto> arr = new ArrayList<>();
             arr.add(userDto);
             lockUser(arr);
-        }else {
+        } else {
             delete(user.getUserId());
         }
     }
@@ -285,21 +295,21 @@ public class UserServiceImpl implements UserService {
         String[] arrTimePresent = s.substring(9).split("/");
         double difference;
         double num = (Integer.parseInt(arrTimePresent[2]) - Integer.parseInt(arrTime[2]));
-        if (Integer.parseInt(arrTime[0]) <= Integer.parseInt(arrTimePresent[0])){
-            if (num == 0){
+        if (Integer.parseInt(arrTime[0]) <= Integer.parseInt(arrTimePresent[0])) {
+            if (num == 0) {
                 difference = Integer.parseInt(arrTimePresent[1]) - Integer.parseInt(arrTime[1]);
-                if (difference == 0){
+                if (difference == 0) {
                     return 0;
                 }
                 System.out.println("b" + Math.floor(difference / 6));
                 return Math.floor(difference / 6);
             }
             System.out.print(num);
-             difference = Integer.parseInt(arrTimePresent[1]) - Integer.parseInt(arrTime[1]) + 12 * num;
+            difference = Integer.parseInt(arrTimePresent[1]) - Integer.parseInt(arrTime[1]) + 12 * num;
             System.out.println("c" + Math.floor(difference / 6));
-             return Math.floor(difference / 6);
+            return Math.floor(difference / 6);
         }
-        return Math.floor((Integer.parseInt(arrTimePresent[1])*12*num - Integer.parseInt(arrTime[1]) -1)/6);
+        return Math.floor((Integer.parseInt(arrTimePresent[1]) * 12 * num - Integer.parseInt(arrTime[1]) - 1) / 6);
 
 
     }

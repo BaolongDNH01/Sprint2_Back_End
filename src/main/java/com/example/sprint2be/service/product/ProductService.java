@@ -13,6 +13,7 @@ public interface ProductService {
     void delete(Integer productId);
     Product findByIdProduct(Integer id);
     void saveProductDto(ProductDto productDto);
+    void saveProductDto2(ProductDto productDto);
 
 //    khanh
     List<ProductDto> findAllProductByUser(String userName);

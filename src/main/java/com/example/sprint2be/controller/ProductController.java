@@ -104,7 +104,7 @@ public class ProductController {
     public ResponseEntity<String> updateProduct(@PathVariable Integer id, @RequestBody ProductDto productDtoForm) {
         Product product = productService.findByIdProduct(id);
         productDtoForm.setProductId(product.getProductId());
-        productService.saveProductDto(productDtoForm);
+        productService.saveProductDto2(productDtoForm);
         return new ResponseEntity<>("update", HttpStatus.OK);
     }
 

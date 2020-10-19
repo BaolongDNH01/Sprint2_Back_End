@@ -2,6 +2,7 @@ package com.example.sprint2be.model.auction;
 
 
 import com.example.sprint2be.model.user.User;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 
@@ -22,6 +23,7 @@ public class Bidder {
 
     @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "userId")
+    @JsonManagedReference
     private User userBidder;
 
 

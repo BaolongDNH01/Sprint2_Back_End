@@ -139,6 +139,29 @@ public class ProductServiceImpl implements ProductService {
 
     }
 
+    @Override
+    public void saveProductDto2(ProductDto productDto) {
+        Product product = new Product();
+        product.setProductId(productDto.getProductId());
+        product.setProductName(productDto.getProductName());
+        product.setInitialPrice(productDto.getInitialPrice());
+        product.setEachIncrease(productDto.getEachIncrease());
+        product.setDatePost(productDto.getDatePost());
+//        product.setImage(productDto.getImage());
+        product.setUserId(userRepository.findById(productDto.getUserId()).orElse(null));
+
+        product.setProductDetail(productDto.getProductDetail());
+        product.setStatusProduct(statusProductRepository.findById(productDto.getStatusId()).orElse(null));
+        product.setAuctionTime(auctionTimeRepository.findById(productDto.getTimeId()).orElse(null));
+        product.setCategory(categoryRepository.findById(productDto.getCategoryId()).orElse(null));
+        if (product.getUserId() == null) {
+            product.setUserId(userRepository.findByUsername(productDto.getFullName()).orElse(null));
+        }else {
+            product.setUserId(userRepository.findById(productDto.getUserId()).orElse(null));
+        }
+        productRepository.save(product);
+    }
+
 
     @Autowired
     UserRepository userRepository;
@@ -157,5 +180,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void editProduct(ProductDto productDto) {
         productRepository.save(convertToProduct(productDto));
+    }
+
+    @Override
+    public List<Product> findProductByCategory(Category category) {
+        return productRepository.findProductsByCategory(category);
     }
 }

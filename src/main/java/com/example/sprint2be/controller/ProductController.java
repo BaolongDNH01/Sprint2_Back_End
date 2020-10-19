@@ -1,6 +1,7 @@
 package com.example.sprint2be.controller;
 
 import com.example.sprint2be.model.auction.Bidder;
+import com.example.sprint2be.model.auction.dto.AuctionDto;
 import com.example.sprint2be.model.auction.dto.BidderDto;
 import com.example.sprint2be.model.auction.dto.UserBidderDto;
 import com.example.sprint2be.model.product.*;
@@ -104,7 +105,7 @@ public class ProductController {
     public ResponseEntity<String> updateProduct(@PathVariable Integer id, @RequestBody ProductDto productDtoForm) {
         Product product = productService.findByIdProduct(id);
         productDtoForm.setProductId(product.getProductId());
-        productService.saveProductDto(productDtoForm);
+        productService.saveProductDto2(productDtoForm);
         return new ResponseEntity<>("update", HttpStatus.OK);
     }
 

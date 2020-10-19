@@ -1,5 +1,6 @@
 package com.example.sprint2be.service.product;
 
+import com.example.sprint2be.model.product.Category;
 import com.example.sprint2be.model.product.Product;
 import com.example.sprint2be.model.product.dto.ProductDto;
 
@@ -13,6 +14,7 @@ public interface ProductService {
     void delete(Integer productId);
     Product findByIdProduct(Integer id);
     void saveProductDto(ProductDto productDto);
+    void saveProductDto2(ProductDto productDto);
 
 //    khanh
     List<ProductDto> findAllProductByUser(String userName);
@@ -21,4 +23,7 @@ public interface ProductService {
     Optional<Product> findProductByUserId(Integer userId);
 //    Long
     void editProduct(ProductDto productDto);
+
+//    chau moi them
+    List<Product> findProductByCategory(Category category);
 }

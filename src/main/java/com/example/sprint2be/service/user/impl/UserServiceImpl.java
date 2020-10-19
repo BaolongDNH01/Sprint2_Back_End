@@ -304,6 +304,11 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Override
+    public List<UserDto> findTop5() {
+        return userRepository.findTop5ByOrderByPointDesc().stream().map(this::convertToUserDto).collect(Collectors.toList());
+    }
+
 
 }
 

@@ -15,7 +15,7 @@ public class Rank {
     private Integer rankId;
     private String name;
     @OneToMany(mappedBy = "rank", cascade = CascadeType.MERGE)
-//    @JsonManagedReference
+    @JsonManagedReference
     private Set<User> users;
 
     public Rank(){}

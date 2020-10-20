@@ -36,7 +36,7 @@ public class Cart implements Serializable {
     // Thien: Relationship with CartItem (1-n)
     @OneToMany(mappedBy = "cart", cascade = CascadeType.DETACH)
 //    @JsonIgnoreProperties(value = "cart")
-    @JsonManagedReference
+    @JsonBackReference
     private List<CartItem> cartItemList;
 
     public Cart() {

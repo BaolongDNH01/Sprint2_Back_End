@@ -32,8 +32,8 @@ public class CartItem implements Serializable {
     // Relationship with Cart
     @ManyToOne(targetEntity = Cart.class, cascade = CascadeType.DETACH)
     @JoinColumn(name = "cart_id", nullable = false)
-    @JsonIgnore
-//    @JsonBackReference
+//    @JsonIgnore
+    @JsonManagedReference
     private Cart cart;
 
     // Relationship with Product

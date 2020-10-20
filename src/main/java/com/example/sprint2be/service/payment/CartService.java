@@ -7,6 +7,7 @@ import com.example.sprint2be.model.payment.CartItem;
 import com.example.sprint2be.model.payment.CartResponseDTO;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,7 +19,9 @@ public interface CartService {
 
     Optional<Cart> findById(Integer cartId);
 
+    //Thien
     Optional<Cart> findCartByUserId(Integer id);
+    ArrayList<Integer[]> getInfoProductWonList(Integer userId);
 
     // chau
     List<CartDTO> findAllCartDto();

@@ -38,7 +38,7 @@ public class User {
     private String confirmPassword;
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "rankId")
-    @JsonManagedReference
+    @JsonBackReference
     private Rank rank;
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinTable (
@@ -53,6 +53,7 @@ public class User {
     private List<Product> productList;
 
     @OneToMany(mappedBy = "userBidder", cascade = CascadeType.DETACH)
+    @JsonBackReference
     private List<Bidder> bidderList;
 
     // Thien: Setup relationship Cart

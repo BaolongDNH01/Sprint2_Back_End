@@ -32,4 +32,20 @@ public interface BidderRepository extends JpaRepository<Bidder, Integer> {
     @Query(
             value = "select max(bid_price) from bidder where auction_id=?1", nativeQuery = true)
     Integer getMaxBidderByAuctionId(Integer auctionId);
+
+    @Query(
+            value = "select bidder.user_id, bidder.bid_price" +
+                    " from bidder" +
+                    " join auction on auction.auction_id=bidder.auction_id" +
+                    " where auction.auction_id=?1" +
+                    " group by bidder.auction_id, bidder.user_id" +
+                    " having bidder.bid_price in (" +
+                    "select max(bidder.bid_price) as max_price" +
+                    " from bidder" +
+                    " join auction on auction.auction_id=bidder.auction_id" +
+                    " where auction.status_id=3" +
+                    " group by bidder.auction_id" +
+                    ")", nativeQuery = true
+    )
+    Integer getUserWinByAuctionId(Integer auctionId);
 }

@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -32,14 +33,18 @@ public class CartController {
     // Thien: Load cart by user id
 //    @PreAuthorize("hasRole('MEMBER')")
     @GetMapping("/get/{userId}")
-    public ResponseEntity<Cart> getCartByUserId(@PathVariable Integer userId) throws ResourceNotFoundException {
-        Cart cart = cartService
-                .findCartByUserId(userId)
+    public ResponseEntity<CartResponseDTO> getCartByUserId(@PathVariable Integer userId) throws ResourceNotFoundException {
+        Cart cart = cartService.findCartByUserId(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Cart not found"));
-        for(CartItem item : cart.getCartItemList()) {
-            System.out.println(item.getProduct().getProductName());
-        }
-        return ResponseEntity.ok(cart);
+
+        CartResponseDTO cartResponseDTO = new CartResponseDTO();
+        cartResponseDTO.setCartId(cart.getCartId());
+        cartResponseDTO.setCartItemList(cart.getCartItemList());
+        cartResponseDTO.setCurrentTotalPrice(cart.getCurrentTotalPrice());
+        cartResponseDTO.setListOrder(cart.getListOrder());
+
+
+        return ResponseEntity.ok(cartResponseDTO);
     }
 
     // Thien:  Add product to cart
@@ -88,7 +93,7 @@ public class CartController {
     }
 
     @GetMapping("/get-cart/{id}")
-    public ResponseEntity<List<UserBidderDto>> getCart(@PathVariable Integer id) {
-        return new ResponseEntity<>(cartRepository.getCartByIdUser(id), HttpStatus.OK);
+    public ResponseEntity<ArrayList<Integer[]>> getCart(@PathVariable Integer id) {
+        return new ResponseEntity<>(cartRepository.getInfoProductWonList(id), HttpStatus.OK);
     }
 }

@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -114,6 +115,8 @@ public class AuctionServiceImpl implements AuctionService {
     }
 
     @Override
+    public Optional<Auction> findAuctionByProduct(Product product) {
+        return auctionRepository.findAuctionByProduct(product);
     public AuctionDto findAuctionByProduct(Product product) {
         return auctionRepository.findAuctionByProduct(product).map(this::convertToAuctionDto).orElse(null);
     }

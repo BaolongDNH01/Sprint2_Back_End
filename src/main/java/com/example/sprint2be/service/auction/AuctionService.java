@@ -6,6 +6,7 @@ import com.example.sprint2be.model.product.AuctionTime;
 import com.example.sprint2be.model.product.Product;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AuctionService {
     List<Auction> findAll();
@@ -15,5 +16,7 @@ public interface AuctionService {
     List<AuctionDto> findAllAuctionDto();
     void saveAuctionDto(AuctionDto auctionDto);
     AuctionDto findByIdDto(Integer auctionId);
+    Optional<Auction> findAuctionByProduct(Product product);
     AuctionDto findAuctionByProduct(Product product);
+
 }

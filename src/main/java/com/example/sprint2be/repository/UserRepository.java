@@ -16,4 +16,5 @@ public interface UserRepository extends JpaRepository<User,Integer> {
     User findTopByOrderByUserIdDesc();
     @Query(value = "select * from _user u where u.enabled = 'true'", nativeQuery = true)
     List<User> findAllUserActivated();
+    List<User> findTop5ByOrderByPointDesc();
 }

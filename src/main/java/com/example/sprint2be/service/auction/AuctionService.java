@@ -16,6 +16,7 @@ public interface AuctionService {
     List<AuctionDto> findAllAuctionDto();
     void saveAuctionDto(AuctionDto auctionDto);
     AuctionDto findByIdDto(Integer auctionId);
-
     Optional<Auction> findAuctionByProduct(Product product);
+    AuctionDto findAuctionByProduct(Product product);
+
 }

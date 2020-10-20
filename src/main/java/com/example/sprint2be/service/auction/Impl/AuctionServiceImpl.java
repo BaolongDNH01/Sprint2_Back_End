@@ -53,6 +53,9 @@ public class AuctionServiceImpl implements AuctionService {
         auctionDto.setProductName(product.getProductName());
         auctionDto.setEachIncrease(product.getEachIncrease());
 
+//      khanh them luc 1h09 10/20/2020
+        auctionDto.setCategoryName(auction.getProduct().getCategory().getCategoryName());
+
         // Chau update lay anh theo id image
         try {
             List<ImageProduct> imageProductList = product.getImageProductList();
@@ -114,6 +117,8 @@ public class AuctionServiceImpl implements AuctionService {
     @Override
     public Optional<Auction> findAuctionByProduct(Product product) {
         return auctionRepository.findAuctionByProduct(product);
+    public AuctionDto findAuctionByProduct(Product product) {
+        return auctionRepository.findAuctionByProduct(product).map(this::convertToAuctionDto).orElse(null);
     }
 
     // Chau => Update status auction

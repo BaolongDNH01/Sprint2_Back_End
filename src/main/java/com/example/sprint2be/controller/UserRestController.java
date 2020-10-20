@@ -278,4 +278,9 @@ public class UserRestController {
         }
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
+
+    @GetMapping("/findTopUser")
+    public ResponseEntity<List<UserDto>> findTopUser(){
+        return new ResponseEntity<>(userService.findTop5(), HttpStatus.OK);
+    }
 }

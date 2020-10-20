@@ -34,11 +34,12 @@ public class User {
     private String avatar;
     private String flag;
     private String enabled;
+    private Long wallet;
     @Column
     private String confirmPassword;
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "rankId")
-    @JsonBackReference
+    @JsonManagedReference
     private Rank rank;
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinTable (
@@ -198,6 +199,14 @@ public class User {
     public void setRank(Rank rank) {
         this.rank = rank;
 
+    }
+
+    public Long getWallet() {
+        return wallet;
+    }
+
+    public void setWallet(Long wallet) {
+        this.wallet = wallet;
     }
 
     public String getEnabled() {

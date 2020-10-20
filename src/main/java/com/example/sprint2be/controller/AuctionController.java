@@ -22,7 +22,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+com.example.sprint2be.service.EmailService getEmailService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -37,7 +39,10 @@ public class AuctionController {
     StatusAuctionService statusAuctionService;
 
     @Autowired
-    com.example.sprint2be.service.EmailService getEmailService;
+    ProductService productService;
+
+    @Autowired
+    CategoryService categoryService;
 
     @Autowired
     BidderRepository bidderRepository;
@@ -46,7 +51,6 @@ public class AuctionController {
     UserService userService;
 
 
-   
     @PostMapping("/create-auction")
    @PreAuthorize("hasRole('MEMBER') or hasRole('ADMIN')")
     public ResponseEntity<Auction> createProduct(@RequestBody AuctionDto auction, UriComponentsBuilder builder) {
@@ -101,6 +105,17 @@ public class AuctionController {
 //    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<StatusAuctionDto>> getAllStatusAuction(){
         return new ResponseEntity<>(this.statusAuctionService.findAllStatusAuctionDto(), HttpStatus.OK);
+    }
+
+    @GetMapping("/getAuctionByCategory/{id}")
+    public ResponseEntity<List<AuctionDto>> getProductByCategory(@PathVariable Integer id){
+        List<AuctionDto> auctions = new ArrayList<>();
+        List<Product> products = productService.findProductByCategory(categoryService.findById(id));
+        for (Product p: products) {
+            AuctionDto a = auctionService.findAuctionByProduct(p);
+            auctions.add(a);
+        }
+        return new ResponseEntity<>(auctions, HttpStatus.OK);
     }
 
 }

@@ -16,12 +16,13 @@ public class AuctionDto {
     private List<Integer> bidderListId;
     private Double initialPrice;
     private String ImageURL;
+    private String categoryName;
 
     public AuctionDto() {
 
     }
 
-    public AuctionDto(Integer auctionId, String dayTimeStart, String dayTimeEnd, Integer statusId, String statusName, Integer productId, String productName, Double eachIncrease, Integer auctionTime, List<Integer> bidderListId, Double initialPrice, String imageURL) {
+    public AuctionDto(Integer auctionId, String dayTimeStart, String dayTimeEnd, Integer statusId, String statusName, Integer productId, String productName, Double eachIncrease, Integer auctionTime, List<Integer> bidderListId, Double initialPrice, String imageURL, String categoryName) {
         this.auctionId = auctionId;
         this.dayTimeStart = dayTimeStart;
         this.dayTimeEnd = dayTimeEnd;
@@ -34,6 +35,7 @@ public class AuctionDto {
         this.bidderListId = bidderListId;
         this.initialPrice = initialPrice;
         ImageURL = imageURL;
+        this.categoryName = categoryName;
     }
 
     public Integer getAuctionId() {
@@ -130,5 +132,13 @@ public class AuctionDto {
 
     public void setImageURL(String imageURL) {
         ImageURL = imageURL;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 }

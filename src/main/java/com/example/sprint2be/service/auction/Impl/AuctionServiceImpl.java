@@ -52,6 +52,9 @@ public class AuctionServiceImpl implements AuctionService {
         auctionDto.setProductName(product.getProductName());
         auctionDto.setEachIncrease(product.getEachIncrease());
 
+//      khanh them luc 1h09 10/20/2020
+        auctionDto.setCategoryName(auction.getProduct().getCategory().getCategoryName());
+
         // Chau update lay anh theo id image
         try {
             List<ImageProduct> imageProductList = product.getImageProductList();

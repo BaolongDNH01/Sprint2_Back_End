@@ -23,8 +23,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -47,8 +45,10 @@ public class AuctionController {
     @Autowired
     UserService userService;
 
+
+   
     @PostMapping("/create-auction")
-	@PreAuthorize("hasRole('MEMBER') or hasRole('ADMIN')")
+   @PreAuthorize("hasRole('MEMBER') or hasRole('ADMIN')")
     public ResponseEntity<Auction> createProduct(@RequestBody AuctionDto auction, UriComponentsBuilder builder) {
         auctionService.saveAuctionDto(auction);
         HttpHeaders headers = new HttpHeaders();
@@ -77,12 +77,10 @@ public class AuctionController {
     }
 
     @PatchMapping("/auction-edit/{id}")
-    public void updateStatusAuction(@PathVariable Integer id, @RequestBody AuctionDto auctionDto) {
-        System.out.println("qua dc day ko ne");
+    public ResponseEntity<String> updateStatusAuction(@PathVariable Integer id, @RequestBody AuctionDto auctionDto) {
         Auction auction = auctionService.findById(id);
         auctionDto.setAuctionId(auction.getAuctionId());
         auctionService.saveAuctionDto(auctionDto);
-
         if (auctionDto.getStatusId() == 3) {
             Integer idUser=bidderRepository.getUserWinByAuctionId(id);
             Integer maxBidder=bidderRepository.getMaxBidderByAuctionId(id);
@@ -90,11 +88,9 @@ public class AuctionController {
             getEmailService.sendEmail(user.getEmail(), "Đấu giá thành công", "Chúc mừng bạn đã đấu giá thành công : http://localhost:4200/product-details/" + auctionDto.getAuctionId() +
                     '\n' + "Với mức giá :"+ maxBidder +" .Điền thông tin nhận hàng tại :");
         }
+        return new ResponseEntity<>("update", HttpStatus.OK);
     }
-//    @PatchMapping("/auction-edit/{id}")
-//    public static void test(@RequestBody AuctionDto auctionDto){
-//        System.out.println("ok");
-//    }
+
     @GetMapping("/auction/{id}")
     public ResponseEntity<AuctionDto> findByIdDto(@PathVariable Integer id) {
         return new ResponseEntity<>(auctionService.findByIdDto(id), HttpStatus.OK);
@@ -107,14 +103,4 @@ public class AuctionController {
         return new ResponseEntity<>(this.statusAuctionService.findAllStatusAuctionDto(), HttpStatus.OK);
     }
 
-    @GetMapping("/getAuctionByCategory/{id}")
-    public ResponseEntity<List<AuctionDto>> getProductByCategory(@PathVariable Integer id){
-        List<AuctionDto> auctions = new ArrayList<>();
-        List<Product> products = productService.findProductByCategory(categoryService.findById(id));
-        for (Product p: products) {
-            AuctionDto a = auctionService.findAuctionByProduct(p);
-            auctions.add(a);
-        }
-        return new ResponseEntity<>(auctions, HttpStatus.OK);
-    }
 }

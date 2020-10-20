@@ -1,9 +1,13 @@
 package com.example.sprint2be.service.payment.impl;
 
+import com.example.sprint2be.model.auction.Auction;
 import com.example.sprint2be.model.payment.Cart;
 import com.example.sprint2be.model.payment.CartDTO;
 import com.example.sprint2be.model.payment.CartItem;
 import com.example.sprint2be.model.payment.CartResponseDTO;
+import com.example.sprint2be.model.product.Product;
+import com.example.sprint2be.repository.auction.AuctionRepository;
+import com.example.sprint2be.repository.payment.CartItemRepository;
 import com.example.sprint2be.repository.payment.CartRepository;
 import com.example.sprint2be.service.payment.CartService;
 import com.example.sprint2be.model.constant.ECartItemStatus;
@@ -12,6 +16,7 @@ import com.example.sprint2be.service.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,7 +28,13 @@ public class CartServiceImpl implements CartService {
     CartRepository cartRepository;
 
     @Autowired
+    CartItemRepository cartItemRepository;
+
+    @Autowired
     ProductService productService;
+
+    @Autowired
+    AuctionRepository auctionRepository;
 
     // Chau
     private CartDTO convertToCartDto(Cart cart) {
@@ -54,12 +65,38 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public Optional<Cart> findCartByUserId(Integer id) {
+
         Optional<Cart> optionalCart = cartRepository.findCartByUser_UserId(id);
 
+
+
         if (optionalCart.isPresent()) {
+            ArrayList<Integer[]> productInfoList = cartRepository.getInfoProductWonList(id);
+            Integer winPrice = productInfoList.get(0)[1];
+            Integer idProduct = productInfoList.get(0)[2];
+            Product productWon = productService.findByIdProduct(idProduct);
+            Optional<Auction> auction = auctionRepository.findAuctionByProduct(productWon);
+
+
             Cart cart = optionalCart.get();
-            double total = 0.0;
             List<CartItem> cartItemsList = cart.getCartItemList();
+
+            double total = 0.0;
+
+            CartItem itemWon = new CartItem();
+            if(auction.isPresent()) {
+                itemWon.setAuction(auction.get());
+            }
+
+            itemWon.setCart(cart);
+            itemWon.setCartItemStatus(ECartItemStatus.ITEM_ENABLED.name());
+            itemWon.setWinPrice(winPrice);
+            itemWon.setProduct(productWon);
+            itemWon.setQuantity(1);
+
+//            cartItemRepository.save(itemWon);
+
+            cartItemsList.add(itemWon);
             cartItemsList.removeIf(item -> item.getCartItemStatus().equalsIgnoreCase(ECartItemStatus.ITEM_PAID.name()));
 
             // Thien: Check cart empty
@@ -72,13 +109,20 @@ public class CartServiceImpl implements CartService {
                 cartItemsList.removeIf(item -> item.getCartItemStatus().equalsIgnoreCase(ECartItemStatus.ITEM_REMOVED.name()));
 
                 for (CartItem item : cartItemsList) {
-                    total += item.getWinPrice();
+                    if(item.getCartItemStatus().equalsIgnoreCase(ECartItemStatus.ITEM_ENABLED.name())) {
+                        total += item.getWinPrice();
+                    }
                 }
             }
             cart.setCurrentTotalPrice(total);
             save(cart);
         }
         return optionalCart;
+    }
+
+    @Override
+    public ArrayList<Integer[]> getInfoProductWonList(Integer userId) {
+        return cartRepository.getInfoProductWonList(userId);
     }
 
     @Override

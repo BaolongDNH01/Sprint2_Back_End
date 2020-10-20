@@ -31,13 +31,15 @@ public class UserPrincipal implements UserDetails, Serializable {
 
     private String avatar;
 
+    private Long wallet;
+
     private Collection<? extends GrantedAuthority> authorities;
 
     public UserPrincipal() {
     }
 
     public UserPrincipal(Integer id, String username, String password, String fullName, String email, String address,
-                         String phoneNumber, String avatar, Collection<? extends GrantedAuthority> authorities) {
+                         String phoneNumber, String avatar, Long wallet, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -47,6 +49,7 @@ public class UserPrincipal implements UserDetails, Serializable {
         this.phoneNumber = phoneNumber;
         this.avatar = avatar;
         this.authorities = authorities;
+        this.wallet = wallet;
     }
 
     public static UserPrincipal build(User user) {
@@ -62,6 +65,7 @@ public class UserPrincipal implements UserDetails, Serializable {
             user.getAddress(),
             user.getPhone(),
             user.getAvatar(),
+            user.getWallet(),
             authorities
         );
     }
@@ -163,6 +167,14 @@ public class UserPrincipal implements UserDetails, Serializable {
 
     public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
         this.authorities = authorities;
+    }
+
+    public Long getWallet() {
+        return wallet;
+    }
+
+    public void setWallet(Long wallet) {
+        this.wallet = wallet;
     }
 }
 

@@ -88,6 +88,7 @@ public class UserRestController {
                     userPrincipal.getUsername(),
                     userPrincipal.getEmail(),
                     userPrincipal.getAvatar(),
+                    userPrincipal.getWallet(),
                     userPrincipal.getAuthorities()
             );
             //        quan

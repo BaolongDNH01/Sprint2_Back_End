@@ -18,19 +18,22 @@ public class JwtResponse {
 
     private String avatar;
 
+    private Long wallet;
+
     private Collection<? extends GrantedAuthority> authorities;
 
 
     public JwtResponse() {
     }
 
-    public JwtResponse(String userId, String token, String username, String email, String avatar, Collection<?
+    public JwtResponse(String userId, String token, String username, String email, String avatar, Long wallet ,Collection<?
             extends GrantedAuthority> authorities) {
         this.userId = userId;
         this.token = token;
         this.username = username;
         this.email = email;
         this.avatar = avatar;
+        this.wallet = wallet;
         this.authorities = authorities;
     }
 
@@ -80,5 +83,13 @@ public class JwtResponse {
 
     public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
         this.authorities = authorities;
+    }
+
+    public Long getWallet() {
+        return wallet;
+    }
+
+    public void setWallet(Long wallet) {
+        this.wallet = wallet;
     }
 }
